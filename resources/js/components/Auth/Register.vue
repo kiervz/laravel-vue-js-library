@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <br><br>
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
@@ -76,7 +77,7 @@
             register() {
                 axios.post('/api/auth/register', this.form)
                     .then(res => {
-                        console.log("gago ka");
+                        this.$router.push('/login');
                     })
                     .catch(error => error.response.data);
             }

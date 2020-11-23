@@ -36,7 +36,7 @@
                 items: [
                     {
                         name : 'Dashboard',
-                        link : "/",
+                        link : "/dashboard",
                         icon : "tachometer-alt", 
                     },
                     {

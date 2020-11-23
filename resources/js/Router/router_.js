@@ -5,8 +5,9 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/', name: 'Dashboard', component: require('../components/Pages/Dashboard.vue').default },
+    { path: '/dashboard', name: 'Dashboard', component: require('../components/Pages/Dashboard.vue').default },
     { path: '/login', name: 'Login', component: require('../components/Auth/Login.vue').default },
+    { path: '/logout', name: 'Logout', component: require('../components/Auth/Logout.vue').default },
     { path: '/register', name: 'Register', component: require('../components/Auth/Register.vue').default },
     { path: '/attendance', name: 'Attendance', component: require('../components/Pages/Attendance.vue').default },
     { path: '/book-entry', name: 'BookEntry', component: require('../components/Pages/BookEntry.vue').default },

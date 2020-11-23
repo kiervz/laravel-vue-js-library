@@ -17,15 +17,12 @@
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <span class="dropdown-header">Sign in as</span>
                     <div class="dropdown-divider"></div>
-                    <!-- <router-link to="/settings" class="dropdown-item">
+                    <router-link to="/settings" class="dropdown-item">
                         <i class="fas fa-cog mr-1"></i> Settings
-                    </router-link>  -->
-                    <a class="dropdown-item" href=""
-                        onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();"
-                    >
+                    </router-link> 
+                    <router-link to="/logout" class="dropdown-item">
                         <i class="fas fa-sign-out-alt mr-1"></i> Logout
-                    </a>
+                    </router-link>
                 </div>
             </li>
         </ul>

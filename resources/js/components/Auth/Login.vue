@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <br><br>
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
@@ -55,11 +56,16 @@
                 errors:{},
             }
         },
+        created() {
+            if(User.loggedIn()) {
+                this.$router.push({ name: 'login'});
+            }
+        },
         methods: {
             login() {
                 axios.post('/api/auth/login', this.form)
                     .then(res => {
-                        console.log("gago");
+                        User.responseAfterLogin(res)
                     })
                     .catch(error => error.response.data);
             }

@@ -6,7 +6,7 @@
         <app-footer></app-footer>
     </div>
     <div v-else>
-        <router-link></router-link>
+        <router-view></router-view>
     </div>
 </template>
 <script>
@@ -19,8 +19,14 @@
         components: { AppNavBar, AppSideBar, AppMain, AppFooter },
         data() {
             return {
-                user: 1,
+                user: null,
             }
+        },
+        created() {
+            this.user = User.loggedIn();
+            EventBus.$on('logout', () => {
+                User.logOut()
+            })
         }
     }
 </script>
