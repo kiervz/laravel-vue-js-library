@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
+    use AuthenticatesUsers;
+
     /**
      * Create a new AuthController instance.
      *
@@ -31,16 +34,30 @@ class AuthController extends Controller
     {
         $credentials = $request->all();
 
-        if ($token = JWTAuth::attempt($credentials)) {
-            return $this->respondWithToken($token);
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
         }
 
-        return response()->json(['error' => 'Unauthorized'], 401);
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                $this->incrementLoginAttempts($request);
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+        }
+        catch(JWTException $e) {
+            // something went wrong
+            $this->incrementLoginAttempts($request);
+            return response()->json(['error' => 'Could Not Create Token'], 500);
+        }
+
+        return $this->respondWithToken($token);
     }
 
     public function register(RegisterRequest $request) 
     {   
-        User::create($request->all());
+        $user = User::create($request->all());
 
         return response()->json([
             'message' => 'Successfully Registered.',

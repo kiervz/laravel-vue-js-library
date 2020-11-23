@@ -4,6 +4,9 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 
 class Handler extends ExceptionHandler
 {
@@ -36,5 +39,27 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Throwable
+     */
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof TokenBlacklistedException) {
+            return response()->json(['error' => 'Token can not be used, get new one'], Response::HTTP_BAD_REQUEST);
+        } else if ($exception instanceof TokenInvalidException) {
+            return response()->json(['error' => 'Token is Invalid'], Response::HTTP_BAD_REQUEST);
+        } else if ($exception instanceof JWTException) {
+            return response()->json(['error' => 'There is problem with your token'], Response::HTTP_BAD_REQUEST);
+        }
+
+        return parent::render($request, $exception);
     }
 }
