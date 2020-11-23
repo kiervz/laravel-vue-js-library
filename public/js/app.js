@@ -2442,9 +2442,61 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      items: [{
+        icon: 'swatchbook',
+        text: "Books",
+        description: "Total books registered",
+        total: 171,
+        bg: 'bg-info'
+      }, {
+        icon: 'book',
+        text: "Books Lost",
+        description: "Total books lost recorded.",
+        total: 1,
+        bg: 'bg-secondary'
+      }, {
+        icon: 'exclamation-triangle',
+        text: "Books Overdue",
+        description: "Total books overdue recorded.",
+        total: 4,
+        bg: 'bg-success'
+      }, {
+        icon: 'book-reader',
+        text: "Borrowers",
+        description: "Total borrowers recorded.",
+        total: 56,
+        bg: 'bg-danger'
+      }, {
+        icon: 'users',
+        text: "Students",
+        description: "Total students registered",
+        total: 200,
+        bg: 'bg-warning'
+      }, {
+        icon: 'user-tie',
+        text: "Faculties",
+        description: "Total faculties today recorded.",
+        total: 10,
+        bg: 'bg-primary'
+      }]
+    };
   }
 });
 
@@ -38181,7 +38233,7 @@ var render = function() {
         "div",
         { staticClass: "app-home" },
         [
-          _c("app-nav-bar"),
+          _c("app-nav-bar", { staticClass: "mb-3" }),
           _vm._v(" "),
           _c("app-side-bar"),
           _vm._v(" "),
@@ -38868,9 +38920,42 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "dashboard" })
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c(
+      "div",
+      { staticClass: "row" },
+      _vm._l(_vm.items, function(item, $index) {
+        return _c("div", { key: $index, staticClass: "col-md-4 col-sm-6" }, [
+          _c("div", { staticClass: "small-box", class: item.bg }, [
+            _c("div", { staticClass: "inner" }, [
+              _c("h3", [_vm._v(_vm._s(item.total))]),
+              _vm._v(" "),
+              _c("p", [_vm._v(_vm._s(item.text))])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "icon" }, [
+              _c("i", { class: "fa-5x mt-3 fas fa-" + item.icon })
+            ]),
+            _vm._v(" "),
+            _vm._m(0, true)
+          ])
+        ])
+      }),
+      0
+    )
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+      _vm._v("More info "),
+      _c("i", { staticClass: "fas fa-arrow-circle-right" })
+    ])
+  }
+]
 render._withStripped = true
 
 

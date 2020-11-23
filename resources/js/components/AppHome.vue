@@ -1,6 +1,6 @@
 <template>
     <div class="app-home" v-if="user">
-        <app-nav-bar></app-nav-bar>
+        <app-nav-bar class="mb-3"></app-nav-bar>
         <app-side-bar></app-side-bar>
         <app-main></app-main>
         <app-footer></app-footer>
