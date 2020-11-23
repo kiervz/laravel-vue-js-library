@@ -43,7 +43,7 @@ class AuthController extends Controller
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
                 $this->incrementLoginAttempts($request);
-                return response()->json(['error' => 'Unauthorized'], 401);
+                return response()->json(['error' => 'Invalid Credentials'], 401);
             }
         }
         catch(JWTException $e) {

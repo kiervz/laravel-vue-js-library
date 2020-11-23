@@ -6,6 +6,9 @@
             <div class="col-md-6">
                 <div class="card mx-auto">
                     <div class="card-body">
+                        <span class="text-danger" v-if="error">
+                            <div class="alert alert-danger" role="alert">{{ error }}</div>
+                        </span>
                         <div class="form-group">
                             <label>Email address</label>
                             <input 
@@ -13,8 +16,8 @@
                                 type="email" 
                                 class="form-control" 
                                 placeholder="Email">
+                            <span class="text-danger" v-if="errors.email">{{ errors.email[0] }}</span>
                         </div>
-                        <span class="red--text" v-if="errors.email">{{ errors.email[0] }}</span>
                         
                         <div class="form-group">
                             <label>Password</label>
@@ -23,8 +26,8 @@
                                 type="password" 
                                 class="form-control" 
                                 placeholder="Password">
+                            <span class="text-danger" v-if="errors.password">{{ errors.password[0] }}</span>
                         </div>
-                        <span class="red--text" v-if="errors.password">{{ errors.password[0] }}</span>
                         
                         <button 
                             class="btn btn-sm btn-primary form-control"
@@ -63,11 +66,26 @@
         },
         methods: {
             login() {
+                this.error = ''
+                this.errors = ''
                 axios.post('/api/auth/login', this.form)
                     .then(res => {
                         User.responseAfterLogin(res)
                     })
-                    .catch(error => error.response.data);
+                    .catch(error => {
+                        if (!error.response.status == 401) {
+                            this.errors = error.response.data.errors
+                        }
+                        else if(error.response.status == 422) {
+                            this.errors = error.response.data.errors
+                        }
+                        else if(error.response.status == 429) {
+                            this.error = error.response.data.errors.email[0]
+                        }
+                        else { 
+                            this.error = error.response.data.error
+                        }
+                    });
             }
         },
     }
