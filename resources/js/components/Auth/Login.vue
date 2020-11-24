@@ -61,7 +61,7 @@
         },
         created() {
             if(User.loggedIn()) {
-                this.$router.push({ name: 'login'});
+                this.$router.push({ name: 'dashboard'});
             }
         },
         methods: {
@@ -69,18 +69,11 @@
                 this.error = ''
                 this.errors = ''
                 axios.post('/api/auth/login', this.form)
-                    .then(res => {
-                        User.responseAfterLogin(res)
-                    })
+                    .then(res => User.responseAfterLogin(res))
                     .catch(error => {
-                        if (!error.response.status == 401) {
+                        let status = error.response.status
+                        if (!status == 401 || status == 422) {
                             this.errors = error.response.data.errors
-                        }
-                        else if(error.response.status == 422) {
-                            this.errors = error.response.data.errors
-                        }
-                        else if(error.response.status == 429) {
-                            this.error = error.response.data.errors.email[0]
                         }
                         else { 
                             this.error = error.response.data.error

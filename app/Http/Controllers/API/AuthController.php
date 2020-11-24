@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -57,7 +58,16 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request) 
     {   
-        $user = User::create($request->all());
+        try {
+            User::create($request->all());
+        }
+        catch(Exception $e) {
+            if ($e->getCode() == 23000) {
+                return response()->json(['error' => 'Email is already exist.'], 500);
+            }
+            
+            return response()->json(['error' => 'Something went wrong.'], 500);
+        }
 
         return response()->json([
             'message' => 'Successfully Registered.',

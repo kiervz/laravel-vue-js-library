@@ -6,6 +6,9 @@
             <div class="col-md-6">
                 <div class="card mx-auto">
                     <div class="card-body">
+                        <span class="text-danger" v-if="error">
+                            <div class="alert alert-danger" role="alert">{{ error }}</div>
+                        </span>
                         <div class="form-group" v-for="(item, index) in items" :key="index">
                             <label>{{ item.label }}</label>
                             <input 
@@ -13,7 +16,7 @@
                                 :type="item.type" 
                                 class="form-control" 
                                 :placeholder="item.label">
-                            <span class="red--text" v-if="errors[item.name]">{{ errors[item.name] }}</span>
+                            <span class="text-danger" v-if="errors[item.name]">{{ errors[item.name][0] }}</span>
                         </div>
                         
                         <button 
@@ -70,7 +73,8 @@
                         type: 'password'
                     },
                 ],
-                errors: []
+                error: null,
+                errors: {}
             }
         },
         methods: {
@@ -79,7 +83,15 @@
                     .then(res => {
                         this.$router.push('/login');
                     })
-                    .catch(error => error.response.data);
+                    .catch(error => {
+                        let status = error.response.status
+                        if (!status == 401 || status == 422) {
+                            this.errors = error.response.data.errors
+                        }
+                        else { 
+                            this.error = error.response.data.error
+                        }
+                    });
             }
         }
     }
