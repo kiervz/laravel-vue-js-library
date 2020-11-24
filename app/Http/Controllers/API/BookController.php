@@ -9,6 +9,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller
 {
+    /**
+     * Create a new BookController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index() 
     {
         $books = BookResource::collection(Book::all());

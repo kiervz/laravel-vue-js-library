@@ -60198,7 +60198,10 @@ Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
 var routes = [{
   path: '/dashboard',
   name: 'Dashboard',
-  component: __webpack_require__(/*! ../components/Pages/Dashboard.vue */ "./resources/js/components/Pages/Dashboard.vue")["default"]
+  component: __webpack_require__(/*! ../components/Pages/Dashboard.vue */ "./resources/js/components/Pages/Dashboard.vue")["default"],
+  meta: {
+    requiresAuth: true
+  }
 }, {
   path: '/login',
   name: 'Login',
@@ -60206,7 +60209,10 @@ var routes = [{
 }, {
   path: '/logout',
   name: 'Logout',
-  component: __webpack_require__(/*! ../components/Auth/Logout.vue */ "./resources/js/components/Auth/Logout.vue")["default"]
+  component: __webpack_require__(/*! ../components/Auth/Logout.vue */ "./resources/js/components/Auth/Logout.vue")["default"],
+  meta: {
+    requiresAuth: true
+  }
 }, {
   path: '/register',
   name: 'Register',
@@ -60214,41 +60220,78 @@ var routes = [{
 }, {
   path: '/attendance',
   name: 'Attendance',
-  component: __webpack_require__(/*! ../components/Pages/Attendance.vue */ "./resources/js/components/Pages/Attendance.vue")["default"]
+  component: __webpack_require__(/*! ../components/Pages/Attendance.vue */ "./resources/js/components/Pages/Attendance.vue")["default"],
+  meta: {
+    requiresAuth: true
+  }
 }, {
   path: '/book-entry',
   name: 'BookEntry',
-  component: __webpack_require__(/*! ../components/Pages/BookEntry.vue */ "./resources/js/components/Pages/BookEntry.vue")["default"]
+  component: __webpack_require__(/*! ../components/Pages/BookEntry.vue */ "./resources/js/components/Pages/BookEntry.vue")["default"],
+  meta: {
+    requiresAuth: true
+  }
 }, {
   path: '/issued-return',
   name: 'IssuedReturn',
-  component: __webpack_require__(/*! ../components/Pages/IssuedReturn.vue */ "./resources/js/components/Pages/IssuedReturn.vue")["default"]
+  component: __webpack_require__(/*! ../components/Pages/IssuedReturn.vue */ "./resources/js/components/Pages/IssuedReturn.vue")["default"],
+  meta: {
+    requiresAuth: true
+  }
 }, {
   path: '/borrowers',
   name: 'Borrowers',
-  component: __webpack_require__(/*! ../components/Pages/Borrowers.vue */ "./resources/js/components/Pages/Borrowers.vue")["default"]
+  component: __webpack_require__(/*! ../components/Pages/Borrowers.vue */ "./resources/js/components/Pages/Borrowers.vue")["default"],
+  meta: {
+    requiresAuth: true
+  }
 }, {
   path: '/user-management',
   name: 'UserManagement',
-  component: __webpack_require__(/*! ../components/Pages/UserManagement.vue */ "./resources/js/components/Pages/UserManagement.vue")["default"]
+  component: __webpack_require__(/*! ../components/Pages/UserManagement.vue */ "./resources/js/components/Pages/UserManagement.vue")["default"],
+  meta: {
+    requiresAuth: true
+  }
 }, {
   path: '/audit-log',
   name: 'AuditLog',
-  component: __webpack_require__(/*! ../components/Pages/AuditLog.vue */ "./resources/js/components/Pages/AuditLog.vue")["default"]
+  component: __webpack_require__(/*! ../components/Pages/AuditLog.vue */ "./resources/js/components/Pages/AuditLog.vue")["default"],
+  meta: {
+    requiresAuth: true
+  }
 }, {
   path: '/reports',
   name: 'Reports',
-  component: __webpack_require__(/*! ../components/Pages/Reports.vue */ "./resources/js/components/Pages/Reports.vue")["default"]
+  component: __webpack_require__(/*! ../components/Pages/Reports.vue */ "./resources/js/components/Pages/Reports.vue")["default"],
+  meta: {
+    requiresAuth: true
+  }
 }, {
   path: '/settings',
   name: 'Settings',
-  component: __webpack_require__(/*! ../components/Pages/Settings.vue */ "./resources/js/components/Pages/Settings.vue")["default"]
+  component: __webpack_require__(/*! ../components/Pages/Settings.vue */ "./resources/js/components/Pages/Settings.vue")["default"],
+  meta: {
+    requiresAuth: true
+  }
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   hashbang: false,
   mode: 'history',
   routes: routes // short for `routes: routes`
 
+});
+router.beforeEach(function (to, from, next) {
+  if (to.meta.requiresAuth) {
+    if (User.loggedIn()) {
+      next();
+    } else {
+      next({
+        name: 'Login'
+      });
+    }
+  }
+
+  next();
 });
 /* harmony default export */ __webpack_exports__["default"] = (router);
 
