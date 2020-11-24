@@ -23,7 +23,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('jwt.auth', ['except' => ['login', 'register']]);
     }
 
     /**
@@ -103,7 +103,7 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(Auth::refresh());
+        return $this->respondWithToken(JWTAuth::refresh());
     }
 
     /**

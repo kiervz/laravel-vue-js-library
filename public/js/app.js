@@ -2226,6 +2226,8 @@ __webpack_require__.r(__webpack_exports__);
 
         if (!status == 401 || status == 422) {
           _this.errors = error.response.data.errors;
+        } else if (status == 429) {
+          _this.error = error.response.data.errors.email[0];
         } else {
           _this.error = error.response.data.error;
         }
@@ -60408,6 +60410,8 @@ try {
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+var JWToken = "Bearer ".concat(localStorage.getItem('token'));
+window.axios.defaults.headers.common['Authorization'] = JWToken;
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

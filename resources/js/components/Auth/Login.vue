@@ -75,6 +75,9 @@
                         if (!status == 401 || status == 422) {
                             this.errors = error.response.data.errors
                         }
+                        else if (status == 429) {
+                            this.error = error.response.data.errors.email[0]
+                        }
                         else { 
                             this.error = error.response.data.error
                         }

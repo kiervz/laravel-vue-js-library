@@ -16,7 +16,7 @@ class BookController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('jwt.auth');
     }
 
     public function index() 
