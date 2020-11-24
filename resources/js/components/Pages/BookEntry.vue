@@ -265,6 +265,9 @@
         created() {
             this.fetchBooks()
             this.fetchCategories()
+            this.$on('refreshBooks', () => { 
+                this.fetchBooks()
+            })
         },
         methods: {
             fetchBooks() {
@@ -300,13 +303,34 @@
 
             },
             addBook() {
-                axios.post('api/book', this.form)
-                    .then(res => {
-                        console.log("Success");
-                    })
-                    .catch(error => {
-                        this.errors = error.response.data.errors
-                    })
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.value) {
+                        axios.post('api/book', this.form)
+                            .then(({ data }) => {
+                                Toast.fire({
+                                    icon: data.status,
+                                    title: data.message
+                                });
+                                this.$emit('refreshBooks')
+                                $('#add_book').modal('hide')
+                            })
+                            .catch(err => {
+                                this.errors = err.response.data.errors;
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Something went wrong.',
+                                });
+                            })
+                    }
+                });
             },
             updateBook() {
 

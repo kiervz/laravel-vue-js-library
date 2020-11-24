@@ -24,6 +24,7 @@ class BookController extends Controller
         Book::create($request->all());
 
         return response()->json([
+            'status' => 'success',
             'message' => 'Book Successfully Added'
         ]);
     }
