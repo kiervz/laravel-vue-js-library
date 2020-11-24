@@ -92,11 +92,10 @@
                                                 :type="item.type"
                                                 v-model="form[item.name]"
                                                 class="form-control"
-                                                :class="{ 'is-invalid': errors[item.name] }"
+                                                :class="errors[item.name] ? 'is-invalid' : form.errors.has(item.name)"
                                             >
-                                            <span 
-                                                class="text-danger" 
-                                                v-if="errors[item.name]">{{ errors[item.name][0] }}
+                                            <span role="alert" v-if="errors[item.name]" :class="errors[item.name] ? 'invalid-feedback d-block' : ''">
+                                                <strong>{{ errors[item.name][0] }}</strong>
                                             </span>
                                         </div>
                                     </div>
@@ -110,7 +109,7 @@
                                                     :id="item.name"
                                                     v-model="form[item.name]"
                                                     class="form-control"
-                                                    :class="{ 'is-invalid': errors[item.name] }"
+                                                    :class="errors[item.name] ? 'is-invalid' : form.errors.has(item.name)"
                                                 >
                                                     <option value="" disabled selected>Select Book Category</option>
                                                     <option
@@ -120,9 +119,8 @@
                                                         {{ item.name }}
                                                     </option>
                                                 </select>
-                                                <span 
-                                                    class="text-danger" 
-                                                    v-if="errors[item.name]">{{ errors[item.name][0] }}
+                                                <span role="alert" v-if="errors[item.name]" :class="errors[item.name] ? 'invalid-feedback d-block' : ''">
+                                                    <strong>{{ errors[item.name][0] }}</strong>
                                                 </span>
                                             </div>
                                             <div v-else>
@@ -135,12 +133,11 @@
                                                         :type="item.type"
                                                         v-model="form[item.name]"
                                                         class="form-control"
-                                                        :class="{ 'is-invalid': errors[item.name] }"
+                                                        :class="errors[item.name] ? 'is-invalid' : form.errors.has(item.name)"
                                                     >
                                                 </div>
-                                                <span 
-                                                    class="text-danger" 
-                                                    v-if="errors[item.name]">{{ errors[item.name][0] }}
+                                                <span role="alert" v-if="errors[item.name]" :class="errors[item.name] ? 'invalid-feedback d-block' : ''">
+                                                    <strong>{{ errors[item.name][0] }}</strong>
                                                 </span>
                                             </div>
                                         </div>
@@ -170,7 +167,7 @@
         name: "BookEntry",
         data() {
             return {
-                form: {
+                form: new Form({
                     id: '',
                     isbn: '',
                     call_number: '',
@@ -184,7 +181,7 @@
                     price: '',
                     avail_copies: '',
                     total_copies: ''
-                },
+                }),
                 books: {},
                 book_categories: {},
                 editMode: false,
@@ -285,21 +282,22 @@
                     .catch(error => error.response.data)
             },
             bookModal() {
-                this.form = {}
-                this.errors = []
+                this.form.clear()
+                this.form.reset()
                 this.editMode = false
                 $('#add_book').modal('show')
+            },
+            editModal(book) {
+                this.form.clear()
+                this.form.reset()
+                this.editMode = true
+                $('#add_book').modal('show')
+                this.form.fill(book)
             },
             categoryModal() {
 
             },
             updateCopiesModal(book) {
-
-            },
-            editModal(book) {
-
-            },
-            deleteModal(book) {
 
             },
             addBook() {
@@ -324,8 +322,8 @@
                                 $('#add_book').modal('hide')
                                 this.$Progress.finish();
                             })
-                            .catch(err => {
-                                this.errors = err.response.data.errors;
+                            .catch(error => {
+                                this.errors = error.response.data.errors;
                                 Toast.fire({
                                     icon: 'warning',
                                     title: 'Something went wrong.',
@@ -336,8 +334,71 @@
                 });
             },
             updateBook() {
-
-            }
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, update it!'
+                }).then((result) => {
+                    if (result.value) {
+                        this.$Progress.start();
+                        this.form.put('api/book/'+ this.form.id)
+                            .then(({ data }) => {
+                                Toast.fire({
+                                    icon: data.status,
+                                    title: data.message
+                                });
+                                this.$emit('refreshBooks')
+                                $('#add_book').modal('hide')
+                                this.$Progress.finish();
+                            })
+                            .catch(error => {
+                                this.errors = error.response.data.errors;
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Something went wrong.',
+                                });
+                                this.$Progress.fail();
+                            })
+                    }
+                });
+            },
+            deleteBook(id) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        this.$Progress.start();
+                        axios.delete('api/book/'+ id)
+                            .then(({ data }) => {
+                                Toast.fire({
+                                    icon: data.status,
+                                    title: data.message
+                                });
+                                this.$emit('refreshBooks')
+                                $('#add_book').modal('hide')
+                                this.$Progress.finish();
+                            })
+                            .catch(error => {
+                                this.errors = error.response.data.errors;
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Something went wrong.',
+                                });
+                                this.$Progress.fail();
+                            })
+                    }
+                });
+            },
         }
     }
 </script>
