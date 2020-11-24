@@ -313,6 +313,7 @@
                     confirmButtonText: 'Yes, save it!'
                 }).then((result) => {
                     if (result.value) {
+                        this.$Progress.start();
                         axios.post('api/book', this.form)
                             .then(({ data }) => {
                                 Toast.fire({
@@ -321,6 +322,7 @@
                                 });
                                 this.$emit('refreshBooks')
                                 $('#add_book').modal('hide')
+                                this.$Progress.finish();
                             })
                             .catch(err => {
                                 this.errors = err.response.data.errors;
@@ -328,6 +330,7 @@
                                     icon: 'warning',
                                     title: 'Something went wrong.',
                                 });
+                                this.$Progress.fail();
                             })
                     }
                 });
