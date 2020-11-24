@@ -2566,6 +2566,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BookEntry",
   data: function data() {
@@ -2625,7 +2640,7 @@ __webpack_require__.r(__webpack_exports__);
         required: "required",
         type: "dropdown"
       }, {
-        label: "Date Published",
+        label: "Year Published",
         name: "year_published",
         required: "required",
         type: "number"
@@ -2673,7 +2688,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     bookModal: function bookModal() {
-      this.books = {};
+      this.form = {};
+      this.errors = [];
       this.editMode = false;
       $('#add_book').modal('show');
     },
@@ -39256,7 +39272,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(book.publisher))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.category.category))]),
+                    _c("td", [_vm._v(_vm._s(book.category))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(book.year_published))]),
                     _vm._v(" "),
@@ -39395,6 +39411,9 @@ var render = function() {
                                       }
                                     ],
                                     staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors[item.name]
+                                    },
                                     attrs: {
                                       id: item.name,
                                       name: item.name,
@@ -39449,6 +39468,9 @@ var render = function() {
                                       }
                                     ],
                                     staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors[item.name]
+                                    },
                                     attrs: {
                                       id: item.name,
                                       name: item.name,
@@ -39477,6 +39499,9 @@ var render = function() {
                                       }
                                     ],
                                     staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.errors[item.name]
+                                    },
                                     attrs: {
                                       id: item.name,
                                       name: item.name,
@@ -39495,7 +39520,16 @@ var render = function() {
                                         )
                                       }
                                     }
-                                  })
+                                  }),
+                              _vm._v(" "),
+                              _vm.errors[item.name]
+                                ? _c("span", { staticClass: "text-danger" }, [
+                                    _vm._v(
+                                      _vm._s(_vm.errors[item.name][0]) +
+                                        "\n                                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]
                           )
                         }),
@@ -39533,6 +39567,9 @@ var render = function() {
                                           }
                                         ],
                                         staticClass: "form-control",
+                                        class: {
+                                          "is-invalid": _vm.errors[item.name]
+                                        },
                                         attrs: {
                                           name: item.name,
                                           id: item.name
@@ -39596,7 +39633,20 @@ var render = function() {
                                         })
                                       ],
                                       2
-                                    )
+                                    ),
+                                    _vm._v(" "),
+                                    _vm.errors[item.name]
+                                      ? _c(
+                                          "span",
+                                          { staticClass: "text-danger" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(_vm.errors[item.name][0]) +
+                                                "\n                                            "
+                                            )
+                                          ]
+                                        )
+                                      : _vm._e()
                                   ])
                                 : _c("div", [
                                     _c("div", [
@@ -39611,6 +39661,10 @@ var render = function() {
                                               }
                                             ],
                                             staticClass: "form-control",
+                                            class: {
+                                              "is-invalid":
+                                                _vm.errors[item.name]
+                                            },
                                             attrs: {
                                               disabled:
                                                 _vm.editMode &&
@@ -39679,6 +39733,10 @@ var render = function() {
                                               }
                                             ],
                                             staticClass: "form-control",
+                                            class: {
+                                              "is-invalid":
+                                                _vm.errors[item.name]
+                                            },
                                             attrs: {
                                               disabled:
                                                 _vm.editMode &&
@@ -39713,6 +39771,10 @@ var render = function() {
                                               }
                                             ],
                                             staticClass: "form-control",
+                                            class: {
+                                              "is-invalid":
+                                                _vm.errors[item.name]
+                                            },
                                             attrs: {
                                               disabled:
                                                 _vm.editMode &&
@@ -39737,7 +39799,20 @@ var render = function() {
                                               }
                                             }
                                           })
-                                    ])
+                                    ]),
+                                    _vm._v(" "),
+                                    _vm.errors[item.name]
+                                      ? _c(
+                                          "span",
+                                          { staticClass: "text-danger" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(_vm.errors[item.name][0]) +
+                                                "\n                                            "
+                                            )
+                                          ]
+                                        )
+                                      : _vm._e()
                                   ])
                             ]
                           )

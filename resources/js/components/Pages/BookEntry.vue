@@ -43,7 +43,7 @@
                                     <td>{{ book.title }}</td>
                                     <td>{{ book.author }}</td>
                                     <td>{{ book.publisher }}</td>
-                                    <td>{{ book.category.category }}</td>
+                                    <td>{{ book.category }}</td>
                                     <td>{{ book.year_published }}</td>
                                     <td>{{ book.total_copies }}</td>
                                     <td>
@@ -92,7 +92,12 @@
                                                 :type="item.type"
                                                 v-model="form[item.name]"
                                                 class="form-control"
+                                                :class="{ 'is-invalid': errors[item.name] }"
                                             >
+                                            <span 
+                                                class="text-danger" 
+                                                v-if="errors[item.name]">{{ errors[item.name][0] }}
+                                            </span>
                                         </div>
                                     </div>
                                     <!-- second row -->
@@ -105,6 +110,7 @@
                                                     :id="item.name"
                                                     v-model="form[item.name]"
                                                     class="form-control"
+                                                    :class="{ 'is-invalid': errors[item.name] }"
                                                 >
                                                     <option value="" disabled selected>Select Book Category</option>
                                                     <option
@@ -114,6 +120,10 @@
                                                         {{ item.name }}
                                                     </option>
                                                 </select>
+                                                <span 
+                                                    class="text-danger" 
+                                                    v-if="errors[item.name]">{{ errors[item.name][0] }}
+                                                </span>
                                             </div>
                                             <div v-else>
                                                 <div>
@@ -125,8 +135,13 @@
                                                         :type="item.type"
                                                         v-model="form[item.name]"
                                                         class="form-control"
+                                                        :class="{ 'is-invalid': errors[item.name] }"
                                                     >
                                                 </div>
+                                                <span 
+                                                    class="text-danger" 
+                                                    v-if="errors[item.name]">{{ errors[item.name][0] }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -219,7 +234,7 @@
                         type: "dropdown"
                     },
                     {
-                        label: "Date Published",
+                        label: "Year Published",
                         name: "year_published",
                         required: "required",
                         type: "number"
@@ -267,7 +282,8 @@
                     .catch(error => error.response.data)
             },
             bookModal() {
-                this.books = {}
+                this.form = {}
+                this.errors = []
                 this.editMode = false
                 $('#add_book').modal('show')
             },
