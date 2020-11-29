@@ -44,4 +44,15 @@ class UserController extends Controller
             'message' => 'User Successfully Updated'
         ], Response::HTTP_OK);
     }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User Successfully Deleted'
+        ], Response::HTTP_OK);
+    }
 }

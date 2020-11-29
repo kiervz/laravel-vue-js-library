@@ -14,30 +14,32 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <table class="table table-sm table-hover">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>User Type</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="user in users" :key="user.id">
-                        <td>{{ user.id }}</td>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.user_type }}</td>
-                        <td>
-                            <i class="fas fa-edit" @click="editModal(user)"></i>
-                            |
-                            <i class="fas fa-trash" @click="deleteUser(user.id)"></i>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>User Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="user in users" :key="user.id">
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.user_type }}</td>
+                            <td>
+                                <i class="fas fa-edit" @click="editModal(user)"></i>
+                                |
+                                <i class="fas fa-trash" @click="deleteUser(user.id)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <!-- /.card-body -->
         <div class="card-footer clearfix">
@@ -228,7 +230,7 @@
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
-                    icon: 'warning',
+                    icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -262,7 +264,7 @@
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
-                    icon: 'warning',
+                    icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -290,8 +292,37 @@
                     }
                 })
             },
-            deleteUser() {
-
+            deleteUser(id) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        this.form.delete('api/user/' + id)
+                            .then(({ data }) => {
+                                Toast.fire({
+                                    icon: data.status,
+                                    title: data.message
+                                });
+                                this.$emit('refreshUsers')
+                                $('#add_user').modal('hide')
+                                this.$Progress.finish();
+                            })
+                            .catch(error => {
+                                this.errors = error.response.data.errors;
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Something went wrong.',
+                                });
+                                this.$Progress.fail();
+                            })
+                    }
+                })
             }
         }
     }
