@@ -14,11 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 Route::group(['middleware' => 'jwt.auth'], function() {
     Route::apiResource('book', 'API\BookController');
+    Route::put('book/copies/{id}', 'API\BookController@update_copies');
     Route::apiResource('category', 'API\BookCategoryController');
 });
 

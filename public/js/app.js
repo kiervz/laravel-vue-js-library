@@ -2586,6 +2586,74 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BookEntry",
   data: function data() {
@@ -2683,7 +2751,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('api/book').then(function (res) {
-        _this2.books = res.data.books;
+        return _this2.books = res.data.books;
       })["catch"](function (error) {
         return error.response.data;
       });
@@ -2692,7 +2760,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       axios.get('api/category').then(function (res) {
-        _this3.book_categories = res.data.categories;
+        return _this3.book_categories = res.data.categories;
       })["catch"](function (error) {
         return error.response.data;
       });
@@ -2711,9 +2779,55 @@ __webpack_require__.r(__webpack_exports__);
       this.form.fill(book);
     },
     categoryModal: function categoryModal() {},
-    updateCopiesModal: function updateCopiesModal(book) {},
-    addBook: function addBook() {
+    updateCopiesModal: function updateCopiesModal(book) {
+      this.form.clear();
+      this.form.reset();
+      $('#update_copies').modal('show');
+      this.form.fill(book);
+    },
+    updateBookCopies: function updateBookCopies() {
       var _this4 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, add new copies!'
+      }).then(function (result) {
+        if (result.value) {
+          _this4.$Progress.start();
+
+          _this4.form.put('api/book/copies/' + _this4.form.id).then(function (_ref) {
+            var data = _ref.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            });
+
+            _this4.form.reset();
+
+            _this4.$emit('refreshBooks');
+
+            $('#update_copies').modal('hide');
+
+            _this4.$Progress.finish();
+          })["catch"](function (error) {
+            _this4.errors = error.response.data.errors;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong. Please, try again later.'
+            });
+
+            _this4.$Progress.fail();
+          });
+        }
+      });
+    },
+    addBook: function addBook() {
+      var _this5 = this;
 
       Swal.fire({
         title: 'Are you sure?',
@@ -2725,48 +2839,9 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, save it!'
       }).then(function (result) {
         if (result.value) {
-          _this4.$Progress.start();
-
-          axios.post('api/book', _this4.form).then(function (_ref) {
-            var data = _ref.data;
-            Toast.fire({
-              icon: data.status,
-              title: data.message
-            });
-
-            _this4.$emit('refreshBooks');
-
-            $('#add_book').modal('hide');
-
-            _this4.$Progress.finish();
-          })["catch"](function (error) {
-            _this4.errors = error.response.data.errors;
-            Toast.fire({
-              icon: 'warning',
-              title: 'Something went wrong.'
-            });
-
-            _this4.$Progress.fail();
-          });
-        }
-      });
-    },
-    updateBook: function updateBook() {
-      var _this5 = this;
-
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, update it!'
-      }).then(function (result) {
-        if (result.value) {
           _this5.$Progress.start();
 
-          _this5.form.put('api/book/' + _this5.form.id).then(function (_ref2) {
+          _this5.form.post('api/book', _this5.form).then(function (_ref2) {
             var data = _ref2.data;
             Toast.fire({
               icon: data.status,
@@ -2790,7 +2865,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    deleteBook: function deleteBook(id) {
+    updateBook: function updateBook() {
       var _this6 = this;
 
       Swal.fire({
@@ -2800,12 +2875,12 @@ __webpack_require__.r(__webpack_exports__);
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Yes, update it!'
       }).then(function (result) {
         if (result.value) {
           _this6.$Progress.start();
 
-          axios["delete"]('api/book/' + id).then(function (_ref3) {
+          _this6.form.put('api/book/' + _this6.form.id).then(function (_ref3) {
             var data = _ref3.data;
             Toast.fire({
               icon: data.status,
@@ -2825,6 +2900,45 @@ __webpack_require__.r(__webpack_exports__);
             });
 
             _this6.$Progress.fail();
+          });
+        }
+      });
+    },
+    deleteBook: function deleteBook(id) {
+      var _this7 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this7.$Progress.start();
+
+          axios["delete"]('api/book/' + id).then(function (_ref4) {
+            var data = _ref4.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            });
+
+            _this7.$emit('refreshBooks');
+
+            $('#add_book').modal('hide');
+
+            _this7.$Progress.finish();
+          })["catch"](function (error) {
+            _this7.errors = error.response.data.errors;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong.'
+            });
+
+            _this7.$Progress.fail();
           });
         }
       });
@@ -44457,6 +44571,138 @@ var render = function() {
             ])
           ])
         ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: { id: "update_copies", role: "dialog" }
+        },
+        [
+          _c("div", { staticClass: "modal-dialog modal-md" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.updateBookCopies($event)
+                    }
+                  }
+                },
+                [
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "card" }, [
+                      _c("div", { staticClass: "card-header" }, [
+                        _vm._v(
+                          "\n                                    Book Details\n                                "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card-body" }, [
+                        _c("div", { staticClass: "form-group row ml-1" }, [
+                          _vm._m(5),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col" }, [
+                            _vm._v(
+                              "\n                                            " +
+                                _vm._s(_vm.form.title) +
+                                "\n                                        "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group row ml-1" }, [
+                          _vm._m(6),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col" }, [
+                            _vm._v(
+                              "\n                                            " +
+                                _vm._s(_vm.form.avail_copies) +
+                                "\n                                        "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group row ml-1" }, [
+                          _vm._m(7),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col" }, [
+                            _vm._v(
+                              "\n                                            " +
+                                _vm._s(_vm.form.total_copies) +
+                                "\n                                        "
+                            )
+                          ])
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "number_copies" } }, [
+                        _vm._v("Number of Copies")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form["number_copies"],
+                            expression: "form['number_copies']"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: _vm.errors["number_copies"] ? "is-invalid" : "",
+                        attrs: {
+                          type: "number",
+                          id: "number_copies",
+                          name: "number_copies"
+                        },
+                        domProps: { value: _vm.form["number_copies"] },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "number_copies",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors["number_copies"]
+                        ? _c(
+                            "span",
+                            {
+                              class: _vm.errors["number_copies"]
+                                ? "invalid-feedback d-block"
+                                : "",
+                              attrs: { role: "alert" }
+                            },
+                            [
+                              _c("strong", [
+                                _vm._v(_vm._s(_vm.errors["number_copies"][0]))
+                              ])
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(8)
+                ]
+              )
+            ])
+          ])
+        ]
       )
     ])
   ])
@@ -44524,6 +44770,88 @@ var staticRenderFns = [
         )
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header bg-dark text-white" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Acquire New Copies")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [
+          _c(
+            "span",
+            { staticClass: "text-white", attrs: { "aria-hidden": "true" } },
+            [_vm._v("×")]
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-5" }, [
+      _c("label", { staticClass: "mr-4", attrs: { for: "book_title" } }, [
+        _vm._v("Book Title: ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-5" }, [
+      _c("label", { staticClass: "mr-4", attrs: { for: "avail_copies" } }, [
+        _vm._v("Available Copies: ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-5" }, [
+      _c("label", { staticClass: "mr-4", attrs: { for: "total_copies" } }, [
+        _vm._v("Total Copies: ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Close")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [_vm._v("Add Copies")]
+      )
+    ])
   }
 ]
 render._withStripped = true

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\BookRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller
@@ -31,10 +32,9 @@ class BookController extends Controller
     public function store(BookRequest $request) 
     {
         $request['avail_copies'] = $request->total_copies;
-        $book = Book::create($request->all());
+        Book::create($request->all());
 
         return response()->json([
-            'book' => $book,
             'status' => 'success',
             'message' => 'Book Successfully Added'
         ], Response::HTTP_CREATED);
@@ -48,6 +48,25 @@ class BookController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Book Successfully Updated'
+        ], Response::HTTP_OK);
+    }
+
+    public function update_copies(Request $request, $id)
+    {
+        $number_copies = $request->input('number_copies');
+        $book = Book::findOrFail($id);
+
+        $request->validate([
+            'number_copies' => 'numeric|required',
+        ]);
+
+        $book->total_copies += $number_copies;
+        $book->avail_copies += $number_copies;
+        $book->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Book copies successfully updated!'
         ], Response::HTTP_OK);
     }
 

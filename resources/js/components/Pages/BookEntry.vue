@@ -155,6 +155,74 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal for updating copies of book -->
+            <div class="modal fade" id="update_copies" role="dialog">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <form @submit.prevent="updateBookCopies">
+                            <div class="modal-header bg-dark text-white">
+                                <h5 class="modal-title" id="exampleModalLabel">Acquire New Copies</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span class="text-white" aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Book Details
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group row ml-1">
+                                            <div class="col-md-5">
+                                                <label for="book_title" class="mr-4">Book Title: </label>
+                                            </div>
+                                            <div class="col">
+                                                {{ form.title }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group row ml-1">
+                                            <div class="col-md-5">
+                                                <label for="avail_copies" class="mr-4">Available Copies: </label>
+                                            </div>
+                                            <div class="col">
+                                                {{ form.avail_copies }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group row ml-1">
+                                            <div class="col-md-5">
+                                                <label for="total_copies" class="mr-4">Total Copies: </label>
+                                            </div>
+                                            <div class="col">
+                                                {{ form.total_copies }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="number_copies">Number of Copies</label>
+                                    <input
+                                        type="number"
+                                        v-model="form['number_copies']"
+                                        class="form-control"
+                                        id="number_copies"
+                                        name="number_copies"
+                                        :class="errors['number_copies'] ? 'is-invalid' : ''"
+                                    >
+                                    <span role="alert" v-if="errors['number_copies']" :class="errors['number_copies'] ? 'invalid-feedback d-block' : ''">
+                                        <strong>{{ errors['number_copies'][0] }}</strong>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Add Copies</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -265,16 +333,12 @@
         methods: {
             fetchBooks() {
                 axios.get('api/book')
-                    .then(res => {
-                        this.books = res.data.books
-                    })
+                    .then(res => this.books = res.data.books)
                     .catch(error => error.response.data)
             },
             fetchCategories() {
                 axios.get('api/category')
-                    .then(res => {
-                        this.book_categories = res.data.categories
-                    })
+                    .then(res => this.book_categories = res.data.categories)
                     .catch(error => error.response.data)
             },
             bookModal() {
@@ -294,7 +358,44 @@
 
             },
             updateCopiesModal(book) {
-
+                this.form.clear()
+                this.form.reset()
+                $('#update_copies').modal('show')
+                this.form.fill(book)
+            },
+            updateBookCopies() {
+                Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, add new copies!'
+                    }).then((result) => {
+                        if (result.value) {
+                            this.$Progress.start();
+                            this.form.put('api/book/copies/' + this.form.id)
+                                .then(({ data }) => {
+                                    Toast.fire({
+                                        icon: data.status,
+                                        title: data.message,
+                                    });
+                                    this.form.reset();
+                                    this.$emit('refreshBooks');
+                                    $('#update_copies').modal('hide');
+                                    this.$Progress.finish();
+                                })
+                                .catch(error => {
+                                    this.errors = error.response.data.errors;
+                                    Toast.fire({
+                                        icon: 'warning',
+                                        title: 'Something went wrong. Please, try again later.',
+                                    });
+                                    this.$Progress.fail();
+                                });
+                        }
+                    })
             },
             addBook() {
                 Swal.fire({
@@ -308,7 +409,7 @@
                 }).then((result) => {
                     if (result.value) {
                         this.$Progress.start();
-                        axios.post('api/book', this.form)
+                        this.form.post('api/book', this.form)
                             .then(({ data }) => {
                                 Toast.fire({
                                     icon: data.status,
