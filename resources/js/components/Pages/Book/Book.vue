@@ -333,9 +333,16 @@
         },
         methods: {
             fetchBooks() {
+                this.$Progress.start()
                 axios.get('api/book')
-                    .then(res => this.books = res.data.books)
-                    .catch(error => error.response.data)
+                    .then(res => {
+                        this.books = res.data.books
+                        this.$Progress.finish()
+                    })
+                    .catch(error => {
+                        error.response.data
+                        this.$Progress.fail();
+                    })
             },
             fetchCategories() {
                 axios.get('api/category')

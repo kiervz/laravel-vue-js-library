@@ -3,13 +3,11 @@
 </template>
 <script>
     export default {
+        name: 'Attendance',
         data() {
             return {
 
             }
         },
-        mounted() {
-            console.log("attendance");
-        }
     }
 </script>

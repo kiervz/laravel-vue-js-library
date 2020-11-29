@@ -108,10 +108,5 @@
                 ],
             }
         },
-        created() {
-            console.log(this.items);
-            console.log(this.currentURL);
-            
-        }
     }
 </script>

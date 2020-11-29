@@ -8,8 +8,5 @@
 
             }
         },
-        mounted() {
-            console.log("reports");
-        }
     }
 </script>

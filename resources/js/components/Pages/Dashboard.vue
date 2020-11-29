@@ -19,6 +19,7 @@
 </template>
 <script>
     export default {
+        name: 'Dashboard',
         data() {
             return {
                 items: [
