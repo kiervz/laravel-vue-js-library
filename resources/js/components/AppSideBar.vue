@@ -21,7 +21,10 @@
                    <li class="nav-item" v-for="(item, index) in items" :key="index">
                         <router-link :to="item.link" class="nav-link">
                             <i :class="'nav-icon fas fa-' + item.icon"></i>
-                            <p>{{ item.name }}</p>
+                            <p>
+                                {{ item.name }}
+                                <i v-if="item.istreeview" class="right fas fa-angle-left"></i>
+                            </p>
                         </router-link>
                         <ul v-if="item.istreeview" class="nav nav-treeview">
                             <li class="nav-item" v-for="(item, index) in items[index].treeview" :key="index">
@@ -107,6 +110,8 @@
         },
         created() {
             console.log(this.items);
+            console.log(this.currentURL);
+            
         }
     }
 </script>

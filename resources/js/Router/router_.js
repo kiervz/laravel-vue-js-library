@@ -24,7 +24,9 @@ const router = new VueRouter({
     hashbang: false,
     mode: 'history',
     routes, // short for `routes: routes`
+    linkActiveClass: 'active'
 });
+
 router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth) {
         if (User.loggedIn()) {
