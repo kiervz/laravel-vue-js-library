@@ -23,6 +23,14 @@
                             <i :class="'nav-icon fas fa-' + item.icon"></i>
                             <p>{{ item.name }}</p>
                         </router-link>
+                        <ul v-if="item.istreeview" class="nav nav-treeview">
+                            <li class="nav-item" v-for="(item, index) in items[index].treeview" :key="index">
+                                <router-link :to="item.link" class="nav-link">
+                                    <i :class="'nav-icon fas fa-' + item.icon"></i>
+                                    <p>{{ item.name }}</p>
+                                </router-link>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </nav>
@@ -37,45 +45,68 @@
                     {
                         name : 'Dashboard',
                         link : "/dashboard",
-                        icon : "tachometer-alt", 
+                        icon : "tachometer-alt",
+                        istreeview: false,
                     },
                     {
                         name : 'Attendance',
                         link : "/attendance", 
-                        icon : "clipboard-list"
+                        icon : "clipboard-list",
+                        istreeview: false,
                     },
                     {
-                        name : 'Book Entry',
-                        link : "/book-entry", 
-                        icon : "book"
+                        name : 'Manage Book',
+                        link : "/book", 
+                        icon : "book",
+                        istreeview: true,
+                        treeview: [
+                            {
+                                name : 'Book',
+                                link : "/book", 
+                                icon : "book",
+                            },
+                            {
+                                name : 'Category',
+                                link : "/book-category", 
+                                icon : "book",
+                            }
+                        ]
                     },
                     {
                         name : 'Issued & Return',
                         link : "/issued-return",
-                        icon : "paste"
+                        icon : "paste",
+                        istreeview: false,
                     },
                     {
                         name : 'Borrowers',
                         link : "/borrowers",
-                        icon : "book-reader"
+                        icon : "book-reader",
+                        istreeview: false,
                     },
                     {
                         name : 'User Management',
                         link : "/user-management",
-                        icon : "users-cog"
+                        icon : "users-cog",
+                        istreeview: false,
                     },
                     {
                         name : 'Audit Log',
                         link : "/audit-log",
-                        icon : "history"
+                        icon : "history",
+                        istreeview: false,
                     },
                     {
                         name : 'Reports',
                         link : "/reports",
-                        icon : "file-download"
+                        icon : "file-download",
+                        istreeview: false,
                     }
                 ],
             }
         },
+        created() {
+            console.log(this.items);
+        }
     }
 </script>

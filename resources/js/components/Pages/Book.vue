@@ -9,9 +9,9 @@
                                 <h3 class="card-title">Books</h3>
                             </div>
                             <div class="float-right">
-                                <button class="btn btn-sm btn-primary show-book-modal" @click="categoryModal" data-title="ADD_CATEG">
+                                <router-link class="btn btn-sm btn-primary" to="/book-category">
                                     Categories <i class="fas fa-tasks"></i>
-                                </button>
+                                </router-link>
                                 <button class="btn btn-sm btn-primary show-book-modal" @click="bookModal" data-title="ADD">
                                     Book Register <i class="fas fa-plus"></i>
                                 </button>
@@ -61,6 +61,7 @@
                     </div>
                 </div>
             </div>
+            
             <!-- Modal for adding and updating book -->
             <div class="modal fade" id="add_book" role="dialog">
                 <div class="modal-dialog modal-lg">
@@ -228,7 +229,7 @@
 </template>
 <script>
     export default {
-        name: "BookEntry",
+        name: "Book",
         data() {
             return {
                 form: new Form({
@@ -353,9 +354,6 @@
                 this.editMode = true
                 $('#add_book').modal('show')
                 this.form.fill(book)
-            },
-            categoryModal() {
-
             },
             updateCopiesModal(book) {
                 this.form.clear()
