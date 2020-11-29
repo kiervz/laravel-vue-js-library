@@ -14,24 +14,32 @@
                 Book Categories
             </div>
             <div class="card-body">
-                <table class="table table-bordered table-sm">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Category</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="item in book_categories" :key="item.id">
-                            <td>{{ item.id }}</td>
-                            <td>{{ item.name }}</td>
-                            <td>
-                                <i class="fas fa-edit" @click="editCategory(item)"></i>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Category</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in book_categories" :key="item.id">
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>
+                                    <i class="fas fa-edit" @click="editCategory(item)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+                <div class="float-right">
+                    <!-- pagination here -->
+                </div>
             </div>
         </div>
     </div>
@@ -60,7 +68,7 @@
                 this.$Progress.start()
                 axios.get('api/category')
                     .then(({ data }) => { 
-                        this.book_categories = data.categories
+                        this.book_categories = data.categories.data
                         this.$Progress.finish(); 
                     })
                     .catch(error => {

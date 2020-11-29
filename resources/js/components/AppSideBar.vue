@@ -71,7 +71,7 @@
                             {
                                 name : 'Category',
                                 link : "/book-category", 
-                                icon : "book",
+                                icon : "swatchbook",
                             }
                         ]
                     },

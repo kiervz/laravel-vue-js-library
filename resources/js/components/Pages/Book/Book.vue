@@ -20,38 +20,40 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Call No.</th>
-                                    <th>ISBN</th>
-                                    <th>Title</th>
-                                    <th>Author</th>
-                                    <th>Category</th>
-                                    <th>Copies</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="book in books" :key="book.id">
-                                    <td>{{ book.id }}</td>
-                                    <td>{{ book.call_number }}</td>
-                                    <td>{{ book.isbn }}</td>
-                                    <td>{{ book.title }}</td>
-                                    <td>{{ book.author }}</td>
-                                    <td>{{ book.category }}</td>
-                                    <td>{{ book.total_copies }}</td>
-                                    <td>
-                                        <i class="fas fa-folder-plus" @click="updateCopiesModal(book)"></i>
-                                        |
-                                        <i class="fas fa-edit" @click="editModal(book)"></i>
-                                        |
-                                        <i class="fas fa-trash" @click="deleteBook(book.id)"></i>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Call No.</th>
+                                        <th>ISBN</th>
+                                        <th>Title</th>
+                                        <th>Author</th>
+                                        <th>Category</th>
+                                        <th>Copies</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="book in books" :key="book.id">
+                                        <td>{{ book.id }}</td>
+                                        <td>{{ book.call_number }}</td>
+                                        <td>{{ book.isbn }}</td>
+                                        <td>{{ book.title }}</td>
+                                        <td>{{ book.author }}</td>
+                                        <td>{{ book.category }}</td>
+                                        <td>{{ book.total_copies }}</td>
+                                        <td>
+                                            <i class="fas fa-folder-plus" @click="updateCopiesModal(book)"></i>
+                                            |
+                                            <i class="fas fa-edit" @click="editModal(book)"></i>
+                                            |
+                                            <i class="fas fa-trash" @click="deleteBook(book.id)"></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
@@ -110,7 +112,7 @@
                                                 >
                                                     <option value="" disabled selected>Select Book Category</option>
                                                     <option
-                                                        v-for="item in book_categories"
+                                                        v-for="item in categories"
                                                         v-bind:value="item.id"
                                                         v-bind:key="item.id">
                                                         {{ item.name }}
@@ -248,7 +250,7 @@
                     total_copies: ''
                 }),
                 books: {},
-                book_categories: {},
+                categories: {},
                 editMode: false,
                 item_col_1: [
                     {
@@ -335,8 +337,8 @@
             fetchBooks() {
                 this.$Progress.start()
                 axios.get('api/book')
-                    .then(res => {
-                        this.books = res.data.books
+                    .then(({data}) => {
+                        this.books = data.books.data
                         this.$Progress.finish()
                     })
                     .catch(error => {
@@ -346,7 +348,7 @@
             },
             fetchCategories() {
                 axios.get('api/category')
-                    .then(res => this.book_categories = res.data.categories)
+                    .then(({data}) => this.categories = data.categories.data)
                     .catch(error => error.response.data)
             },
             bookModal() {

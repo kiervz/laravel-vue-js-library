@@ -2141,7 +2141,7 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           name: 'Category',
           link: "/book-category",
-          icon: "book"
+          icon: "swatchbook"
         }]
       }, {
         name: 'Issued & Return',
@@ -2679,6 +2679,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Book",
   data: function data() {
@@ -2699,7 +2701,7 @@ __webpack_require__.r(__webpack_exports__);
         total_copies: ''
       }),
       books: {},
-      book_categories: {},
+      categories: {},
       editMode: false,
       item_col_1: [{
         label: "ISBN",
@@ -2776,8 +2778,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.$Progress.start();
-      axios.get('api/book').then(function (res) {
-        _this2.books = res.data.books;
+      axios.get('api/book').then(function (_ref) {
+        var data = _ref.data;
+        _this2.books = data.books.data;
 
         _this2.$Progress.finish();
       })["catch"](function (error) {
@@ -2789,8 +2792,9 @@ __webpack_require__.r(__webpack_exports__);
     fetchCategories: function fetchCategories() {
       var _this3 = this;
 
-      axios.get('api/category').then(function (res) {
-        return _this3.book_categories = res.data.categories;
+      axios.get('api/category').then(function (_ref2) {
+        var data = _ref2.data;
+        return _this3.categories = data.categories.data;
       })["catch"](function (error) {
         return error.response.data;
       });
@@ -2829,8 +2833,8 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this4.$Progress.start();
 
-          _this4.form.put('api/book/copies/' + _this4.form.id).then(function (_ref) {
-            var data = _ref.data;
+          _this4.form.put('api/book/copies/' + _this4.form.id).then(function (_ref3) {
+            var data = _ref3.data;
             Toast.fire({
               icon: data.status,
               title: data.message
@@ -2870,8 +2874,8 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this5.$Progress.start();
 
-          _this5.form.post('api/book', _this5.form).then(function (_ref2) {
-            var data = _ref2.data;
+          _this5.form.post('api/book', _this5.form).then(function (_ref4) {
+            var data = _ref4.data;
             Toast.fire({
               icon: data.status,
               title: data.message
@@ -2909,8 +2913,8 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this6.$Progress.start();
 
-          _this6.form.put('api/book/' + _this6.form.id).then(function (_ref3) {
-            var data = _ref3.data;
+          _this6.form.put('api/book/' + _this6.form.id).then(function (_ref5) {
+            var data = _ref5.data;
             Toast.fire({
               icon: data.status,
               title: data.message
@@ -2948,8 +2952,8 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this7.$Progress.start();
 
-          axios["delete"]('api/book/' + id).then(function (_ref4) {
-            var data = _ref4.data;
+          axios["delete"]('api/book/' + id).then(function (_ref6) {
+            var data = _ref6.data;
             Toast.fire({
               icon: data.status,
               title: data.message
@@ -3024,6 +3028,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'BookCategory',
   data: function data() {
@@ -3051,7 +3063,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$Progress.start();
       axios.get('api/category').then(function (_ref) {
         var data = _ref.data;
-        _this2.book_categories = data.categories;
+        _this2.book_categories = data.categories.data;
 
         _this2.$Progress.finish();
       })["catch"](function (error) {
@@ -3419,6 +3431,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3523,7 +3537,7 @@ __webpack_require__.r(__webpack_exports__);
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        icon: 'warning',
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -3560,7 +3574,7 @@ __webpack_require__.r(__webpack_exports__);
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        icon: 'warning',
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -3591,7 +3605,43 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    deleteUser: function deleteUser() {}
+    deleteUser: function deleteUser(id) {
+      var _this5 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this5.form["delete"]('api/user/' + id).then(function (_ref4) {
+            var data = _ref4.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            });
+
+            _this5.$emit('refreshUsers');
+
+            $('#add_user').modal('hide');
+
+            _this5.$Progress.finish();
+          })["catch"](function (error) {
+            _this5.errors = error.response.data.errors;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong.'
+            });
+
+            _this5.$Progress.fail();
+          });
+        }
+      });
+    }
   }
 });
 
@@ -44446,63 +44496,65 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
-            _c("table", { staticClass: "table table-sm table-hover" }, [
-              _vm._m(1),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.books, function(book) {
-                  return _c("tr", { key: book.id }, [
-                    _c("td", [_vm._v(_vm._s(book.id))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.call_number))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.isbn))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.title))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.author))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.category))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.total_copies))]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("i", {
-                        staticClass: "fas fa-folder-plus",
-                        on: {
-                          click: function($event) {
-                            return _vm.updateCopiesModal(book)
+            _c("div", { staticClass: "table-responsive" }, [
+              _c("table", { staticClass: "table table-hover" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.books, function(book) {
+                    return _c("tr", { key: book.id }, [
+                      _c("td", [_vm._v(_vm._s(book.id))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(book.call_number))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(book.isbn))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(book.title))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(book.author))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(book.category))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(book.total_copies))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("i", {
+                          staticClass: "fas fa-folder-plus",
+                          on: {
+                            click: function($event) {
+                              return _vm.updateCopiesModal(book)
+                            }
                           }
-                        }
-                      }),
-                      _vm._v(
-                        "\n                                    |\n                                    "
-                      ),
-                      _c("i", {
-                        staticClass: "fas fa-edit",
-                        on: {
-                          click: function($event) {
-                            return _vm.editModal(book)
+                        }),
+                        _vm._v(
+                          "\n                                        |\n                                        "
+                        ),
+                        _c("i", {
+                          staticClass: "fas fa-edit",
+                          on: {
+                            click: function($event) {
+                              return _vm.editModal(book)
+                            }
                           }
-                        }
-                      }),
-                      _vm._v(
-                        "\n                                    |\n                                    "
-                      ),
-                      _c("i", {
-                        staticClass: "fas fa-trash",
-                        on: {
-                          click: function($event) {
-                            return _vm.deleteBook(book.id)
+                        }),
+                        _vm._v(
+                          "\n                                        |\n                                        "
+                        ),
+                        _c("i", {
+                          staticClass: "fas fa-trash",
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteBook(book.id)
+                            }
                           }
-                        }
-                      })
+                        })
+                      ])
                     ])
-                  ])
-                }),
-                0
-              )
+                  }),
+                  0
+                )
+              ])
             ])
           ]),
           _vm._v(" "),
@@ -44810,9 +44862,7 @@ var render = function() {
                                           [_vm._v("Select Book Category")]
                                         ),
                                         _vm._v(" "),
-                                        _vm._l(_vm.book_categories, function(
-                                          item
-                                        ) {
+                                        _vm._l(_vm.categories, function(item) {
                                           return _c(
                                             "option",
                                             {
@@ -45450,33 +45500,37 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
-        _c("table", { staticClass: "table table-bordered table-sm" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c(
-            "tbody",
-            _vm._l(_vm.book_categories, function(item) {
-              return _c("tr", { key: item.id }, [
-                _c("td", [_vm._v(_vm._s(item.id))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(item.name))]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("i", {
-                    staticClass: "fas fa-edit",
-                    on: {
-                      click: function($event) {
-                        return _vm.editCategory(item)
+        _c("div", { staticClass: "table-responsive" }, [
+          _c("table", { staticClass: "table table-bordered" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.book_categories, function(item) {
+                return _c("tr", { key: item.id }, [
+                  _c("td", [_vm._v(_vm._s(item.id))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(item.name))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("i", {
+                      staticClass: "fas fa-edit",
+                      on: {
+                        click: function($event) {
+                          return _vm.editCategory(item)
+                        }
                       }
-                    }
-                  })
+                    })
+                  ])
                 ])
-              ])
-            }),
-            0
-          )
+              }),
+              0
+            )
+          ])
         ])
-      ])
+      ]),
+      _vm._v(" "),
+      _vm._m(1)
     ])
   ])
 }
@@ -45493,6 +45547,14 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Action")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-footer clearfix" }, [
+      _c("div", { staticClass: "float-right" })
     ])
   }
 ]
@@ -45697,44 +45759,48 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
-      _c("table", { staticClass: "table table-sm table-hover" }, [
-        _vm._m(1),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.users, function(user) {
-            return _c("tr", { key: user.id }, [
-              _c("td", [_vm._v(_vm._s(user.id))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.name))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.email))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.user_type))]),
-              _vm._v(" "),
-              _c("td", [
-                _c("i", {
-                  staticClass: "fas fa-edit",
-                  on: {
-                    click: function($event) {
-                      return _vm.editModal(user)
+      _c("div", { staticClass: "table-responsive" }, [
+        _c("table", { staticClass: "table table-hover" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.users, function(user) {
+              return _c("tr", { key: user.id }, [
+                _c("td", [_vm._v(_vm._s(user.id))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(user.name))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(user.email))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(user.user_type))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("i", {
+                    staticClass: "fas fa-edit",
+                    on: {
+                      click: function($event) {
+                        return _vm.editModal(user)
+                      }
                     }
-                  }
-                }),
-                _vm._v("\n                        |\n                        "),
-                _c("i", {
-                  staticClass: "fas fa-trash",
-                  on: {
-                    click: function($event) {
-                      return _vm.deleteUser(user.id)
+                  }),
+                  _vm._v(
+                    "\n                            |\n                            "
+                  ),
+                  _c("i", {
+                    staticClass: "fas fa-trash",
+                    on: {
+                      click: function($event) {
+                        return _vm.deleteUser(user.id)
+                      }
                     }
-                  }
-                })
+                  })
+                ])
               ])
-            ])
-          }),
-          0
-        )
+            }),
+            0
+          )
+        ])
       ])
     ]),
     _vm._v(" "),

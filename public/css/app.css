@@ -48247,3 +48247,11 @@ readers do not read off random characters that represent icons */
   font-weight: 400;
 }
 
+.fa-trash {
+  color: red;
+}
+
+.fa-edit {
+  color: #3498ff;
+}
+

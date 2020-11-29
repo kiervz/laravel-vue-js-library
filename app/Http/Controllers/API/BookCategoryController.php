@@ -10,7 +10,7 @@ class BookCategoryController extends Controller
 {
     public function index() 
     {
-        $categories = BookCategory::all();
+        $categories = BookCategory::paginate(5);
 
         return response()->json([
             'categories' => $categories,
