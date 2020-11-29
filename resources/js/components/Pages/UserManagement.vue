@@ -193,6 +193,7 @@
                 this.form.reset()
                 this.fetchUsers()
                 this.editMode = false
+                this.errors = []
             })
         },
         methods: {
@@ -213,11 +214,13 @@
                 this.form.reset()
                 $('#add_user').modal('show')
                 this.editMode = false
+                this.errors = []
             },
             editModal(user) {
                 this.form.clear()
                 this.form.reset()
                 this.editMode = true
+                this.errors = []
                 $('#add_user').modal('show')
                 this.form.fill(user)
             },
@@ -254,6 +257,38 @@
                 })
                 
                     
+            },
+            updateUser() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, update it!'
+                }).then((result) => {
+                    if (result.value) {
+                        this.form.put('api/user/' + this.form.id)
+                            .then(({ data }) => {
+                                Toast.fire({
+                                    icon: data.status,
+                                    title: data.message
+                                });
+                                this.$emit('refreshUsers')
+                                $('#add_user').modal('hide')
+                                this.$Progress.finish();
+                            })
+                            .catch(error => {
+                                this.errors = error.response.data.errors;
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Something went wrong.',
+                                });
+                                this.$Progress.fail();
+                            })
+                    }
+                })
             },
             deleteUser() {
 

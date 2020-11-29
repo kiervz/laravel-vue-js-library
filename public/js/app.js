@@ -3483,6 +3483,7 @@ __webpack_require__.r(__webpack_exports__);
       _this.fetchUsers();
 
       _this.editMode = false;
+      _this.errors = [];
     });
   },
   methods: {
@@ -3506,11 +3507,13 @@ __webpack_require__.r(__webpack_exports__);
       this.form.reset();
       $('#add_user').modal('show');
       this.editMode = false;
+      this.errors = [];
     },
     editModal: function editModal(user) {
       this.form.clear();
       this.form.reset();
       this.editMode = true;
+      this.errors = [];
       $('#add_user').modal('show');
       this.form.fill(user);
     },
@@ -3547,6 +3550,43 @@ __webpack_require__.r(__webpack_exports__);
             });
 
             _this3.$Progress.fail();
+          });
+        }
+      });
+    },
+    updateUser: function updateUser() {
+      var _this4 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, update it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this4.form.put('api/user/' + _this4.form.id).then(function (_ref3) {
+            var data = _ref3.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            });
+
+            _this4.$emit('refreshUsers');
+
+            $('#add_user').modal('hide');
+
+            _this4.$Progress.finish();
+          })["catch"](function (error) {
+            _this4.errors = error.response.data.errors;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong.'
+            });
+
+            _this4.$Progress.fail();
           });
         }
       });

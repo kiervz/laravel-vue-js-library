@@ -23,12 +23,13 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+        $isMethod = $this->method() == 'PUT';
         return [
             'name' => 'required|alpha_spaces|max:200',
             'email' => 'required|email',
             'user_type' => 'required',
-            'password' => 'required_with:confirm_password|string|same:confirm_password|min:8|max:25',
-            'confirm_password' => 'string|min:8|max:25',
+            'password' => !$isMethod ? 'required_with:confirm_password|string|same:confirm_password|min:8|max:25' : '',
+            'confirm_password' => !$isMethod ? 'string|min:8|max:25' : '',
         ];
     }
 }
