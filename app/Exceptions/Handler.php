@@ -58,7 +58,7 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'Token is Invalid'], Response::HTTP_BAD_REQUEST);
         } else if ($exception instanceof JWTException) {
             return response()->json(['error' => 'There is problem with your token'], Response::HTTP_BAD_REQUEST);
-        }
+        } 
 
         return parent::render($request, $exception);
     }

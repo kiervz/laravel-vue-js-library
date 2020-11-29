@@ -28,9 +28,7 @@
                                     <th>ISBN</th>
                                     <th>Title</th>
                                     <th>Author</th>
-                                    <th>Publisher</th>
                                     <th>Category</th>
-                                    <th>Year Pub.</th>
                                     <th>Copies</th>
                                     <th>Action</th>
                                 </tr>
@@ -42,9 +40,7 @@
                                     <td>{{ book.isbn }}</td>
                                     <td>{{ book.title }}</td>
                                     <td>{{ book.author }}</td>
-                                    <td>{{ book.publisher }}</td>
                                     <td>{{ book.category }}</td>
-                                    <td>{{ book.year_published }}</td>
                                     <td>{{ book.total_copies }}</td>
                                     <td>
                                         <i class="fas fa-folder-plus" @click="updateCopiesModal(book)"></i>

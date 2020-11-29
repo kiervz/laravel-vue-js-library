@@ -2007,7 +2007,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+  created: function created() {
+    axios.post('api/auth/me').then(function (res) {})["catch"](function (error) {
+      return Exception.handle(error);
+    });
+  }
+});
 
 /***/ }),
 
@@ -2417,10 +2426,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
 //
 //
 //
@@ -43832,11 +43837,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(book.author))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.publisher))]),
-                    _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(book.category))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.year_published))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(book.total_copies))]),
                     _vm._v(" "),
@@ -44485,11 +44486,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Author")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Publisher")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Category")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Year Pub.")]),
         _vm._v(" "),
         _c("th", [_vm._v("Copies")]),
         _vm._v(" "),
@@ -60026,6 +60023,51 @@ var AppStorage = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/js/Helpers/Exception.js":
+/*!*******************************************!*\
+  !*** ./resources/js/Helpers/Exception.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _User__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./User */ "./resources/js/Helpers/User.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var Exception = /*#__PURE__*/function () {
+  function Exception() {
+    _classCallCheck(this, Exception);
+  }
+
+  _createClass(Exception, [{
+    key: "handle",
+    value: function handle(error) {
+      this.isExpired(error.response.data.error);
+      this.isExpired(error.response.data.message);
+    }
+  }, {
+    key: "isExpired",
+    value: function isExpired(error) {
+      if (error == 'Token is invalid' || error == 'There is problem with your token' || error == "Token has expired") {
+        _User__WEBPACK_IMPORTED_MODULE_0__["default"].logOut();
+      }
+    }
+  }]);
+
+  return Exception;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Exception = new Exception());
+
+/***/ }),
+
 /***/ "./resources/js/Helpers/Token.js":
 /*!***************************************!*\
   !*** ./resources/js/Helpers/Token.js ***!
@@ -60309,13 +60351,14 @@ router.beforeEach(function (to, from, next) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Helpers_User__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Helpers/User */ "./resources/js/Helpers/User.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-progressbar */ "./node_modules/vue-progressbar/dist/vue-progressbar.js");
-/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_progressbar__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.common.js");
-/* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vform__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _Router_router_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Router/router_.js */ "./resources/js/Router/router_.js");
+/* harmony import */ var _Helpers_Exception__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Helpers/Exception */ "./resources/js/Helpers/Exception.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-progressbar */ "./node_modules/vue-progressbar/dist/vue-progressbar.js");
+/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_progressbar__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.common.js");
+/* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vform__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _Router_router_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Router/router_.js */ "./resources/js/Router/router_.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -60326,34 +60369,36 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
 window.User = _Helpers_User__WEBPACK_IMPORTED_MODULE_0__["default"];
+
+window.Exception = _Helpers_Exception__WEBPACK_IMPORTED_MODULE_1__["default"];
 window.EventBus = new Vue(); // Sweet Alert
 
 
-window.Swal = sweetalert2__WEBPACK_IMPORTED_MODULE_1___default.a;
-var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_1___default.a.mixin({
+window.Swal = sweetalert2__WEBPACK_IMPORTED_MODULE_2___default.a;
+var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_2___default.a.mixin({
   toast: true,
   position: 'top-end',
   showConfirmButton: false,
   timer: 3000,
   timerProgressBar: true,
   didOpen: function didOpen(toast) {
-    toast.addEventListener('mouseenter', sweetalert2__WEBPACK_IMPORTED_MODULE_1___default.a.stopTimer);
-    toast.addEventListener('mouseleave', sweetalert2__WEBPACK_IMPORTED_MODULE_1___default.a.resumeTimer);
+    toast.addEventListener('mouseenter', sweetalert2__WEBPACK_IMPORTED_MODULE_2___default.a.stopTimer);
+    toast.addEventListener('mouseleave', sweetalert2__WEBPACK_IMPORTED_MODULE_2___default.a.resumeTimer);
   }
 });
 window.Toast = Toast; // Vue Progress bar
 
 
-Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_2___default.a, {
+Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_3___default.a, {
   color: 'rgb(143, 255, 199)',
   failedColor: 'red',
   height: '2px'
 }); //Import v-from
 
 
-window.Form = vform__WEBPACK_IMPORTED_MODULE_3__["Form"];
-Vue.component(vform__WEBPACK_IMPORTED_MODULE_3__["HasError"].name, vform__WEBPACK_IMPORTED_MODULE_3__["HasError"]);
-Vue.component(vform__WEBPACK_IMPORTED_MODULE_3__["AlertError"].name, vform__WEBPACK_IMPORTED_MODULE_3__["AlertError"]);
+window.Form = vform__WEBPACK_IMPORTED_MODULE_4__["Form"];
+Vue.component(vform__WEBPACK_IMPORTED_MODULE_4__["HasError"].name, vform__WEBPACK_IMPORTED_MODULE_4__["HasError"]);
+Vue.component(vform__WEBPACK_IMPORTED_MODULE_4__["AlertError"].name, vform__WEBPACK_IMPORTED_MODULE_4__["AlertError"]);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -60374,7 +60419,7 @@ Vue.component('app-home', __webpack_require__(/*! ./components/AppHome.vue */ ".
 
 var app = new Vue({
   el: '#app',
-  router: _Router_router_js__WEBPACK_IMPORTED_MODULE_4__["default"]
+  router: _Router_router_js__WEBPACK_IMPORTED_MODULE_5__["default"]
 });
 
 /***/ }),

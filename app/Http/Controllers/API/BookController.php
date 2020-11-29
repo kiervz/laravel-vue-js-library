@@ -31,9 +31,10 @@ class BookController extends Controller
     public function store(BookRequest $request) 
     {
         $request['avail_copies'] = $request->total_copies;
-        Book::create($request->all());
+        $book = Book::create($request->all());
 
         return response()->json([
+            'book' => $book,
             'status' => 'success',
             'message' => 'Book Successfully Added'
         ], Response::HTTP_CREATED);

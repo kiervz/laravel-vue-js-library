@@ -25,7 +25,7 @@ class BookRequest extends FormRequest
     {
         $isMethodPut = $this->method() == 'PUT';
         return [
-            'isbn' => $isMethodPut ? 'required|string|min:9|max:20|unique:books,isbn,' .$this->id : 'required|string|min:9|max:20|unique:books',
+            'isbn' => $isMethodPut ? 'required|string|min:9|max:13|unique:books,isbn,' .$this->id: 'required|string|min:9|max:13|unique:books',
             'call_number' => 'required|string|min:7|max:30',
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:150',
