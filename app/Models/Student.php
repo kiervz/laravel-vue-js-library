@@ -10,6 +10,4 @@ class Student extends Model
     use HasFactory;
 
     protected $guarded = [];
-    
-    public $incrementing = false;
 }

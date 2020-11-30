@@ -29,7 +29,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="student in students" :key="student.id">
-                                <td>{{ student.id }}</td>
+                                <td>{{ student.student_id }}</td>
                                 <td>{{ student.name }}</td>
                                 <td>{{ student.gender }}</td>
                                 <td>{{ student.major }}</td>
@@ -37,7 +37,7 @@
                                 <td>
                                     <i class="fas fa-edit" @click="editModal(student)"></i>
                                     |
-                                    <i class="fas fa-trash" @click="deleteStudent(student.id)"></i>
+                                    <i class="fas fa-trash" @click="deleteStudent(student.student_id)"></i>
                                 </td>
                             </tr>
                         </tbody>
@@ -56,7 +56,7 @@
         <div class="modal fade" id="add_student" role="dialog">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
-                    <form @submit.prevent="editMode ? updateStudent() : addStudent()">
+                    <form @submit.prevent="editMode ? updateStudent() : createStudent()">
                         <!-- Modal Header -->
                         <div class="modal-header bg-dark text-white">
                             <h5 v-show="!editMode" class="modal-title">Register Student</h5>
@@ -74,15 +74,13 @@
                                         <label :for="item.name" class="mt-1">{{ item.label }}</label>
                                         <div v-if="item.type == 'dropdown'">
                                             <select
-                                                :name="item.name"
-                                                :id="item.name"
                                                 v-model="form[item.name]"
                                                 class="form-control"
                                                 :class="errors[item.name] ? 'is-invalid' : form.errors.has(item.name)"
                                             >
                                                 <option value="" disabled selected>Select Gender</option>
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
                                             </select>
                                             <span role="alert" v-if="errors[item.name]" :class="errors[item.name] ? 'invalid-feedback d-block' : ''">
                                                 <strong>{{ errors[item.name][0] }}</strong>
@@ -91,8 +89,6 @@
                                         <div v-else>
                                             <div>
                                                 <input
-                                                    :id="item.name"
-                                                    :name="item.name"
                                                     :type="item.type"
                                                     v-model="form[item.name]"
                                                     class="form-control"
@@ -130,6 +126,7 @@
             return {
                 form: new Form({
                     id: '',
+                    student_id: '',
                     name: '',
                     gender: '',
                     major: '',
@@ -138,7 +135,7 @@
                 items: [
                     {
                         label: "Student ID",
-                        name: "id",
+                        name: "student_id",
                         required: "required",
                         type: "text"
                     },
@@ -174,6 +171,13 @@
         },
         created() {
             this.fetchStudents()
+            this.$on('refreshStudents', () => {
+                this.fetchStudents()
+                this.form.clear()
+                this.form.reset()
+                this.errors = []
+                this.editMode = false
+            })
         },
         methods: {
             addModal() {
@@ -198,9 +202,74 @@
                 axios.get('api/student')
                     .then(({ data }) => {
                         this.students = data.students.data
-                        console.log(this.students);
                     })
                     .catch(error => error.response.data)
+            },
+            createStudent() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.value) {
+                        this.$Progress.start();
+                        this.form.post('api/student', this.form)
+                            .then(({ data }) => {
+                                Toast.fire({
+                                    icon: data.status,
+                                    title: data.message
+                                });
+                                this.$emit('refreshStudents')
+                                $('#add_student').modal('hide')
+                                this.$Progress.finish();
+                            })
+                            .catch(error => {
+                                this.errors = error.response.data.errors;
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Something went wrong.',
+                                });
+                                this.$Progress.fail();
+                            })
+                    }
+                });
+            },
+            updateStudent(student) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, update it!'
+                }).then((result) => {
+                    if (result.value) {
+                        this.$Progress.start();
+                        this.form.put('api/student/' + this.form.id)
+                            .then(({ data }) => {
+                                Toast.fire({
+                                    icon: data.status,
+                                    title: data.message
+                                });
+                                this.$emit('refreshStudents')
+                                $('#add_student').modal('hide')
+                                this.$Progress.finish();
+                            })
+                            .catch(error => {
+                                this.errors = error.response.data.errors;
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Something went wrong.',
+                                });
+                                this.$Progress.fail();
+                            })
+                    }
+                });
             }
         }
     }

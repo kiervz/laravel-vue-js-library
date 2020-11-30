@@ -3304,15 +3304,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       form: new Form({
         id: '',
+        student_id: '',
         name: '',
         gender: '',
         major: '',
@@ -3320,7 +3317,7 @@ __webpack_require__.r(__webpack_exports__);
       }),
       items: [{
         label: "Student ID",
-        name: "id",
+        name: "student_id",
         required: "required",
         type: "text"
       }, {
@@ -3350,7 +3347,19 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    var _this = this;
+
     this.fetchStudents();
+    this.$on('refreshStudents', function () {
+      _this.fetchStudents();
+
+      _this.form.clear();
+
+      _this.form.reset();
+
+      _this.errors = [];
+      _this.editMode = false;
+    });
   },
   methods: {
     addModal: function addModal() {
@@ -3370,14 +3379,91 @@ __webpack_require__.r(__webpack_exports__);
     },
     deleteStudent: function deleteStudent(id) {},
     fetchStudents: function fetchStudents() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get('api/student').then(function (_ref) {
         var data = _ref.data;
-        _this.students = data.students.data;
-        console.log(_this.students);
+        _this2.students = data.students.data;
       })["catch"](function (error) {
         return error.response.data;
+      });
+    },
+    createStudent: function createStudent() {
+      var _this3 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, save it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this3.$Progress.start();
+
+          _this3.form.post('api/student', _this3.form).then(function (_ref2) {
+            var data = _ref2.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            });
+
+            _this3.$emit('refreshStudents');
+
+            $('#add_student').modal('hide');
+
+            _this3.$Progress.finish();
+          })["catch"](function (error) {
+            _this3.errors = error.response.data.errors;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong.'
+            });
+
+            _this3.$Progress.fail();
+          });
+        }
+      });
+    },
+    updateStudent: function updateStudent(student) {
+      var _this4 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, update it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this4.$Progress.start();
+
+          _this4.form.put('api/student/' + _this4.form.id).then(function (_ref3) {
+            var data = _ref3.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            });
+
+            _this4.$emit('refreshStudents');
+
+            $('#add_student').modal('hide');
+
+            _this4.$Progress.finish();
+          })["catch"](function (error) {
+            _this4.errors = error.response.data.errors;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong.'
+            });
+
+            _this4.$Progress.fail();
+          });
+        }
       });
     }
   }
@@ -45874,7 +45960,7 @@ var render = function() {
               "tbody",
               _vm._l(_vm.students, function(student) {
                 return _c("tr", { key: student.id }, [
-                  _c("td", [_vm._v(_vm._s(student.id))]),
+                  _c("td", [_vm._v(_vm._s(student.student_id))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(student.name))]),
                   _vm._v(" "),
@@ -45900,7 +45986,7 @@ var render = function() {
                       staticClass: "fas fa-trash",
                       on: {
                         click: function($event) {
-                          return _vm.deleteStudent(student.id)
+                          return _vm.deleteStudent(student.student_id)
                         }
                       }
                     })
@@ -45931,7 +46017,7 @@ var render = function() {
                 on: {
                   submit: function($event) {
                     $event.preventDefault()
-                    _vm.editMode ? _vm.updateStudent() : _vm.addStudent()
+                    _vm.editMode ? _vm.updateStudent() : _vm.createStudent()
                   }
                 }
               },
@@ -46008,7 +46094,6 @@ var render = function() {
                                       class: _vm.errors[item.name]
                                         ? "is-invalid"
                                         : _vm.form.errors.has(item.name),
-                                      attrs: { name: item.name, id: item.name },
                                       on: {
                                         change: function($event) {
                                           var $$selectedVal = Array.prototype.filter
@@ -46050,13 +46135,13 @@ var render = function() {
                                       _vm._v(" "),
                                       _c(
                                         "option",
-                                        { attrs: { value: "male" } },
+                                        { attrs: { value: "Male" } },
                                         [_vm._v("Male")]
                                       ),
                                       _vm._v(" "),
                                       _c(
                                         "option",
-                                        { attrs: { value: "female" } },
+                                        { attrs: { value: "Female" } },
                                         [_vm._v("Female")]
                                       )
                                     ]
@@ -46097,11 +46182,7 @@ var render = function() {
                                           class: _vm.errors[item.name]
                                             ? "is-invalid"
                                             : _vm.form.errors.has(item.name),
-                                          attrs: {
-                                            id: item.name,
-                                            name: item.name,
-                                            type: "checkbox"
-                                          },
+                                          attrs: { type: "checkbox" },
                                           domProps: {
                                             checked: Array.isArray(
                                               _vm.form[item.name]
@@ -46165,11 +46246,7 @@ var render = function() {
                                           class: _vm.errors[item.name]
                                             ? "is-invalid"
                                             : _vm.form.errors.has(item.name),
-                                          attrs: {
-                                            id: item.name,
-                                            name: item.name,
-                                            type: "radio"
-                                          },
+                                          attrs: { type: "radio" },
                                           domProps: {
                                             checked: _vm._q(
                                               _vm.form[item.name],
@@ -46199,11 +46276,7 @@ var render = function() {
                                           class: _vm.errors[item.name]
                                             ? "is-invalid"
                                             : _vm.form.errors.has(item.name),
-                                          attrs: {
-                                            id: item.name,
-                                            name: item.name,
-                                            type: item.type
-                                          },
+                                          attrs: { type: item.type },
                                           domProps: {
                                             value: _vm.form[item.name]
                                           },
