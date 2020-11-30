@@ -48,6 +48,7 @@
             </div>
         </div>
 
+        <!-- User Modal -->
         <div class="modal fade" id="add_user" role="dialog">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">

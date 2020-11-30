@@ -19,6 +19,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::put('book/copies/{id}', 'API\BookController@update_copies');
     Route::apiResource('category', 'API\BookCategoryController');
     Route::apiResource('user', 'API\UserController');
+    Route::apiResource('student', 'API\StudentController');
 });
 
 Route::group([

@@ -60,7 +60,7 @@
                     {
                         name : 'Manage Book',
                         link : "/book", 
-                        icon : "book",
+                        icon : "book-open",
                         istreeview: true,
                         treeview: [
                             {
@@ -83,9 +83,21 @@
                     },
                     {
                         name : 'Borrowers',
-                        link : "/borrowers",
-                        icon : "book-reader",
-                        istreeview: false,
+                        link : "/student-management",
+                        icon : "users",
+                        istreeview: true,
+                        treeview: [
+                            {
+                                name : 'Student Management',
+                                link : "/student-management", 
+                                icon : "user",
+                            },
+                            {
+                                name : 'Faculty Management',
+                                link : "/faculty-management", 
+                                icon : "user-tie",
+                            }
+                        ]
                     },
                     {
                         name : 'User Management',
