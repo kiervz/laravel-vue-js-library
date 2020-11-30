@@ -39,4 +39,15 @@ class StudentController extends Controller
         ], Response::HTTP_OK);
     }
 
+    public function destroy($id) 
+    {
+        $student = Student::findOrFail($id);
+        $student->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Student Successfully Deleted'
+        ], Response::HTTP_OK);
+    }
+
 }

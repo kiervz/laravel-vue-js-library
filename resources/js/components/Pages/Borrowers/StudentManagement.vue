@@ -37,7 +37,7 @@
                                 <td>
                                     <i class="fas fa-edit" @click="editModal(student)"></i>
                                     |
-                                    <i class="fas fa-trash" @click="deleteStudent(student.student_id)"></i>
+                                    <i class="fas fa-trash" @click="deleteStudent(student.id)"></i>
                                 </td>
                             </tr>
                         </tbody>
@@ -196,7 +196,37 @@
                 $('#add_student').modal('show')
             },
             deleteStudent(id) {
-
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        this.$Progress.start();
+                        this.form.delete('api/student/' + id)
+                            .then(({ data }) => {
+                                Toast.fire({
+                                    icon: data.status,
+                                    title: data.message
+                                });
+                                this.$emit('refreshStudents')
+                                $('#add_student').modal('hide')
+                                this.$Progress.finish();
+                            })
+                            .catch(error => {
+                                this.errors = error.response.data.errors;
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Something went wrong.',
+                                });
+                                this.$Progress.fail();
+                            })
+                    }
+                });
             },
             fetchStudents() {
                 axios.get('api/student')
