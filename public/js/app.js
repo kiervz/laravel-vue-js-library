@@ -3332,7 +3332,7 @@ __webpack_require__.r(__webpack_exports__);
         label: "Gender",
         name: "gender",
         required: "required",
-        type: "text"
+        type: "dropdown"
       }, {
         label: "Major",
         name: "major",
@@ -3349,13 +3349,36 @@ __webpack_require__.r(__webpack_exports__);
       errors: []
     };
   },
-  created: function created() {},
+  created: function created() {
+    this.fetchStudents();
+  },
   methods: {
     addModal: function addModal() {
       this.form.clear();
       this.form.reset();
+      this.errors = [];
       this.editMode = false;
       $('#add_student').modal('show');
+    },
+    editModal: function editModal(student) {
+      this.form.clear();
+      this.form.reset();
+      this.errors = [];
+      this.editMode = true;
+      this.form.fill(student);
+      $('#add_student').modal('show');
+    },
+    deleteStudent: function deleteStudent(id) {},
+    fetchStudents: function fetchStudents() {
+      var _this = this;
+
+      axios.get('api/student').then(function (_ref) {
+        var data = _ref.data;
+        _this.students = data.students.data;
+        console.log(_this.students);
+      })["catch"](function (error) {
+        return error.response.data;
+      });
     }
   }
 });
@@ -45849,24 +45872,24 @@ var render = function() {
             _vm._v(" "),
             _c(
               "tbody",
-              _vm._l(_vm.students, function(stduent) {
-                return _c("tr", { key: stduent.id }, [
-                  _c("td", [_vm._v(_vm._s(_vm.student.id))]),
+              _vm._l(_vm.students, function(student) {
+                return _c("tr", { key: student.id }, [
+                  _c("td", [_vm._v(_vm._s(student.id))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.student.name))]),
+                  _c("td", [_vm._v(_vm._s(student.name))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.student.gender))]),
+                  _c("td", [_vm._v(_vm._s(student.gender))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.student.major))]),
+                  _c("td", [_vm._v(_vm._s(student.major))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.student.phone))]),
+                  _c("td", [_vm._v(_vm._s(student.phone))]),
                   _vm._v(" "),
                   _c("td", [
                     _c("i", {
                       staticClass: "fas fa-edit",
                       on: {
                         click: function($event) {
-                          return _vm.editModal(_vm.student)
+                          return _vm.editModal(student)
                         }
                       }
                     }),
@@ -45877,7 +45900,7 @@ var render = function() {
                       staticClass: "fas fa-trash",
                       on: {
                         click: function($event) {
-                          return _vm.deleteStudent(_vm.student.id)
+                          return _vm.deleteStudent(student.id)
                         }
                       }
                     })

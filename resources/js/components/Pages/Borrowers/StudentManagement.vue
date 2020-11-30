@@ -28,7 +28,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="stduent in students" :key="stduent.id">
+                            <tr v-for="student in students" :key="student.id">
                                 <td>{{ student.id }}</td>
                                 <td>{{ student.name }}</td>
                                 <td>{{ student.gender }}</td>
@@ -152,7 +152,7 @@
                         label: "Gender",
                         name: "gender",
                         required: "required",
-                        type: "text"
+                        type: "dropdown"
                     },
                     {
                         label: "Major",
@@ -173,14 +173,34 @@
             }
         },
         created() {
-
+            this.fetchStudents()
         },
         methods: {
             addModal() {
                 this.form.clear()
                 this.form.reset()
+                this.errors = []
                 this.editMode = false
                 $('#add_student').modal('show')
+            },
+            editModal(student) {
+                this.form.clear()
+                this.form.reset()
+                this.errors = []
+                this.editMode = true
+                this.form.fill(student)
+                $('#add_student').modal('show')
+            },
+            deleteStudent(id) {
+
+            },
+            fetchStudents() {
+                axios.get('api/student')
+                    .then(({ data }) => {
+                        this.students = data.students.data
+                        console.log(this.students);
+                    })
+                    .catch(error => error.response.data)
             }
         }
     }
