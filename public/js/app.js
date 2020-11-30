@@ -3165,9 +3165,315 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      form: new Form({
+        id: '',
+        faculty_id: '',
+        name: '',
+        gender: '',
+        phone: ''
+      }),
+      items: [{
+        label: "Faculty ID",
+        name: "faculty_id",
+        required: "required",
+        type: "text"
+      }, {
+        label: "Name",
+        name: "name",
+        required: "required",
+        type: "text"
+      }, {
+        label: "Gender",
+        name: "gender",
+        required: "required",
+        type: "dropdown"
+      }, {
+        label: "Phone",
+        name: "phone",
+        required: "required",
+        type: "text"
+      }],
+      faculties: [],
+      editMode: false,
+      errors: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.fetchFaculties();
+    this.$on('refreshFaculties', function () {
+      _this.fetchFaculties();
+
+      _this.form.clear();
+
+      _this.form.reset();
+
+      _this.errors = [];
+      _this.editMode = false;
+    });
+  },
+  methods: {
+    addModal: function addModal() {
+      this.form.clear();
+      this.form.reset();
+      this.errors = [];
+      this.editMode = false;
+      $('#add_faculty').modal('show');
+    },
+    editModal: function editModal(faculty) {
+      this.form.clear();
+      this.form.reset();
+      this.errors = [];
+      this.editMode = true;
+      this.form.fill(faculty);
+      $('#add_faculty').modal('show');
+    },
+    deleteFaculty: function deleteFaculty(id) {
+      var _this2 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this2.$Progress.start();
+
+          _this2.form["delete"]('api/faculty/' + id).then(function (_ref) {
+            var data = _ref.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            });
+
+            _this2.$emit('refreshFaculties');
+
+            $('#add_faculty').modal('hide');
+
+            _this2.$Progress.finish();
+          })["catch"](function (error) {
+            _this2.errors = error.response.data.errors;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong.'
+            });
+
+            _this2.$Progress.fail();
+          });
+        }
+      });
+    },
+    fetchFaculties: function fetchFaculties() {
+      var _this3 = this;
+
+      axios.get('api/faculty').then(function (_ref2) {
+        var data = _ref2.data;
+        _this3.faculties = data.faculties.data;
+      })["catch"](function (error) {
+        return error.response.data;
+      });
+    },
+    createFaculty: function createFaculty() {
+      var _this4 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, save it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this4.$Progress.start();
+
+          _this4.form.post('api/faculty', _this4.form).then(function (_ref3) {
+            var data = _ref3.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            });
+
+            _this4.$emit('refreshFaculties');
+
+            $('#add_faculty').modal('hide');
+
+            _this4.$Progress.finish();
+          })["catch"](function (error) {
+            _this4.errors = error.response.data.errors;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong.'
+            });
+
+            _this4.$Progress.fail();
+          });
+        }
+      });
+    },
+    updateFaculty: function updateFaculty(faculty) {
+      var _this5 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, update it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this5.$Progress.start();
+
+          _this5.form.put('api/faculty/' + _this5.form.id).then(function (_ref4) {
+            var data = _ref4.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            });
+
+            _this5.$emit('refreshFaculties');
+
+            $('#add_faculty').modal('hide');
+
+            _this5.$Progress.finish();
+          })["catch"](function (error) {
+            _this5.errors = error.response.data.errors;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong.'
+            });
+
+            _this5.$Progress.fail();
+          });
+        }
+      });
+    }
   }
 });
 
@@ -3377,19 +3683,57 @@ __webpack_require__.r(__webpack_exports__);
       this.form.fill(student);
       $('#add_student').modal('show');
     },
-    deleteStudent: function deleteStudent(id) {},
-    fetchStudents: function fetchStudents() {
+    deleteStudent: function deleteStudent(id) {
       var _this2 = this;
 
-      axios.get('api/student').then(function (_ref) {
-        var data = _ref.data;
-        _this2.students = data.students.data;
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this2.$Progress.start();
+
+          _this2.form["delete"]('api/student/' + id).then(function (_ref) {
+            var data = _ref.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            });
+
+            _this2.$emit('refreshStudents');
+
+            $('#add_student').modal('hide');
+
+            _this2.$Progress.finish();
+          })["catch"](function (error) {
+            _this2.errors = error.response.data.errors;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong.'
+            });
+
+            _this2.$Progress.fail();
+          });
+        }
+      });
+    },
+    fetchStudents: function fetchStudents() {
+      var _this3 = this;
+
+      axios.get('api/student').then(function (_ref2) {
+        var data = _ref2.data;
+        _this3.students = data.students.data;
       })["catch"](function (error) {
         return error.response.data;
       });
     },
     createStudent: function createStudent() {
-      var _this3 = this;
+      var _this4 = this;
 
       Swal.fire({
         title: 'Are you sure?',
@@ -3401,48 +3745,9 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, save it!'
       }).then(function (result) {
         if (result.value) {
-          _this3.$Progress.start();
-
-          _this3.form.post('api/student', _this3.form).then(function (_ref2) {
-            var data = _ref2.data;
-            Toast.fire({
-              icon: data.status,
-              title: data.message
-            });
-
-            _this3.$emit('refreshStudents');
-
-            $('#add_student').modal('hide');
-
-            _this3.$Progress.finish();
-          })["catch"](function (error) {
-            _this3.errors = error.response.data.errors;
-            Toast.fire({
-              icon: 'warning',
-              title: 'Something went wrong.'
-            });
-
-            _this3.$Progress.fail();
-          });
-        }
-      });
-    },
-    updateStudent: function updateStudent(student) {
-      var _this4 = this;
-
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, update it!'
-      }).then(function (result) {
-        if (result.value) {
           _this4.$Progress.start();
 
-          _this4.form.put('api/student/' + _this4.form.id).then(function (_ref3) {
+          _this4.form.post('api/student', _this4.form).then(function (_ref3) {
             var data = _ref3.data;
             Toast.fire({
               icon: data.status,
@@ -3462,6 +3767,45 @@ __webpack_require__.r(__webpack_exports__);
             });
 
             _this4.$Progress.fail();
+          });
+        }
+      });
+    },
+    updateStudent: function updateStudent(student) {
+      var _this5 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, update it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this5.$Progress.start();
+
+          _this5.form.put('api/student/' + _this5.form.id).then(function (_ref4) {
+            var data = _ref4.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            });
+
+            _this5.$emit('refreshStudents');
+
+            $('#add_student').modal('hide');
+
+            _this5.$Progress.finish();
+          })["catch"](function (error) {
+            _this5.errors = error.response.data.errors;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong.'
+            });
+
+            _this5.$Progress.fail();
           });
         }
       });
@@ -45889,16 +46233,519 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header" }, [
+        _c(
+          "div",
+          {
+            staticClass: "d-flex justify-content-between align-items-baseline"
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "float-right" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-primary show-book-modal",
+                  attrs: { "data-title": "ADD" },
+                  on: { click: _vm.addModal }
+                },
+                [
+                  _vm._v("\n                        Faculty Register "),
+                  _c("i", { staticClass: "fas fa-plus" })
+                ]
+              )
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "table-responsive" }, [
+          _c("table", { staticClass: "table table-hover" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.faculties, function(faculty) {
+                return _c("tr", { key: faculty.id }, [
+                  _c("td", [_vm._v(_vm._s(faculty.faculty_id))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(faculty.name))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(faculty.gender))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(faculty.phone))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("i", {
+                      staticClass: "fas fa-edit",
+                      on: {
+                        click: function($event) {
+                          return _vm.editModal(faculty)
+                        }
+                      }
+                    }),
+                    _vm._v(
+                      "\n                                |\n                                "
+                    ),
+                    _c("i", {
+                      staticClass: "fas fa-trash",
+                      on: {
+                        click: function($event) {
+                          return _vm.deleteFaculty(faculty.id)
+                        }
+                      }
+                    })
+                  ])
+                ])
+              }),
+              0
+            )
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _vm._m(2)
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: { id: "add_faculty", role: "dialog" }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-md" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    _vm.editMode ? _vm.updateFaculty() : _vm.createFaculty()
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "modal-header bg-dark text-white" }, [
+                  _c(
+                    "h5",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: !_vm.editMode,
+                          expression: "!editMode"
+                        }
+                      ],
+                      staticClass: "modal-title"
+                    },
+                    [_vm._v("Register Faculty")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "h5",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.editMode,
+                          expression: "editMode"
+                        }
+                      ],
+                      staticClass: "modal-title"
+                    },
+                    [_vm._v("Update Faculty")]
+                  ),
+                  _vm._v(" "),
+                  _vm._m(3)
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body text-muted" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      { staticClass: "col-12" },
+                      _vm._l(_vm.items, function(item, $index) {
+                        return _c(
+                          "div",
+                          { key: $index, staticClass: "form-group-sm" },
+                          [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "mt-1",
+                                attrs: { for: item.name }
+                              },
+                              [_vm._v(_vm._s(item.label))]
+                            ),
+                            _vm._v(" "),
+                            item.type == "dropdown"
+                              ? _c("div", [
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.form[item.name],
+                                          expression: "form[item.name]"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      class: _vm.errors[item.name]
+                                        ? "is-invalid"
+                                        : _vm.form.errors.has(item.name),
+                                      on: {
+                                        change: function($event) {
+                                          var $$selectedVal = Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function(o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function(o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                          _vm.$set(
+                                            _vm.form,
+                                            item.name,
+                                            $event.target.multiple
+                                              ? $$selectedVal
+                                              : $$selectedVal[0]
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "option",
+                                        {
+                                          attrs: {
+                                            value: "",
+                                            disabled: "",
+                                            selected: ""
+                                          }
+                                        },
+                                        [_vm._v("Select Gender")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "option",
+                                        { attrs: { value: "Male" } },
+                                        [_vm._v("Male")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "option",
+                                        { attrs: { value: "Female" } },
+                                        [_vm._v("Female")]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.errors[item.name]
+                                    ? _c(
+                                        "span",
+                                        {
+                                          class: _vm.errors[item.name]
+                                            ? "invalid-feedback d-block"
+                                            : "",
+                                          attrs: { role: "alert" }
+                                        },
+                                        [
+                                          _c("strong", [
+                                            _vm._v(
+                                              _vm._s(_vm.errors[item.name][0])
+                                            )
+                                          ])
+                                        ]
+                                      )
+                                    : _vm._e()
+                                ])
+                              : _c("div", [
+                                  _c("div", [
+                                    item.type === "checkbox"
+                                      ? _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.form[item.name],
+                                              expression: "form[item.name]"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          class: _vm.errors[item.name]
+                                            ? "is-invalid"
+                                            : _vm.form.errors.has(item.name),
+                                          attrs: { type: "checkbox" },
+                                          domProps: {
+                                            checked: Array.isArray(
+                                              _vm.form[item.name]
+                                            )
+                                              ? _vm._i(
+                                                  _vm.form[item.name],
+                                                  null
+                                                ) > -1
+                                              : _vm.form[item.name]
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = _vm.form[item.name],
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      _vm.form,
+                                                      item.name,
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      _vm.form,
+                                                      item.name,
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
+                                              } else {
+                                                _vm.$set(
+                                                  _vm.form,
+                                                  item.name,
+                                                  $$c
+                                                )
+                                              }
+                                            }
+                                          }
+                                        })
+                                      : item.type === "radio"
+                                      ? _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.form[item.name],
+                                              expression: "form[item.name]"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          class: _vm.errors[item.name]
+                                            ? "is-invalid"
+                                            : _vm.form.errors.has(item.name),
+                                          attrs: { type: "radio" },
+                                          domProps: {
+                                            checked: _vm._q(
+                                              _vm.form[item.name],
+                                              null
+                                            )
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              return _vm.$set(
+                                                _vm.form,
+                                                item.name,
+                                                null
+                                              )
+                                            }
+                                          }
+                                        })
+                                      : _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.form[item.name],
+                                              expression: "form[item.name]"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          class: _vm.errors[item.name]
+                                            ? "is-invalid"
+                                            : _vm.form.errors.has(item.name),
+                                          attrs: { type: item.type },
+                                          domProps: {
+                                            value: _vm.form[item.name]
+                                          },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                _vm.form,
+                                                item.name,
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm.errors[item.name]
+                                    ? _c(
+                                        "span",
+                                        {
+                                          class: _vm.errors[item.name]
+                                            ? "invalid-feedback d-block"
+                                            : "",
+                                          attrs: { role: "alert" }
+                                        },
+                                        [
+                                          _c("strong", [
+                                            _vm._v(
+                                              _vm._s(_vm.errors[item.name][0])
+                                            )
+                                          ])
+                                        ]
+                                      )
+                                    : _vm._e()
+                                ])
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary p-18",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancel")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: !_vm.editMode,
+                          expression: "!editMode"
+                        }
+                      ],
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit" }
+                    },
+                    [
+                      _c("i", { staticClass: "fas fa-save mr-1" }),
+                      _vm._v("Save\n                        ")
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.editMode,
+                          expression: "editMode"
+                        }
+                      ],
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit" }
+                    },
+                    [
+                      _c("i", { staticClass: "fas fa-pen mr-1" }),
+                      _vm._v("Update\n                        ")
+                    ]
+                  )
+                ])
+              ]
+            )
+          ])
+        ])
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("h1", [_vm._v("Faculty")])
+    return _c("div", { staticClass: "d-flex align-items-center" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Faculties")])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Gender")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Phone")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-footer clearfix" }, [
+      _c("div", { staticClass: "float-right" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [
+        _c(
+          "span",
+          { staticClass: "text-white", attrs: { "aria-hidden": "true" } },
+          [_vm._v("×")]
+        )
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -45986,7 +46833,7 @@ var render = function() {
                       staticClass: "fas fa-trash",
                       on: {
                         click: function($event) {
-                          return _vm.deleteStudent(student.student_id)
+                          return _vm.deleteStudent(student.id)
                         }
                       }
                     })

@@ -20,6 +20,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::apiResource('category', 'API\BookCategoryController');
     Route::apiResource('user', 'API\UserController');
     Route::apiResource('student', 'API\StudentController');
+    Route::apiResource('faculty', 'API\FacultyController');
 });
 
 Route::group([
