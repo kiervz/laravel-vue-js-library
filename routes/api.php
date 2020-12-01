@@ -21,6 +21,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::apiResource('user', 'API\UserController');
     Route::apiResource('student', 'API\StudentController');
     Route::apiResource('faculty', 'API\FacultyController');
+    Route::apiResource('borrower', 'API\BorrowerController');
 });
 
 Route::group([

@@ -220,11 +220,16 @@
                 });
             },
             fetchFaculties() {
+                this.$Progress.start()
                 axios.get('api/faculty')
                     .then(({ data }) => {
                         this.faculties = data.faculties.data
+                        this.$Progress.finish()
                     })
-                    .catch(error => error.response.data)
+                    .catch(error => {
+                        error.response.data
+                        this.$Progress.fail()
+                    })
             },
             createFaculty() {
                 Swal.fire({

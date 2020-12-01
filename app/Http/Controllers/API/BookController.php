@@ -70,6 +70,15 @@ class BookController extends Controller
         ], Response::HTTP_OK);
     }
 
+    public function show($id) 
+    {
+        $book = Book::where('isbn', $id)->get();
+
+        return response()->json([
+            'book' => $book,
+        ], Response::HTTP_OK);
+    }
+
     public function destroy($id) 
     {
         $book = Book::find($id);

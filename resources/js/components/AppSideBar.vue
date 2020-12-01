@@ -52,12 +52,6 @@
                         istreeview: false,
                     },
                     {
-                        name : 'Attendance',
-                        link : "/attendance", 
-                        icon : "clipboard-list",
-                        istreeview: false,
-                    },
-                    {
                         name : 'Manage Book',
                         link : "/book", 
                         icon : "book-open",

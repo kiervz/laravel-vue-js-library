@@ -229,11 +229,16 @@
                 });
             },
             fetchStudents() {
+                this.$Progress.start()
                 axios.get('api/student')
                     .then(({ data }) => {
                         this.students = data.students.data
+                        this.$Progress.finish()
                     })
-                    .catch(error => error.response.data)
+                    .catch(error => {
+                        error.response.data
+                        this.$Progress.fail()
+                    })
             },
             createStudent() {
                 Swal.fire({
