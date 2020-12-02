@@ -29,12 +29,13 @@ class BorrowController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function show(Request $request) 
+    public function show($id) 
     {
         $data = DB::table('borrows')
             ->join('books', 'borrows.isbn', '=', 'books.isbn')
             ->join('users', 'borrows.user_id', '=', 'users.id')
             ->select('books.isbn', 'books.title', 'books.author', 'borrows.date_borrowed', 'borrows.due_date', 'borrows.penalty', 'users.id','users.name')
+            ->where('borrows.borrower_id', $id)
             ->get();
 
         return response()->json([

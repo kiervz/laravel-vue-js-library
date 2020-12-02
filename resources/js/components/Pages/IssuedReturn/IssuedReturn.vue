@@ -11,7 +11,7 @@
         <div class="card-header col-md-12">
             <div class="d-flex justify-content-between align-items-baseline">
                 <div class="d-flex align-items-center">
-                    <h3 class="card-title">Books</h3>
+                    <h3 class="card-title">Borrower's Data</h3>
                 </div>
                 <div class="float-right">
                     <button class="btn btn-md btn-primary" @click="create">Borrow</button>
@@ -63,6 +63,7 @@
         },
         methods: {
             borrowerID(id) {
+                this.datas = []
                 this.borrower_id = id
                 this.showData(id)
             },

@@ -4052,6 +4052,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     borrowerID: function borrowerID(id) {
+      this.datas = [];
       this.borrower_id = id;
       this.showData(id);
     },
@@ -47851,7 +47852,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "d-flex align-items-center" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Books")])
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Borrower's Data")])
     ])
   },
   function() {
