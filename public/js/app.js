@@ -2791,6 +2791,7 @@ __webpack_require__.r(__webpack_exports__);
     editModal: function editModal(book) {
       this.form.clear();
       this.form.reset();
+      this.errors = [];
       this.editMode = true;
       $('#add_book').modal('show');
       this.form.fill(book);
@@ -4050,10 +4051,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    fetchBorrowerData: function fetchBorrowerData(id) {
+    borrowerID: function borrowerID(id) {
       this.borrower_id = id;
+      this.showData(id);
     },
-    fetchISBN: function fetchISBN(isbn) {
+    bookISBN: function bookISBN(isbn) {
       this.book_isbn = isbn;
     },
     create: function create() {
@@ -4092,6 +4094,16 @@ __webpack_require__.r(__webpack_exports__);
             _this.$Progress.fail();
           });
         }
+      });
+    },
+    showData: function showData(id) {
+      var _this2 = this;
+
+      axios.get('api/borrow/' + id).then(function (_ref2) {
+        var data = _ref2.data;
+        _this2.datas = data.data;
+      })["catch"](function (error) {
+        return error.response.data;
       });
     }
   }
@@ -47769,40 +47781,42 @@ var render = function() {
       _c(
         "div",
         { staticClass: "col-md-6" },
-        [_c("issued-to", { on: { borrowerID: _vm.fetchBorrowerData } })],
+        [_c("issued-to", { on: { borrowerID: _vm.borrowerID } })],
         1
       ),
       _vm._v(" "),
       _c(
         "div",
         { staticClass: "col-md-6" },
-        [_c("issued-book", { on: { bookISBN: _vm.fetchISBN } })],
+        [_c("issued-book", { on: { bookISBN: _vm.bookISBN } })],
         1
       )
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "container-fluid" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "card-header col-md-11" }, [
-          _vm._v("\n                Borrower Information\n            ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-1 align-self-center mx-auto" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-md btn-primary float-right",
-              on: { click: _vm.create }
-            },
-            [_vm._v("Borrow")]
-          )
-        ])
-      ])
+    _c("div", { staticClass: "card-header col-md-12" }, [
+      _c(
+        "div",
+        { staticClass: "d-flex justify-content-between align-items-baseline" },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "float-right" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-md btn-primary",
+                on: { click: _vm.create }
+              },
+              [_vm._v("Borrow")]
+            )
+          ])
+        ]
+      )
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "table-responsive" }, [
       _c("table", { staticClass: "table table-hover" }, [
-        _vm._m(0),
+        _vm._m(1),
         _vm._v(" "),
         _c(
           "tbody",
@@ -47810,19 +47824,19 @@ var render = function() {
             return _c("tr", { key: data.id }, [
               _c("td", [_vm._v(_vm._s(data.id))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(data.call_number))]),
-              _vm._v(" "),
               _c("td", [_vm._v(_vm._s(data.isbn))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(data.title))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(data.author))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(data.category))]),
+              _c("td", [_vm._v(_vm._s(data.date_borrowed))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(data.total_copies))]),
+              _c("td", [_vm._v(_vm._s(data.due_date))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(data.prepared_by))])
+              _c("td", [_vm._v(_vm._s(data.penalty))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(data.name))])
             ])
           }),
           0
@@ -47832,6 +47846,14 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex align-items-center" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Books")])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

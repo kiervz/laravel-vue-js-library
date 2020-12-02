@@ -21,6 +21,7 @@ class CreateBorrowsTable extends Migration
             $table->dateTime('date_borrowed');
             $table->dateTime('due_date');
             $table->decimal('penalty', 5, 2);
+            $table->integer('status')->default('1');
             $table->timestamps();
         });
     }

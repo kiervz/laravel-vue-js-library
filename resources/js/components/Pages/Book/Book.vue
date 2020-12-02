@@ -360,6 +360,7 @@
             editModal(book) {
                 this.form.clear()
                 this.form.reset()
+                this.errors= []
                 this.editMode = true
                 $('#add_book').modal('show')
                 this.form.fill(book)

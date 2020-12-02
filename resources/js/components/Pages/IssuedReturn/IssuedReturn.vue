@@ -2,19 +2,19 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <issued-to @borrowerID="fetchBorrowerData"></issued-to>
+                <issued-to @borrowerID="borrowerID"></issued-to>
             </div>
             <div class="col-md-6">
-                <issued-book @bookISBN="fetchISBN"></issued-book>
+                <issued-book @bookISBN="bookISBN"></issued-book>
             </div>
         </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="card-header col-md-11">
-                    Borrower Information
+        <div class="card-header col-md-12">
+            <div class="d-flex justify-content-between align-items-baseline">
+                <div class="d-flex align-items-center">
+                    <h3 class="card-title">Books</h3>
                 </div>
-                <div class="col-md-1 align-self-center mx-auto">
-                    <button class="btn btn-md btn-primary float-right" @click="create">Borrow</button>
+                <div class="float-right">
+                    <button class="btn btn-md btn-primary" @click="create">Borrow</button>
                 </div>
             </div>
         </div>
@@ -35,13 +35,13 @@
                 <tbody>
                     <tr v-for="data in datas" :key="data.id">
                         <td>{{ data.id }}</td>
-                        <td>{{ data.call_number }}</td>
                         <td>{{ data.isbn }}</td>
                         <td>{{ data.title }}</td>
                         <td>{{ data.author }}</td>
-                        <td>{{ data.category }}</td>
-                        <td>{{ data.total_copies }}</td>
-                        <td>{{ data.prepared_by }}</td>
+                        <td>{{ data.date_borrowed }}</td>
+                        <td>{{ data.due_date }}</td>
+                        <td>{{ data.penalty }}</td>
+                        <td>{{ data.name }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -62,10 +62,11 @@
             }
         },
         methods: {
-            fetchBorrowerData(id) {
+            borrowerID(id) {
                 this.borrower_id = id
+                this.showData(id)
             },
-            fetchISBN(isbn) {
+            bookISBN(isbn) {
                 this.book_isbn = isbn
             },
             create() {
@@ -98,6 +99,13 @@
                             })
                     }
                 });
+            },
+            showData(id) {
+                axios.get('api/borrow/'+ id) 
+                    .then(({data}) => {
+                        this.datas = data.data
+                    })
+                    .catch(error => error.response.data)
             }
         }
     }

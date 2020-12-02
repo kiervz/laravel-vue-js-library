@@ -7,6 +7,7 @@ use App\Models\Borrow;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class BorrowController extends Controller
@@ -25,6 +26,19 @@ class BorrowController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Book Successfully Issued!'
+        ], Response::HTTP_OK);
+    }
+
+    public function show(Request $request) 
+    {
+        $data = DB::table('borrows')
+            ->join('books', 'borrows.isbn', '=', 'books.isbn')
+            ->join('users', 'borrows.user_id', '=', 'users.id')
+            ->select('books.isbn', 'books.title', 'books.author', 'borrows.date_borrowed', 'borrows.due_date', 'borrows.penalty', 'users.id','users.name')
+            ->get();
+
+        return response()->json([
+            'data' => $data
         ], Response::HTTP_OK);
     }
 
