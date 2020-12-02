@@ -2,10 +2,10 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <issued-to></issued-to>
+                <issued-to @borrowerID="fetchBorrowerData"></issued-to>
             </div>
             <div class="col-md-6">
-                <issued-book></issued-book>
+                <issued-book @bookISBN="fetchISBN"></issued-book>
             </div>
         </div>
         <div class="container-fluid">
@@ -14,7 +14,7 @@
                     Borrower Information
                 </div>
                 <div class="col-md-1 align-self-center mx-auto">
-                    <button class="btn btn-md btn-primary float-right">Borrow</button>
+                    <button class="btn btn-md btn-primary float-right" @click="create">Borrow</button>
                 </div>
             </div>
         </div>
@@ -57,7 +57,48 @@
         data() {
             return {
                 datas: [],
+                borrower_id: null,
+                book_isbn: null
             }
         },
+        methods: {
+            fetchBorrowerData(id) {
+                this.borrower_id = id
+            },
+            fetchISBN(isbn) {
+                this.book_isbn = isbn
+            },
+            create() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.value) {
+                        this.$Progress.start();
+                        axios.post('api/borrow', { isbn: this.book_isbn, borrower_id: this.borrower_id })
+                            .then(({ data }) => {
+                                Toast.fire({
+                                    icon: data.status,
+                                    title: data.message
+                                });
+                                this.$Progress.finish();
+                            })
+                            .catch(error => {
+                                error.response.data
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Something went wrong.',
+                                });
+                                this.$Progress.fail();
+                            })
+                    }
+                });
+            }
+        }
     }
 </script>

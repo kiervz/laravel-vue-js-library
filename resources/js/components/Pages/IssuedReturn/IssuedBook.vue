@@ -10,7 +10,7 @@
                     <div class="col-md-5">
                         <input type="text" class="form-control" v-on:keydown.enter="searchBook(form['isbn'])" v-model="form['isbn']">
                     </div>
-                    <button class="btn btn-sm btn-primary">Search Book</button>
+                    <button class="btn btn-sm btn-primary" @click="searchBook(form['isbn'])">Search Book</button>
                 </div>
                 <div class="form-group row" v-for="(item, index) in items" :key="index">
                     <label :for="item.label" class="col-md-4 col-form-label text-md-left">{{ item.label }}</label>
@@ -54,16 +54,39 @@
             }
         },  
         methods: {
+            emptyFields() {
+                this.form.clear()
+                this.form.reset()
+            },
             searchBook(isbn) {
-                axios.get('api/book/' + isbn)
-                    .then(({data}) => {
-                        console.log(data.book);
-                        this.form.call_number = data.book[0].call_number
-                        this.form.title = data.book[0].title
-                        this.form.author = data.book[0].author
-                        this.form.publisher = data.book[0].publisher
-                    })
-                    .catch(error => error.response.data);
+                if (!isbn) {
+                    this.emptyFields()
+                } else {
+                    axios.get('api/book/' + isbn)
+                        .then(({data}) => {
+                            if (data.book.length == 0) {
+                                this.showWarning()
+                            } else {
+                                this.form.call_number = data.book[0].call_number
+                                this.form.title = data.book[0].title
+                                this.form.author = data.book[0].author
+                                this.form.publisher = data.book[0].publisher
+
+                                this.$emit('bookISBN', isbn)
+                            }
+                        })
+                        .catch(error => {
+                            error.response.data
+                        });
+                }
+            },
+            showWarning() {
+                Swal.fire({
+                    title: 'Book Not Found!',
+                    text: "Please check the ISBN.",
+                    icon: 'warning',
+                })
+                this.emptyFields()
             }
         }
     }

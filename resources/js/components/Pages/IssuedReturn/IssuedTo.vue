@@ -10,7 +10,7 @@
                     <div class="col-md-5">
                         <input type="text" v-on:keydown.enter="searchBorrower(form['borrower_id'])" class="form-control" v-model="form['borrower_id']">
                     </div>
-                    <button class="btn btn-sm btn-primary">Search Borrower</button>
+                    <button class="btn btn-sm btn-primary" @click="searchBorrower(form['borrower_id'])  ">Search Borrower</button>
                 </div>
                 <div class="form-group row" v-for="(item, index) in items" :key="index">
                     <label :for="item.label" class="col-md-4 col-form-label text-md-left">{{ item.label }}</label>
@@ -56,15 +56,37 @@
             }
         },
         methods: {
+            emptyFields() {
+                this.form.clear()
+                this.form.reset()
+            },
             searchBorrower(id) {
-                axios.get('api/borrower/' + id)
-                    .then(({data}) => {
-                        this.form.name = data.borrower[0].name
-                        this.form.major = (data.borrower[0].major != null ? data.borrower[0].major : 'None')
-                        this.form.type = (data.borrower[0].major != null ?  'Student' : 'Faculty')
-                        this.form.penalty = 0
-                    })
-                    .catch(error => error.response.data);
+                if (!id) {
+                    this.emptyFields()
+                } else {
+                    axios.get('api/borrower/' + id)
+                        .then(({data}) => {
+                            if (data.borrower.length == 0) {
+                                this.showWarning()
+                            } else {
+                                this.form.name = data.borrower[0].name
+                                this.form.major = (data.borrower[0].major != null ? data.borrower[0].major : 'None')
+                                this.form.type = (data.borrower[0].major != null ?  'Student' : 'Faculty')
+                                this.form.penalty = 0
+
+                                this.$emit('borrowerID', id)
+                            }
+                        })
+                        .catch(error => error.response.data);
+                }
+            },
+            showWarning() {
+                Swal.fire({
+                    title: 'Borrower Not Found!',
+                    text: "Please check the Borrower ID.",
+                    icon: 'warning',
+                })
+                this.emptyFields()
             }
         }
     }

@@ -3933,19 +3933,41 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    emptyFields: function emptyFields() {
+      this.form.clear();
+      this.form.reset();
+    },
     searchBook: function searchBook(isbn) {
       var _this = this;
 
-      axios.get('api/book/' + isbn).then(function (_ref) {
-        var data = _ref.data;
-        console.log(data.book);
-        _this.form.call_number = data.book[0].call_number;
-        _this.form.title = data.book[0].title;
-        _this.form.author = data.book[0].author;
-        _this.form.publisher = data.book[0].publisher;
-      })["catch"](function (error) {
-        return error.response.data;
+      if (!isbn) {
+        this.emptyFields();
+      } else {
+        axios.get('api/book/' + isbn).then(function (_ref) {
+          var data = _ref.data;
+
+          if (data.book.length == 0) {
+            _this.showWarning();
+          } else {
+            _this.form.call_number = data.book[0].call_number;
+            _this.form.title = data.book[0].title;
+            _this.form.author = data.book[0].author;
+            _this.form.publisher = data.book[0].publisher;
+
+            _this.$emit('bookISBN', isbn);
+          }
+        })["catch"](function (error) {
+          error.response.data;
+        });
+      }
+    },
+    showWarning: function showWarning() {
+      Swal.fire({
+        title: 'Book Not Found!',
+        text: "Please check the ISBN.",
+        icon: 'warning'
       });
+      this.emptyFields();
     }
   }
 });
@@ -4022,8 +4044,56 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      datas: []
+      datas: [],
+      borrower_id: null,
+      book_isbn: null
     };
+  },
+  methods: {
+    fetchBorrowerData: function fetchBorrowerData(id) {
+      this.borrower_id = id;
+    },
+    fetchISBN: function fetchISBN(isbn) {
+      this.book_isbn = isbn;
+    },
+    create: function create() {
+      var _this = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, save it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this.$Progress.start();
+
+          axios.post('api/borrow', {
+            isbn: _this.book_isbn,
+            borrower_id: _this.borrower_id
+          }).then(function (_ref) {
+            var data = _ref.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            });
+
+            _this.$Progress.finish();
+          })["catch"](function (error) {
+            error.response.data;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong.'
+            });
+
+            _this.$Progress.fail();
+          });
+        }
+      });
+    }
   }
 });
 
@@ -4090,18 +4160,41 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    emptyFields: function emptyFields() {
+      this.form.clear();
+      this.form.reset();
+    },
     searchBorrower: function searchBorrower(id) {
       var _this = this;
 
-      axios.get('api/borrower/' + id).then(function (_ref) {
-        var data = _ref.data;
-        _this.form.name = data.borrower[0].name;
-        _this.form.major = data.borrower[0].major != null ? data.borrower[0].major : 'None';
-        _this.form.type = data.borrower[0].major != null ? 'Student' : 'Faculty';
-        _this.form.penalty = 0;
-      })["catch"](function (error) {
-        return error.response.data;
+      if (!id) {
+        this.emptyFields();
+      } else {
+        axios.get('api/borrower/' + id).then(function (_ref) {
+          var data = _ref.data;
+
+          if (data.borrower.length == 0) {
+            _this.showWarning();
+          } else {
+            _this.form.name = data.borrower[0].name;
+            _this.form.major = data.borrower[0].major != null ? data.borrower[0].major : 'None';
+            _this.form.type = data.borrower[0].major != null ? 'Student' : 'Faculty';
+            _this.form.penalty = 0;
+
+            _this.$emit('borrowerID', id);
+          }
+        })["catch"](function (error) {
+          return error.response.data;
+        });
+      }
+    },
+    showWarning: function showWarning() {
+      Swal.fire({
+        title: 'Borrower Not Found!',
+        text: "Please check the Borrower ID.",
+        icon: 'warning'
       });
+      this.emptyFields();
     }
   }
 });
@@ -47593,9 +47686,18 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("button", { staticClass: "btn btn-sm btn-primary" }, [
-              _vm._v("Search Book")
-            ])
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm btn-primary",
+                on: {
+                  click: function($event) {
+                    return _vm.searchBook(_vm.form["isbn"])
+                  }
+                }
+              },
+              [_vm._v("Search Book")]
+            )
           ]),
           _vm._v(" "),
           _vm._l(_vm.items, function(item, index) {
@@ -47664,16 +47766,43 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid" }, [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-6" }, [_c("issued-to")], 1),
+      _c(
+        "div",
+        { staticClass: "col-md-6" },
+        [_c("issued-to", { on: { borrowerID: _vm.fetchBorrowerData } })],
+        1
+      ),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-6" }, [_c("issued-book")], 1)
+      _c(
+        "div",
+        { staticClass: "col-md-6" },
+        [_c("issued-book", { on: { bookISBN: _vm.fetchISBN } })],
+        1
+      )
     ]),
     _vm._v(" "),
-    _vm._m(0),
+    _c("div", { staticClass: "container-fluid" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "card-header col-md-11" }, [
+          _vm._v("\n                Borrower Information\n            ")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-1 align-self-center mx-auto" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-md btn-primary float-right",
+              on: { click: _vm.create }
+            },
+            [_vm._v("Borrow")]
+          )
+        ])
+      ])
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "table-responsive" }, [
       _c("table", { staticClass: "table table-hover" }, [
-        _vm._m(1),
+        _vm._m(0),
         _vm._v(" "),
         _c(
           "tbody",
@@ -47703,24 +47832,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container-fluid" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "card-header col-md-11" }, [
-          _vm._v("\n                Borrower Information\n            ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-1 align-self-center mx-auto" }, [
-          _c("button", { staticClass: "btn btn-md btn-primary float-right" }, [
-            _vm._v("Borrow")
-          ])
-        ])
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -47820,9 +47931,18 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("button", { staticClass: "btn btn-sm btn-primary" }, [
-              _vm._v("Search Borrower")
-            ])
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm btn-primary",
+                on: {
+                  click: function($event) {
+                    return _vm.searchBorrower(_vm.form["borrower_id"])
+                  }
+                }
+              },
+              [_vm._v("Search Borrower")]
+            )
           ]),
           _vm._v(" "),
           _vm._l(_vm.items, function(item, index) {
