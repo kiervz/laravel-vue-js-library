@@ -1978,13 +1978,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      user: null
+      userLoggedIn: null,
+      userType: null
     };
   },
   created: function created() {
-    this.user = User.loggedIn();
+    var _this = this;
+
+    this.userLoggedIn = User.loggedIn();
     EventBus.$on('logout', function () {
       User.logOut();
+    });
+    axios.post('api/auth/me').then(function (res) {
+      _this.userType = res.data.user_type;
+    })["catch"](function (error) {
+      return Exception.handle(error);
     });
   }
 });
@@ -2011,11 +2019,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
-  },
-  created: function created() {
-    axios.post('api/auth/me').then(function (res) {})["catch"](function (error) {
-      return Exception.handle(error);
-    });
   }
 });
 
@@ -2061,7 +2064,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['userType']
+});
 
 /***/ }),
 
@@ -4082,7 +4087,9 @@ __webpack_require__.r(__webpack_exports__);
             Toast.fire({
               icon: data.status,
               title: data.message
-            });
+            }); // Get the borrower id then show his borrowed books
+
+            _this.borrowerID(_this.borrower_id);
 
             _this.$Progress.finish();
           })["catch"](function (error) {
@@ -44682,14 +44689,14 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.user
+  return _vm.userLoggedIn
     ? _c(
         "div",
         { staticClass: "app-home" },
         [
           _c("vue-progress-bar"),
           _vm._v(" "),
-          _c("app-nav-bar"),
+          _c("app-nav-bar", { attrs: { "user-type": _vm.userType } }),
           _vm._v(" "),
           _c("app-side-bar"),
           _vm._v(" "),
@@ -44773,7 +44780,7 @@ var render = function() {
             },
             [
               _c("span", { staticClass: "dropdown-header" }, [
-                _vm._v("Sign in as")
+                _vm._v("Sign in as " + _vm._s(_vm.userType))
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "dropdown-divider" }),
@@ -47852,7 +47859,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "d-flex align-items-center" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Borrower's Data")])
+      _c("h3", { staticClass: "card-title" }, [
+        _vm._v("Borrower's Borrowed Book")
+      ])
     ])
   },
   function() {

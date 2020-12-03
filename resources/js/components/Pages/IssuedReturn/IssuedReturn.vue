@@ -11,7 +11,7 @@
         <div class="card-header col-md-12">
             <div class="d-flex justify-content-between align-items-baseline">
                 <div class="d-flex align-items-center">
-                    <h3 class="card-title">Borrower's Data</h3>
+                    <h3 class="card-title">Borrower's Borrowed Book</h3>
                 </div>
                 <div class="float-right">
                     <button class="btn btn-md btn-primary" @click="create">Borrow</button>
@@ -88,6 +88,8 @@
                                     icon: data.status,
                                     title: data.message
                                 });
+                                // Get the borrower id then show his borrowed books
+                                this.borrowerID(this.borrower_id) 
                                 this.$Progress.finish();
                             })
                             .catch(error => {
