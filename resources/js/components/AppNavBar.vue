@@ -15,7 +15,7 @@
                     <i class="fas fa-user-circle" style="font-size: 2em;"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-header">Sign in as</span>
+                    <span class="dropdown-header">Sign in as {{ userType }}</span>
                     <div class="dropdown-divider"></div>
                     <router-link to="/settings" class="dropdown-item">
                         <i class="fas fa-cog mr-1"></i> Settings
@@ -31,6 +31,6 @@
 
 <script>
     export default {
-        
+        props: ['userType'],
     }
 </script>
