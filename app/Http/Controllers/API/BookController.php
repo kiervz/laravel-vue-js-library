@@ -25,7 +25,7 @@ class BookController extends Controller
         $books = Book::paginate(10);
 
         return response()->json([
-            'books' => $books
+            'books' => BookResource::collection($books)->response()->getData(true)
         ], Response::HTTP_OK);
     }
 
