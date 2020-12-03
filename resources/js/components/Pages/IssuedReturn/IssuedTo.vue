@@ -87,6 +87,7 @@
                     icon: 'warning',
                 })
                 this.emptyFields()
+                EventBus.$emit('clearData')
             }
         }
     }

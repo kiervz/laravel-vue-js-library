@@ -31,6 +31,17 @@
 
 <script>
     export default {
-        props: ['userType'],
+        data() {
+            return {
+                userType: null
+            }
+        },
+        created() {
+            axios.post('api/auth/me')
+                .then(res => {
+                    this.userType = res.data.user_type
+                })
+                .catch(error => Exception.handle(error))
+        }
     }
 </script>

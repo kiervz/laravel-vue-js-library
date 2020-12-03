@@ -30,6 +30,7 @@
                         <th>Due Date</th>
                         <th>Penalty</th>
                         <th>Prepared By</th>
+                        <th>Return</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,6 +43,9 @@
                         <td>{{ data.due_date }}</td>
                         <td>{{ data.penalty }}</td>
                         <td>{{ data.name }}</td>
+                        <td>
+                            <i class="fas fa-undo" @click="returnBook(data.id)"></i>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -60,6 +64,11 @@
                 borrower_id: null,
                 book_isbn: null
             }
+        },
+        created() {
+            EventBus.$on('clearData', () => {
+                this.datas = []
+            });
         },
         methods: {
             borrowerID(id) {
@@ -109,7 +118,40 @@
                         this.datas = data.data
                     })
                     .catch(error => error.response.data)
-            }
+            },
+            returnBook(id) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, return it!'
+                }).then((result) => {
+                    if (result.value) {
+                        this.$Progress.start();
+                        axios.put('api/borrow/'+ id)
+                            .then(({ data }) => {
+                                Toast.fire({
+                                    icon: data.status,
+                                    title: data.message
+                                });
+                                // Get the borrower id then show his borrowed books
+                                this.borrowerID(this.borrower_id) 
+                                this.$Progress.finish();
+                            })
+                            .catch(error => {
+                                error.response.data
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Something went wrong.',
+                                });
+                                this.$Progress.fail();
+                            })
+                    }
+                });
+            },
         }
     }
 </script>

@@ -1978,21 +1978,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      userLoggedIn: null,
-      userType: null
+      userLoggedIn: null
     };
   },
   created: function created() {
-    var _this = this;
-
     this.userLoggedIn = User.loggedIn();
     EventBus.$on('logout', function () {
       User.logOut();
-    });
-    axios.post('api/auth/me').then(function (res) {
-      _this.userType = res.data.user_type;
-    })["catch"](function (error) {
-      return Exception.handle(error);
     });
   }
 });
@@ -2065,7 +2057,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['userType']
+  data: function data() {
+    return {
+      userType: null
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.post('api/auth/me').then(function (res) {
+      _this.userType = res.data.user_type;
+    })["catch"](function (error) {
+      return Exception.handle(error);
+    });
+  }
 });
 
 /***/ }),
@@ -4041,6 +4046,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4055,6 +4064,13 @@ __webpack_require__.r(__webpack_exports__);
       book_isbn: null
     };
   },
+  created: function created() {
+    var _this = this;
+
+    EventBus.$on('clearData', function () {
+      _this.datas = [];
+    });
+  },
   methods: {
     borrowerID: function borrowerID(id) {
       this.datas = [];
@@ -4065,7 +4081,7 @@ __webpack_require__.r(__webpack_exports__);
       this.book_isbn = isbn;
     },
     create: function create() {
-      var _this = this;
+      var _this2 = this;
 
       Swal.fire({
         title: 'Are you sure?',
@@ -4077,11 +4093,11 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, save it!'
       }).then(function (result) {
         if (result.value) {
-          _this.$Progress.start();
+          _this2.$Progress.start();
 
           axios.post('api/borrow', {
-            isbn: _this.book_isbn,
-            borrower_id: _this.borrower_id
+            isbn: _this2.book_isbn,
+            borrower_id: _this2.borrower_id
           }).then(function (_ref) {
             var data = _ref.data;
             Toast.fire({
@@ -4089,9 +4105,9 @@ __webpack_require__.r(__webpack_exports__);
               title: data.message
             }); // Get the borrower id then show his borrowed books
 
-            _this.borrowerID(_this.borrower_id);
+            _this2.borrowerID(_this2.borrower_id);
 
-            _this.$Progress.finish();
+            _this2.$Progress.finish();
           })["catch"](function (error) {
             error.response.data;
             Toast.fire({
@@ -4099,19 +4115,56 @@ __webpack_require__.r(__webpack_exports__);
               title: 'Something went wrong.'
             });
 
-            _this.$Progress.fail();
+            _this2.$Progress.fail();
           });
         }
       });
     },
     showData: function showData(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get('api/borrow/' + id).then(function (_ref2) {
         var data = _ref2.data;
-        _this2.datas = data.data;
+        _this3.datas = data.data;
       })["catch"](function (error) {
         return error.response.data;
+      });
+    },
+    returnBook: function returnBook(id) {
+      var _this4 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, return it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this4.$Progress.start();
+
+          axios.put('api/borrow/' + id).then(function (_ref3) {
+            var data = _ref3.data;
+            Toast.fire({
+              icon: data.status,
+              title: data.message
+            }); // Get the borrower id then show his borrowed books
+
+            _this4.borrowerID(_this4.borrower_id);
+
+            _this4.$Progress.finish();
+          })["catch"](function (error) {
+            error.response.data;
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong.'
+            });
+
+            _this4.$Progress.fail();
+          });
+        }
       });
     }
   }
@@ -4215,6 +4268,7 @@ __webpack_require__.r(__webpack_exports__);
         icon: 'warning'
       });
       this.emptyFields();
+      EventBus.$emit('clearData');
     }
   }
 });
@@ -44696,7 +44750,7 @@ var render = function() {
         [
           _c("vue-progress-bar"),
           _vm._v(" "),
-          _c("app-nav-bar", { attrs: { "user-type": _vm.userType } }),
+          _c("app-nav-bar"),
           _vm._v(" "),
           _c("app-side-bar"),
           _vm._v(" "),
@@ -47844,7 +47898,18 @@ var render = function() {
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(data.penalty))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(data.name))])
+              _c("td", [_vm._v(_vm._s(data.name))]),
+              _vm._v(" "),
+              _c("td", [
+                _c("i", {
+                  staticClass: "fas fa-undo",
+                  on: {
+                    click: function($event) {
+                      return _vm.returnBook(data.id)
+                    }
+                  }
+                })
+              ])
             ])
           }),
           0
@@ -47884,7 +47949,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Penalty")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Prepared By")])
+        _c("th", [_vm._v("Prepared By")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Return")])
       ])
     ])
   }

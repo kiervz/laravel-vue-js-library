@@ -38,7 +38,6 @@ class BorrowController extends Controller
             $book->avail_copies = $book->avail_copies - 1;
             $book->update();
         }
-        
 
         return response()->json([
             'status' => $status,
@@ -51,12 +50,31 @@ class BorrowController extends Controller
         $data = DB::table('borrows')
             ->join('books', 'borrows.isbn', '=', 'books.isbn')
             ->join('users', 'borrows.user_id', '=', 'users.id')
-            ->select('borrows.id','books.isbn', 'books.title', 'books.author', 'borrows.date_borrowed', 'borrows.due_date', 'borrows.penalty', 'users.name')
+            ->select('borrows.id','books.isbn', 'borrows.status', 'books.title', 'books.author', 'borrows.date_borrowed', 'borrows.due_date', 'borrows.penalty', 'users.name')
             ->where('borrows.borrower_id', $id)
+            ->where('borrows.status', 1)
             ->get();
 
         return response()->json([
             'data' => $data
+        ], Response::HTTP_OK);
+    }
+
+    public function update($id)
+    {   
+        $book_isbn = '';
+        $borrow = Borrow::findOrFail($id);
+        $borrow->status = 0;
+        $book_isbn = $borrow->isbn;
+        $borrow->update();
+
+        $book = Book::where('isbn', $book_isbn)->first();
+        $book->avail_copies += 1;
+        $book->update();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "Book Successfully Returned!"
         ], Response::HTTP_OK);
     }
 
