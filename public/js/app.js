@@ -4304,12 +4304,153 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Settings_ChangePassword_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Settings/ChangePassword.vue */ "./resources/js/components/Pages/Settings/ChangePassword.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    ChangePassword: _Settings_ChangePassword_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {};
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pages/Settings/ChangePassword.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Pages/Settings/ChangePassword.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      form: new Form({
+        password: null,
+        new_password: null,
+        confirm_new_password: null
+      }),
+      errors: [],
+      user_id: User.id()
+    };
+  },
+  methods: {
+    changePassword: function changePassword() {
+      var _this = this;
+
+      axios.put("api/user/".concat(this.user_id, "/change-password"), this.form).then(function (_ref) {
+        var data = _ref.data;
+        Toast.fire({
+          icon: data.status,
+          title: data.message
+        });
+        _this.errors = [];
+
+        _this.form.reset();
+
+        _this.form.clear();
+      })["catch"](function (error) {
+        _this.errors = error.response.data.errors;
+      });
+    }
   }
 });
 
@@ -48132,7 +48273,243 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("div", { staticClass: "row" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-9" }, [
+        _c(
+          "div",
+          { staticClass: "tab-content", attrs: { id: "v-pills-tabContent" } },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "tab-pane fade show active",
+                attrs: {
+                  id: "v-pills-cpass",
+                  role: "tabpanel",
+                  "aria-labelledby": "v-pills-cpass-tab"
+                }
+              },
+              [_c("change-password")],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "tab-pane fade",
+                attrs: {
+                  id: "v-pills-options",
+                  role: "tabpanel",
+                  "aria-labelledby": "v-pills-options-tab"
+                }
+              },
+              [_vm._v("\n                    Options ...\n                ")]
+            )
+          ]
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-3" }, [
+      _c(
+        "div",
+        {
+          staticClass: "nav flex-column nav-pills",
+          attrs: {
+            id: "v-pills-tab",
+            role: "tablist",
+            "aria-orientation": "vertical"
+          }
+        },
+        [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "v-pills-options-tab",
+                "data-toggle": "pill",
+                href: "#v-pills-options",
+                role: "tab",
+                "aria-controls": "v-pills-options",
+                "aria-selected": "false"
+              }
+            },
+            [_vm._v("\n                    Options\n                ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "nav-link active",
+              attrs: {
+                id: "v-pills-cpass-tab",
+                "data-toggle": "pill",
+                href: "#v-pills-cpass",
+                role: "tab",
+                "aria-controls": "v-pills-cpass",
+                "aria-selected": "true"
+              }
+            },
+            [_vm._v("\n                    Change Password\n                ")]
+          )
+        ]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pages/Settings/ChangePassword.vue?vue&type=template&id=1f77c79e&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Pages/Settings/ChangePassword.vue?vue&type=template&id=1f77c79e& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("div", { staticClass: "card mx-auto" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Current password")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form["password"],
+                expression: "form['password']"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "password",
+              name: "password",
+              placeholder: "Password"
+            },
+            domProps: { value: _vm.form["password"] },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "password", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.password
+            ? _c("span", { staticClass: "text-danger" }, [
+                _vm._v(_vm._s(_vm.errors.password[0]))
+              ])
+            : _vm._e()
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("New Password")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form["new_password"],
+                expression: "form['new_password']"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "password",
+              name: "new_password",
+              placeholder: "New Password"
+            },
+            domProps: { value: _vm.form["new_password"] },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "new_password", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.new_password
+            ? _c("span", { staticClass: "text-danger" }, [
+                _vm._v(_vm._s(_vm.errors.new_password[0]))
+              ])
+            : _vm._e()
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Confirm New Password")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form["confirm_new_password"],
+                expression: "form['confirm_new_password']"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "password",
+              name: "confirm_new_password",
+              placeholder: "Confirm New Password"
+            },
+            domProps: { value: _vm.form["confirm_new_password"] },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "confirm_new_password", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.confirm_new_password
+            ? _c("span", { staticClass: "text-danger" }, [
+                _vm._v(_vm._s(_vm.errors.confirm_new_password[0]))
+              ])
+            : _vm._e()
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-sm btn-primary form-control",
+            on: { click: _vm.changePassword }
+          },
+          [_vm._v("\n                Change Password\n            ")]
+        )
+      ])
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -65782,6 +66159,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Settings_vue_vue_type_template_id_5666b259___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Settings_vue_vue_type_template_id_5666b259___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/Settings/ChangePassword.vue":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/Pages/Settings/ChangePassword.vue ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ChangePassword_vue_vue_type_template_id_1f77c79e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ChangePassword.vue?vue&type=template&id=1f77c79e& */ "./resources/js/components/Pages/Settings/ChangePassword.vue?vue&type=template&id=1f77c79e&");
+/* harmony import */ var _ChangePassword_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ChangePassword.vue?vue&type=script&lang=js& */ "./resources/js/components/Pages/Settings/ChangePassword.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ChangePassword_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ChangePassword_vue_vue_type_template_id_1f77c79e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ChangePassword_vue_vue_type_template_id_1f77c79e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Pages/Settings/ChangePassword.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/Settings/ChangePassword.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/Pages/Settings/ChangePassword.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePassword_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ChangePassword.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pages/Settings/ChangePassword.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePassword_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/Settings/ChangePassword.vue?vue&type=template&id=1f77c79e&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/Pages/Settings/ChangePassword.vue?vue&type=template&id=1f77c79e& ***!
+  \**************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePassword_vue_vue_type_template_id_1f77c79e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ChangePassword.vue?vue&type=template&id=1f77c79e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pages/Settings/ChangePassword.vue?vue&type=template&id=1f77c79e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePassword_vue_vue_type_template_id_1f77c79e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePassword_vue_vue_type_template_id_1f77c79e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Rules\MatchOldPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -75,4 +77,30 @@ class UserController extends Controller
             'message' => $message
         ], Response::HTTP_OK);
     }
+
+    public function changePassword(Request $request) 
+    {
+        $this->validate($request, [
+            'password' => ['required', new MatchOldPassword],
+            'new_password' => 'required|string|max:25',
+            'confirm_new_password' => 'required|string|max:25|same:new_password'
+        ]);
+
+        $status = "success";
+        $message = "Password Successfully Updated!";
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            $status = "error";
+            $message = "Password Unsuccessfully Updated!";
+        } else {
+            $user = User::find(Auth::id());
+            $user->password = $request->new_password;
+            $user->update();
+        }
+
+        return response()->json([
+            'status' => $status,
+            'message' => $message
+        ]);
+    }
+
 }

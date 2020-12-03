@@ -16,13 +16,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'jwt.auth'], function() {
     Route::apiResource('book', 'API\BookController');
-    Route::put('book/copies/{id}', 'API\BookController@update_copies');
+    Route::put('book/copies/{id}', 'API\BookController@update_copies')
+            ->name('book.updateCopies');
+
     Route::apiResource('category', 'API\BookCategoryController');
     Route::apiResource('user', 'API\UserController');
+    Route::put('user/{id}/change-password', 'API\UserController@changePassword')
+            ->name('user.change-password');
+            
     Route::apiResource('student', 'API\StudentController');
     Route::apiResource('faculty', 'API\FacultyController');
     Route::apiResource('borrow', 'API\BorrowController');
-    Route::get('borrower/{id}', 'API\BorrowerController@show')->name('borrower.show');
+    Route::get('borrower/{id}', 'API\BorrowerController@show')
+            ->name('borrower.show');
 });
 
 Route::group([
