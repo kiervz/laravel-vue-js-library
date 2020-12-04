@@ -47,8 +47,8 @@
         
     </div>
 </template>
-<script>
-    import ChangePassword from './Settings/ChangePassword.vue'
+<script>    
+    import ChangePassword from './ChangePassword.vue'
     export default {
         components: { ChangePassword },
         data() {

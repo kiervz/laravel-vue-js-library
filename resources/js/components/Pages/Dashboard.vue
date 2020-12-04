@@ -1,15 +1,82 @@
 <template>
     <div class="container-fluid">
         <div class="row">
-            <div v-for="(item, $index) in items" :key="$index" class="col-md-4 col-sm-6">
-                <div class="small-box" :class="item.bg"> 
+            <div class="col-md-4 col-sm-6">
+                <div class="small-box bg-info"> 
                     <div class="inner">
-                        <h3>{{ item.total }}</h3>
+                        <h3>{{ total_books }}</h3>
 
-                        <p>{{ item.text }}</p>
+                        <p>Books</p>
                     </div>
                     <div class="icon">
-                        <i :class="'fa-5x mt-3 fas fa-' + item.icon"></i>
+                        <i class='fa-5x mt-3 fas fa-swatchbook'></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+                <div class="small-box bg-danger"> 
+                    <div class="inner">
+                        <h3>{{ total_books_lost }}</h3>
+
+                        <p>Books Lost</p>
+                    </div>
+                    <div class="icon">
+                        <i class='fa-5x mt-3 fas fa-book'></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+                <div class="small-box bg-success"> 
+                    <div class="inner">
+                        <h3>{{ total_books_overdue }}</h3>
+
+                        <p>Books Overdue</p>
+                    </div>
+                    <div class="icon">
+                        <i class='fa-5x mt-3 fas fa-exclamation-triangle'></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="small-box bg-secondary"> 
+                    <div class="inner">
+                        <h3>{{ total_books_borrowed }}</h3>
+
+                        <p>Borrowed Books</p>
+                    </div>
+                    <div class="icon">
+                        <i class='fa-5x mt-3 fas fa-book-reader'></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="small-box bg-warning"> 
+                    <div class="inner">
+                        <h3>{{ total_students }}</h3>
+
+                        <p>Students</p>
+                    </div>
+                    <div class="icon">
+                        <i class='fa-5x mt-3 fas fa-users'></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="small-box bg-primary"> 
+                    <div class="inner">
+                        <h3>{{ total_faculties }}</h3>
+
+                        <p>Faculties</p>
+                    </div>
+                    <div class="icon">
+                        <i class='fa-5x mt-3 fas fa-user-tie'></i>
                     </div>
                     <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
@@ -22,51 +89,57 @@
         name: 'Dashboard',
         data() {
             return {
-                items: [
-                    {
-                        icon: 'swatchbook',
-                        text: "Books",
-                        description: "Total books registered",
-                        total: 171,
-                        bg: 'bg-info'
-                    },
-                    {
-                        icon: 'book',
-                        text: "Books Lost",
-                        description: "Total books lost recorded.",
-                        total: 1,
-                        bg: 'bg-secondary'
-                    },
-                    {
-                        icon: 'exclamation-triangle',
-                        text: "Books Overdue",
-                        description: "Total books overdue recorded.",
-                        total: 4,
-                        bg: 'bg-success'
-                    },
-                    {
-                        icon: 'book-reader',
-                        text: "Borrowers",
-                        description: "Total borrowers recorded.",
-                        total: 56,
-                        bg: 'bg-danger'
-                    },
-                    {
-                        icon: 'users',
-                        text: "Students",
-                        description: "Total students registered",
-                        total: 200,
-                        bg: 'bg-warning'
-                    },
-                    {
-                        icon: 'user-tie',
-                        text: "Faculties",
-                        description: "Total faculties today recorded.",
-                        total: 10,
-                        bg: 'bg-primary'
-                    }
-                ]
+                total_books_lost: 0,
+                total_books: 0,
+                total_books_overdue: 0,
+                total_books_borrowed: 0,
+                total_students: 0,
+                total_faculties: 0,
             }
         },
+        created() {
+            this.getTotalBooks()
+            this.getTotalBooksLost()
+            this.getTotalStudents()
+            this.getTotalFaculties()
+            this.getTotalBooksBorrowed()
+        },
+        methods: {
+            getTotalBooks() {
+                axios.post('api/dashboard/books')
+                    .then(({data}) => {
+                        this.total_books = data.books
+                    })
+                    .catch(error => error.response.data)
+            },
+            getTotalBooksLost() {
+                axios.post('api/dashboard/books-lost')
+                    .then(({data}) => {
+                        this.total_books_lost = data.books_lost
+                    })
+                    .catch(error => error.response.data)
+            },
+            getTotalStudents() {
+                axios.post('api/dashboard/total-students')
+                    .then(({data}) => {
+                        this.total_students = data.students
+                    })
+                    .catch(error => error.response.data)
+            },
+            getTotalFaculties() {
+                axios.post('api/dashboard/total-faculties')
+                    .then(({data}) => {
+                        this.total_faculties = data.faculties
+                    })
+                    .catch(error => error.response.data)
+            },
+            getTotalBooksBorrowed() {
+                axios.post('api/dashboard/books-borrowed')
+                    .then(({data}) => {
+                        this.total_books_borrowed = data.books_borrowed
+                    })
+                    .catch(error => error.response.data)
+            },
+        }
     }
 </script>

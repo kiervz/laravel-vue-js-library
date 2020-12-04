@@ -17,7 +17,7 @@ const routes = [
     { path: '/user-management', name: 'UserManagement', component: require('../components/Pages/UserManagement.vue').default, meta: { requiresAuth: true } },
     { path: '/audit-log', name: 'AuditLog', component: require('../components/Pages/AuditLog.vue').default, meta: { requiresAuth: true } },
     { path: '/reports', name: 'Reports', component: require('../components/Pages/Reports.vue').default, meta: { requiresAuth: true } },
-    { path: '/settings', name: 'Settings', component: require('../components/Pages/Settings.vue').default, meta: { requiresAuth: true } },
+    { path: '/settings', name: 'Settings', component: require('../components/Pages/Setting/Settings.vue').default, meta: { requiresAuth: true } },
 ];
 
 const router = new VueRouter({

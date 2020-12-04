@@ -32,6 +32,19 @@ Route::group(['middleware' => 'jwt.auth'], function() {
 });
 
 Route::group([
+    'middleware' => 'jwt.auth', 
+    'prefix' => 'dashboard'
+], function() {
+
+    Route::post('books', 'API\DashboardController@booksCount');
+    Route::post('books-borrowed', 'API\DashboardController@booksBorrowed');
+    Route::post('books-lost', 'API\DashboardController@booksLost');
+    Route::post('total-students', 'API\DashboardController@totalStudents');
+    Route::post('total-faculties', 'API\DashboardController@totalFaculties');
+
+});
+
+Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
