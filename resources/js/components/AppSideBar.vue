@@ -66,13 +66,19 @@
                                 name : 'Category',
                                 link : "/book-category", 
                                 icon : "swatchbook",
-                            }
+                            },
                         ]
                     },
                     {
                         name : 'Issued & Return',
                         link : "/issued-return",
                         icon : "paste",
+                        istreeview: false,
+                    },
+                    {
+                        name : 'Book Records',
+                        link : "/book-records",
+                        icon : "swatchbook",
                         istreeview: false,
                     },
                     {

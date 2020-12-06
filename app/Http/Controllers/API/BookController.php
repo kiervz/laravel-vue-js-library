@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\BookRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
+use App\Models\Borrow;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller
@@ -89,4 +91,21 @@ class BookController extends Controller
             'message' => 'Book Successfully Deleted'
         ], Response::HTTP_OK);
     }
+
+    public function inventory()
+    {
+        $data = DB::table('books')
+            ->join('book_categories', 'books.category_id', '=', 'book_categories.id')
+            ->select('books.id','book_categories.name as category', 'books.call_number', 'books.isbn', 
+                    'books.title', 'books.author', 'books.publisher', 'books.total_copies', 'books.avail_copies', 
+                DB::raw("(SELECT COUNT(id) as count FROM borrows WHERE (books.isbn = borrows.isbn) AND (status = 1)) AS total_borrowers"),
+                DB::raw("(SELECT COUNT(id) as count FROM borrows WHERE (books.isbn = borrows.isbn) AND (status = 3)) AS total_lost")    
+            )
+            ->get();
+
+        return response()->json([
+            'data' => $data
+        ], Response::HTTP_OK);
+    }
+
 }

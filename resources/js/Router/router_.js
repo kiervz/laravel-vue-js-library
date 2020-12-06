@@ -12,6 +12,7 @@ const routes = [
     { path: '/book', name: 'Book', component: require('../components/Pages/Book/Book.vue').default, meta: { requiresAuth: true } },
     { path: '/book-category', name: 'BookCategory', component: require('../components/Pages/Book/BookCategory.vue').default, meta: { requiresAuth: true } },
     { path: '/issued-return', name: 'IssuedReturn', component: require('../components/Pages/IssuedReturn/IssuedReturn.vue').default, meta: { requiresAuth: true } },
+    { path: '/book-records', name: 'BookRecords', component: require('../components/Pages/BookRecords.vue').default, meta: { requiresAuth: true } },
     { path: '/student-management', name: 'Student', component: require('../components/Pages/Borrowers/StudentManagement.vue').default, meta: { requiresAuth: true } },
     { path: '/faculty-management', name: 'Faculty', component: require('../components/Pages/Borrowers/FacultyManagement.vue').default, meta: { requiresAuth: true } },
     { path: '/user-management', name: 'UserManagement', component: require('../components/Pages/UserManagement.vue').default, meta: { requiresAuth: true } },

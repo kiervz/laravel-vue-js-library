@@ -2154,6 +2154,11 @@ __webpack_require__.r(__webpack_exports__);
         icon: "paste",
         istreeview: false
       }, {
+        name: 'Book Records',
+        link: "/book-records",
+        icon: "swatchbook",
+        istreeview: false
+      }, {
         name: 'Borrowers',
         link: "/student-management",
         icon: "users",
@@ -3131,6 +3136,163 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pages/BookRecords.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Pages/BookRecords.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      book_inventory: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.post('api/book/inventory').then(function (_ref) {
+      var data = _ref.data;
+      _this.book_inventory = data.data;
+    })["catch"](function (error) {
+      return error.response.data;
+    });
   }
 });
 
@@ -46795,6 +46957,266 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pages/BookRecords.vue?vue&type=template&id=e687f15a&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Pages/BookRecords.vue?vue&type=template&id=e687f15a& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container-fluid" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "tab-content" }, [
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade show active",
+          attrs: {
+            id: "book-inventory",
+            role: "tabpanel",
+            "aria-labelledby": "book-inventory-tab"
+          }
+        },
+        [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.book_inventory, function(book) {
+                  return _c("tr", { key: book.id }, [
+                    _c("td", [_vm._v(_vm._s(book.id))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(book.call_number))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(book.isbn))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(book.title))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(book.author))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(book.category))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(book.publisher))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(book.total_copies))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(book.total_borrowers))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(book.total_lost))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(book.avail_copies))])
+                  ])
+                }),
+                0
+              )
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade",
+          attrs: {
+            id: "book-borrowed",
+            role: "tabpanel",
+            "aria-labelledby": "book-borrowed-tab"
+          }
+        },
+        [_vm._v("\n            Book Borrowed\n        ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade",
+          attrs: {
+            id: "book-returned",
+            role: "tabpanel",
+            "aria-labelledby": "book-returned-tab"
+          }
+        },
+        [_vm._v("\n            Book Returned\n        ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade",
+          attrs: {
+            id: "book-lost",
+            role: "tabpanel",
+            "aria-labelledby": "book-lost-tab"
+          }
+        },
+        [_vm._v("\n            Book Lost\n        ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade",
+          attrs: {
+            id: "book-overdue",
+            role: "tabpanel",
+            "aria-labelledby": "book-overdue-tab"
+          }
+        },
+        [_vm._v("\n            Book Overdue\n        ")]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "ul",
+      { staticClass: "nav nav-tabs", attrs: { role: "tablist" } },
+      [
+        _c("li", { staticClass: "nav-item", attrs: { role: "presentation" } }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link active",
+              attrs: {
+                id: "book-inventory-tab",
+                "data-toggle": "tab",
+                href: "#book-inventory",
+                role: "tab",
+                "aria-controls": "book-inventory",
+                "aria-selected": "true"
+              }
+            },
+            [_vm._v("\n                Book Inventory\n            ")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item", attrs: { role: "presentation" } }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "book-borrowed-tab",
+                "data-toggle": "tab",
+                href: "#book-borrowed",
+                role: "tab",
+                "aria-controls": "book-borrowed",
+                "aria-selected": "false"
+              }
+            },
+            [_vm._v("\n                Book Borrowed\n            ")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item", attrs: { role: "presentation" } }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "book-returned-tab",
+                "data-toggle": "tab",
+                href: "#book-returned",
+                role: "tab",
+                "aria-controls": "book-returned",
+                "aria-selected": "false"
+              }
+            },
+            [_vm._v("\n                Book Returned\n            ")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item", attrs: { role: "presentation" } }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "book-lost-tab",
+                "data-toggle": "tab",
+                href: "#book-lost",
+                role: "tab",
+                "aria-controls": "book-lost",
+                "aria-selected": "false"
+              }
+            },
+            [_vm._v("\n                Book Lost\n            ")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item", attrs: { role: "presentation" } }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "book-overdue-tab",
+                "data-toggle": "tab",
+                href: "#book-overdue",
+                role: "tab",
+                "aria-controls": "book-overdue",
+                "aria-selected": "false"
+              }
+            },
+            [_vm._v("\n                Book Overdue\n            ")]
+          )
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Call No.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("ISBN")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Title")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Author")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Category")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Publisher")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total Copies")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Borrowed")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Lost")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Avail. Copies")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pages/Borrowers/FacultyManagement.vue?vue&type=template&id=8c53caba&":
 /*!************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Pages/Borrowers/FacultyManagement.vue?vue&type=template&id=8c53caba& ***!
@@ -64906,6 +65328,13 @@ var routes = [{
     requiresAuth: true
   }
 }, {
+  path: '/book-records',
+  name: 'BookRecords',
+  component: __webpack_require__(/*! ../components/Pages/BookRecords.vue */ "./resources/js/components/Pages/BookRecords.vue")["default"],
+  meta: {
+    requiresAuth: true
+  }
+}, {
   path: '/student-management',
   name: 'Student',
   component: __webpack_require__(/*! ../components/Pages/Borrowers/StudentManagement.vue */ "./resources/js/components/Pages/Borrowers/StudentManagement.vue")["default"],
@@ -65858,6 +66287,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCategory_vue_vue_type_template_id_03e42d72___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCategory_vue_vue_type_template_id_03e42d72___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/BookRecords.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/Pages/BookRecords.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BookRecords_vue_vue_type_template_id_e687f15a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BookRecords.vue?vue&type=template&id=e687f15a& */ "./resources/js/components/Pages/BookRecords.vue?vue&type=template&id=e687f15a&");
+/* harmony import */ var _BookRecords_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BookRecords.vue?vue&type=script&lang=js& */ "./resources/js/components/Pages/BookRecords.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BookRecords_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BookRecords_vue_vue_type_template_id_e687f15a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BookRecords_vue_vue_type_template_id_e687f15a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Pages/BookRecords.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/BookRecords.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/Pages/BookRecords.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BookRecords_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./BookRecords.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pages/BookRecords.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BookRecords_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/BookRecords.vue?vue&type=template&id=e687f15a&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/Pages/BookRecords.vue?vue&type=template&id=e687f15a& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BookRecords_vue_vue_type_template_id_e687f15a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./BookRecords.vue?vue&type=template&id=e687f15a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pages/BookRecords.vue?vue&type=template&id=e687f15a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BookRecords_vue_vue_type_template_id_e687f15a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BookRecords_vue_vue_type_template_id_e687f15a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
