@@ -108,4 +108,21 @@ class BookController extends Controller
         ], Response::HTTP_OK);
     }
 
+    public function borrowed()
+    {
+        $data = DB::table('borrows')
+            ->join('books', 'borrows.isbn', '=', 'books.isbn')
+            ->join('users', 'borrows.user_id', '=', 'users.id')
+            ->select('borrows.id','books.isbn', 'books.title', 'books.author', 'borrows.date_borrowed', 'borrows.due_date', 'borrows.penalty', 'users.name',
+                DB::raw("(SELECT name FROM students WHERE (students.student_id = borrows.borrower_id)) AS student_name"),
+                DB::raw("(SELECT name FROM faculties WHERE (faculties.faculty_id = borrows.borrower_id)) AS faculty_name"),
+            )
+            ->where('borrows.status', 1)
+            ->get();
+
+        return response()->json([
+            'data' => $data
+        ], Response::HTTP_OK);
+    }
+
 }

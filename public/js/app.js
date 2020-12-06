@@ -3278,10 +3278,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      book_inventory: []
+      book_inventory: [],
+      book_borrowed: []
     };
   },
   created: function created() {
@@ -3290,6 +3318,13 @@ __webpack_require__.r(__webpack_exports__);
     axios.post('api/book/inventory').then(function (_ref) {
       var data = _ref.data;
       _this.book_inventory = data.data;
+    })["catch"](function (error) {
+      return error.response.data;
+    });
+    axios.post('api/book/borrowed').then(function (_ref2) {
+      var data = _ref2.data;
+      _this.book_borrowed = data.data;
+      console.log(_this.book_borrowed);
     })["catch"](function (error) {
       return error.response.data;
     });
@@ -46993,29 +47028,29 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                _vm._l(_vm.book_inventory, function(book) {
-                  return _c("tr", { key: book.id }, [
-                    _c("td", [_vm._v(_vm._s(book.id))]),
+                _vm._l(_vm.book_inventory, function(data) {
+                  return _c("tr", { key: data.id }, [
+                    _c("td", [_vm._v(_vm._s(data.id))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.call_number))]),
+                    _c("td", [_vm._v(_vm._s(data.call_number))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.isbn))]),
+                    _c("td", [_vm._v(_vm._s(data.isbn))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.title))]),
+                    _c("td", [_vm._v(_vm._s(data.title))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.author))]),
+                    _c("td", [_vm._v(_vm._s(data.author))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.category))]),
+                    _c("td", [_vm._v(_vm._s(data.category))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.publisher))]),
+                    _c("td", [_vm._v(_vm._s(data.publisher))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.total_copies))]),
+                    _c("td", [_vm._v(_vm._s(data.total_copies))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.total_borrowers))]),
+                    _c("td", [_vm._v(_vm._s(data.total_borrowers))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.total_lost))]),
+                    _c("td", [_vm._v(_vm._s(data.total_lost))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.avail_copies))])
+                    _c("td", [_vm._v(_vm._s(data.avail_copies))])
                   ])
                 }),
                 0
@@ -47035,7 +47070,39 @@ var render = function() {
             "aria-labelledby": "book-borrowed-tab"
           }
         },
-        [_vm._v("\n            Book Borrowed\n        ")]
+        [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.book_borrowed, function(data) {
+                  return _c("tr", { key: data.id }, [
+                    _c("td", [_vm._v(_vm._s(data.id))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.call_number))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.title))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.author))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(data.student_name || data.faculty_name))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.date_borrowed))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.due_date))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.name))])
+                  ])
+                }),
+                0
+              )
+            ])
+          ])
+        ]
       ),
       _vm._v(" "),
       _c(
@@ -47207,6 +47274,30 @@ var staticRenderFns = [
         _c("th", [_vm._v("Lost")]),
         _vm._v(" "),
         _c("th", [_vm._v("Avail. Copies")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Call No.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Title")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Author")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Borrower's Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date Borrowed")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date Due")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Process By")])
       ])
     ])
   }

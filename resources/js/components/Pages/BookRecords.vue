@@ -81,18 +81,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="book in book_inventory" :key="book.id">
-                                <td>{{ book.id }}</td>
-                                <td>{{ book.call_number }}</td>
-                                <td>{{ book.isbn }}</td>
-                                <td>{{ book.title }}</td>
-                                <td>{{ book.author }}</td>
-                                <td>{{ book.category }}</td>
-                                <td>{{ book.publisher }}</td>
-                                <td>{{ book.total_copies }}</td>
-                                <td>{{ book.total_borrowers }}</td>
-                                <td>{{ book.total_lost }}</td>
-                                <td>{{ book.avail_copies }}</td>
+                            <tr v-for="data in book_inventory" :key="data.id">
+                                <td>{{ data.id }}</td>
+                                <td>{{ data.call_number }}</td>
+                                <td>{{ data.isbn }}</td>
+                                <td>{{ data.title }}</td>
+                                <td>{{ data.author }}</td>
+                                <td>{{ data.category }}</td>
+                                <td>{{ data.publisher }}</td>
+                                <td>{{ data.total_copies }}</td>
+                                <td>{{ data.total_borrowers }}</td>
+                                <td>{{ data.total_lost }}</td>
+                                <td>{{ data.avail_copies }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -102,7 +102,34 @@
                 id="book-borrowed" 
                 role="tabpanel" 
                 aria-labelledby="book-borrowed-tab">
-                Book Borrowed
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Call No.</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Borrower's Name</th>
+                                <th>Date Borrowed</th>
+                                <th>Date Due</th>
+                                <th>Process By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="data in book_borrowed" :key="data.id">
+                                <td>{{ data.id }}</td>
+                                <td>{{ data.call_number }}</td>
+                                <td>{{ data.title }}</td>
+                                <td>{{ data.author }}</td>
+                                <td>{{ data.student_name || data.faculty_name }}</td>
+                                <td>{{ data.date_borrowed }}</td>
+                                <td>{{ data.due_date }}</td>
+                                <td>{{ data.name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="tab-pane fade" 
                 id="book-returned" 
@@ -130,13 +157,21 @@
     export default {
         data() {
             return {
-                book_inventory: []
+                book_inventory: [],
+                book_borrowed: []
             }
         },
         created() {
             axios.post('api/book/inventory')
                 .then(({data}) => {
                     this.book_inventory = data.data
+                })
+                .catch(error => error.response.data)
+
+            axios.post('api/book/borrowed')
+                .then(({data}) => {
+                    this.book_borrowed = data.data
+                    console.log(this.book_borrowed);
                 })
                 .catch(error => error.response.data)
         }
