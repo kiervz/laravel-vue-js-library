@@ -49,6 +49,7 @@ Route::group([
     Route::post('books', 'API\DashboardController@booksCount');
     Route::post('books-borrowed', 'API\DashboardController@booksBorrowed');
     Route::post('books-lost', 'API\DashboardController@booksLost');
+    Route::post('books-overdue', 'API\DashboardController@booksOverdue');
     Route::post('total-students', 'API\DashboardController@totalStudents');
     Route::post('total-faculties', 'API\DashboardController@totalFaculties');
 

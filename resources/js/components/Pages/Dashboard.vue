@@ -103,6 +103,7 @@
             this.getTotalStudents()
             this.getTotalFaculties()
             this.getTotalBooksBorrowed()
+            this.getTotalBooksOverdue()
         },
         methods: {
             getTotalBooks() {
@@ -137,6 +138,13 @@
                 axios.post('api/dashboard/books-borrowed')
                     .then(({data}) => {
                         this.total_books_borrowed = data.books_borrowed
+                    })
+                    .catch(error => error.response.data)
+            },
+            getTotalBooksOverdue() {
+                axios.post('api/dashboard/books-overdue')
+                    .then(({data}) => {
+                        this.total_books_overdue = data.books_overdue
                     })
                     .catch(error => error.response.data)
             },

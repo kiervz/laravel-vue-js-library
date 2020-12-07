@@ -37,4 +37,13 @@ class DashboardController extends Controller
         $books_borrowed = DB::table('borrows')->where('status', '1')->count();
         return response()->json(['books_borrowed' => $books_borrowed]);
     }
+    
+    public function booksOverdue() 
+    {
+        $books_overdue = DB::table('borrows')
+                            ->where('status', 1)
+                            ->where('penalty', '>', 0)
+                            ->count();
+        return response()->json(['books_overdue' => $books_overdue]);
+    }
 }

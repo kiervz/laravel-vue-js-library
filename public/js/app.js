@@ -4216,6 +4216,7 @@ __webpack_require__.r(__webpack_exports__);
     this.getTotalStudents();
     this.getTotalFaculties();
     this.getTotalBooksBorrowed();
+    this.getTotalBooksOverdue();
   },
   methods: {
     getTotalBooks: function getTotalBooks() {
@@ -4264,6 +4265,16 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('api/dashboard/books-borrowed').then(function (_ref5) {
         var data = _ref5.data;
         _this5.total_books_borrowed = data.books_borrowed;
+      })["catch"](function (error) {
+        return error.response.data;
+      });
+    },
+    getTotalBooksOverdue: function getTotalBooksOverdue() {
+      var _this6 = this;
+
+      axios.post('api/dashboard/books-overdue').then(function (_ref6) {
+        var data = _ref6.data;
+        _this6.total_books_overdue = data.books_overdue;
       })["catch"](function (error) {
         return error.response.data;
       });
