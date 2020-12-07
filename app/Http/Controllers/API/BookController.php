@@ -161,18 +161,7 @@ class BookController extends Controller
 
     public function overdue()
     {
-        $borrows = Borrow::where('status', 1);
-        foreach ($borrows as $borrows) {
-            $diff_day = now()->diff($borrows->due_date)->d;
-            $diff_hour = now()->diff($borrows->due_date)->h;
-
-            if ($diff_hour > 0) {
-                $diff_day += 1;
-            }
-
-            $borrows->penalty = $diff_day;
-            $borrows->update();
-        }
+        $this->borrowOverdue();
 
         $data = DB::table('borrows')
             ->join('books', 'borrows.isbn', '=', 'books.isbn')
@@ -190,4 +179,19 @@ class BookController extends Controller
         ], Response::HTTP_OK);
     }
 
+    private function borrowOverdue() 
+    {
+        $borrows = Borrow::where('status', 1);
+        foreach ($borrows as $borrows) {
+            $diff_day = now()->diff($borrows->due_date)->d;
+            $diff_hour = now()->diff($borrows->due_date)->h;
+
+            if ($diff_hour > 0) {
+                $diff_day += 1;
+            }
+
+            $borrows->penalty = $diff_day;
+            $borrows->update();
+        }
+    }
 }

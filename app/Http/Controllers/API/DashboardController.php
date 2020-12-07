@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    protected $BookController;
+
+    public function __construct(BookController $BookController)
+    {
+        $this->BookController = $BookController;
+    }
+
     public function booksCount() 
     {
         $books = DB::table('books')->sum('total_copies');
@@ -40,10 +47,13 @@ class DashboardController extends Controller
     
     public function booksOverdue() 
     {
+        $this->BookController->overdue();
         $books_overdue = DB::table('borrows')
                             ->where('status', 1)
                             ->where('penalty', '>', 0)
                             ->count();
         return response()->json(['books_overdue' => $books_overdue]);
     }
+
+    
 }
