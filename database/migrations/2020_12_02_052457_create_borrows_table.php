@@ -17,10 +17,11 @@ class CreateBorrowsTable extends Migration
             $table->id();
             $table->string('borrower_id');
             $table->string('isbn');
-            $table->string('user_id');
+            $table->integer('user_id');
             $table->dateTime('date_borrowed');
             $table->dateTime('due_date');
-            $table->decimal('penalty', 5, 2);
+            $table->dateTime('date_returned');
+            $table->integer('penalty');
             $table->integer('status')->default('1');
             $table->timestamps();
         });

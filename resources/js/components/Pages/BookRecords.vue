@@ -150,7 +150,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="(data, index) in book_returned" :key="index">
-                            <td>{{ index=+1 }}</td>
+                            <td>{{ index + 1 }}</td>
                             <td>{{ data.call_number }}</td>
                             <td>{{ data.title }}</td>
                             <td>{{ data.author }}</td>
@@ -181,7 +181,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="(data, index) in book_lost" :key="index">
-                            <td>{{ index=+1 }}</td>
+                            <td>{{ index + 1 }}</td>
                             <td>{{ data.call_number }}</td>
                             <td>{{ data.title }}</td>
                             <td>{{ data.author }}</td>
@@ -197,7 +197,32 @@
                 id="book-overdue" 
                 role="tabpanel" 
                 aria-labelledby="book-overdue-tab">
-                Book Overdue
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Call No.</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Borrower's Name</th>
+                            <th>Date Borrowed</th>
+                            <th>Date Due</th>
+                            <th>Process By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(data, index) in book_overdue" :key="index">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ data.call_number }}</td>
+                            <td>{{ data.title }}</td>
+                            <td>{{ data.author }}</td>
+                            <td>{{ data.student_name || data.faculty_name }}</td>
+                            <td>{{ data.date_borrowed }}</td>
+                            <td>{{ data.due_date }}</td>
+                            <td>{{ data.name }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -211,6 +236,7 @@
                 book_borrowed: [],
                 book_returned: [],
                 book_lost: [],
+                book_overdue: []
             }
         },
         created() {
@@ -236,6 +262,12 @@
             axios.post('api/book/lost')
                 .then(({data}) => {
                     this.book_lost = data.data
+                })
+                .catch(error => error.response.data)
+
+            axios.post('api/book/overdue')
+                .then(({data}) => {
+                    this.book_overdue = data.data
                 })
                 .catch(error => error.response.data)
         }

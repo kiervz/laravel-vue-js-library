@@ -3330,12 +3330,64 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       book_inventory: [],
       book_borrowed: [],
-      book_returned: []
+      book_returned: [],
+      book_lost: [],
+      book_overdue: []
     };
   },
   created: function created() {
@@ -3357,6 +3409,18 @@ __webpack_require__.r(__webpack_exports__);
     axios.post('api/book/returned').then(function (_ref3) {
       var data = _ref3.data;
       _this.book_returned = data.data;
+    })["catch"](function (error) {
+      return error.response.data;
+    });
+    axios.post('api/book/lost').then(function (_ref4) {
+      var data = _ref4.data;
+      _this.book_lost = data.data;
+    })["catch"](function (error) {
+      return error.response.data;
+    });
+    axios.post('api/book/overdue').then(function (_ref5) {
+      var data = _ref5.data;
+      _this.book_overdue = data.data;
     })["catch"](function (error) {
       return error.response.data;
     });
@@ -46742,7 +46806,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-light" }, [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),
@@ -46999,7 +47063,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-light" }, [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),
@@ -47155,7 +47219,7 @@ var render = function() {
               "tbody",
               _vm._l(_vm.book_returned, function(data, index) {
                 return _c("tr", { key: index }, [
-                  _c("td", [_vm._v(_vm._s((index = +1)))]),
+                  _c("td", [_vm._v(_vm._s(index + 1))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(data.call_number))]),
                   _vm._v(" "),
@@ -47190,7 +47254,37 @@ var render = function() {
             "aria-labelledby": "book-lost-tab"
           }
         },
-        [_vm._v("\n            Book Lost\n        ")]
+        [
+          _c("table", { staticClass: "table table-hover" }, [
+            _vm._m(4),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.book_lost, function(data, index) {
+                return _c("tr", { key: index }, [
+                  _c("td", [_vm._v(_vm._s(index + 1))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.call_number))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.title))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.author))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(_vm._s(data.student_name || data.faculty_name))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.date_borrowed))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.due_date))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.name))])
+                ])
+              }),
+              0
+            )
+          ])
+        ]
       ),
       _vm._v(" "),
       _c(
@@ -47203,7 +47297,37 @@ var render = function() {
             "aria-labelledby": "book-overdue-tab"
           }
         },
-        [_vm._v("\n            Book Overdue\n        ")]
+        [
+          _c("table", { staticClass: "table table-hover" }, [
+            _vm._m(5),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.book_overdue, function(data, index) {
+                return _c("tr", { key: index }, [
+                  _c("td", [_vm._v(_vm._s(index + 1))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.call_number))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.title))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.author))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(_vm._s(data.student_name || data.faculty_name))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.date_borrowed))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.due_date))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.name))])
+                ])
+              }),
+              0
+            )
+          ])
+        ]
       )
     ])
   ])
@@ -47313,7 +47437,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-light" }, [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),
@@ -47343,7 +47467,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-light" }, [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),
@@ -47367,7 +47491,55 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-light" }, [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Call No.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Title")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Author")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Borrower's Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date Borrowed")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date Due")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Process By")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-light" }, [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Call No.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Title")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Author")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Borrower's Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date Borrowed")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date Due")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Process By")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-light" }, [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),
@@ -47878,7 +48050,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-light" }, [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),
@@ -48416,7 +48588,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-light" }, [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),
@@ -48924,7 +49096,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-light" }, [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),
@@ -49879,7 +50051,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-light" }, [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),

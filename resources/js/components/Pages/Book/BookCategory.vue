@@ -16,7 +16,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered">
-                        <thead>
+                        <thead class="thead-light">
                             <tr>
                                 <th>ID</th>
                                 <th>Category</th>

@@ -30,7 +30,7 @@ class BorrowController extends Controller
             $book_isbn = $borrow->isbn;
             $borrow->user_id = Auth::id();
             $borrow->date_borrowed = Carbon::now();
-            $borrow->due_date = Carbon::now();
+            $borrow->due_date = Carbon::now()->addDay(3);
             $borrow->penalty = 0;
             $borrow->save();
     
@@ -66,6 +66,7 @@ class BorrowController extends Controller
         $book_isbn = '';
         $borrow = Borrow::findOrFail($id);
         $borrow->status = 0;
+        $borrow->date_returned = now();
         $book_isbn = $borrow->isbn;
         $borrow->update();
 

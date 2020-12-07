@@ -26,6 +26,8 @@ Route::group(['middleware' => 'jwt.auth'], function() {
             ->name('book.returned');
     Route::post('book/lost', 'API\BookController@lost')
             ->name('book.lost');
+    Route::post('book/overdue', 'API\BookController@overdue')
+            ->name('book.overdue');
 
     Route::apiResource('category', 'API\BookCategoryController');
     Route::apiResource('user', 'API\UserController');

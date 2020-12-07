@@ -161,7 +161,33 @@ class BookController extends Controller
 
     public function overdue()
     {
-        
+        $borrows = Borrow::where('status', 1);
+        foreach ($borrows as $borrows) {
+            $diff_day = now()->diff($borrows->due_date)->d;
+            $diff_hour = now()->diff($borrows->due_date)->h;
+
+            if ($diff_hour > 0) {
+                $diff_day += 1;
+            }
+
+            $borrows->penalty = $diff_day;
+            $borrows->update();
+        }
+
+        $data = DB::table('borrows')
+            ->join('books', 'borrows.isbn', '=', 'books.isbn')
+            ->join('users', 'borrows.user_id', '=', 'users.id')
+            ->select('books.call_number', 'books.title', 'books.author', 'borrows.date_borrowed', 'borrows.due_date', 'users.name',
+                DB::raw("(SELECT name FROM students WHERE (students.student_id = borrows.borrower_id)) AS student_name"),
+                DB::raw("(SELECT name FROM faculties WHERE (faculties.faculty_id = borrows.borrower_id)) AS faculty_name"),
+            )
+            ->where('borrows.status', 1)
+            ->where('borrows.penalty', '>', 0)
+            ->get();
+
+        return response()->json([
+            'data' => $data
+        ], Response::HTTP_OK);
     }
 
 }
