@@ -3305,11 +3305,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       book_inventory: [],
-      book_borrowed: []
+      book_borrowed: [],
+      book_returned: []
     };
   },
   created: function created() {
@@ -3325,6 +3351,12 @@ __webpack_require__.r(__webpack_exports__);
       var data = _ref2.data;
       _this.book_borrowed = data.data;
       console.log(_this.book_borrowed);
+    })["catch"](function (error) {
+      return error.response.data;
+    });
+    axios.post('api/book/returned').then(function (_ref3) {
+      var data = _ref3.data;
+      _this.book_returned = data.data;
     })["catch"](function (error) {
       return error.response.data;
     });
@@ -47115,7 +47147,37 @@ var render = function() {
             "aria-labelledby": "book-returned-tab"
           }
         },
-        [_vm._v("\n            Book Returned\n        ")]
+        [
+          _c("table", { staticClass: "table table-hover" }, [
+            _vm._m(3),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.book_returned, function(data, index) {
+                return _c("tr", { key: index }, [
+                  _c("td", [_vm._v(_vm._s((index = +1)))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.call_number))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.title))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.author))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(_vm._s(data.student_name || data.faculty_name))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.date_borrowed))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.due_date))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(data.name))])
+                ])
+              }),
+              0
+            )
+          ])
+        ]
       ),
       _vm._v(" "),
       _c(
@@ -47274,6 +47336,30 @@ var staticRenderFns = [
         _c("th", [_vm._v("Lost")]),
         _vm._v(" "),
         _c("th", [_vm._v("Avail. Copies")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Call No.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Title")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Author")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Borrower's Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date Borrowed")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date Due")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Process By")])
       ])
     ])
   },

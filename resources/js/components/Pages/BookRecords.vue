@@ -135,7 +135,32 @@
                 id="book-returned" 
                 role="tabpanel" 
                 aria-labelledby="book-returned-tab">
-                Book Returned
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Call No.</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Borrower's Name</th>
+                            <th>Date Borrowed</th>
+                            <th>Date Due</th>
+                            <th>Process By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(data, index) in book_returned" :key="index">
+                            <td>{{ index=+1 }}</td>
+                            <td>{{ data.call_number }}</td>
+                            <td>{{ data.title }}</td>
+                            <td>{{ data.author }}</td>
+                            <td>{{ data.student_name || data.faculty_name }}</td>
+                            <td>{{ data.date_borrowed }}</td>
+                            <td>{{ data.due_date }}</td>
+                            <td>{{ data.name }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="tab-pane fade" 
                 id="book-lost" 
@@ -158,7 +183,8 @@
         data() {
             return {
                 book_inventory: [],
-                book_borrowed: []
+                book_borrowed: [],
+                book_returned: []
             }
         },
         created() {
@@ -172,6 +198,12 @@
                 .then(({data}) => {
                     this.book_borrowed = data.data
                     console.log(this.book_borrowed);
+                })
+                .catch(error => error.response.data)
+
+            axios.post('api/book/returned')
+                .then(({data}) => {
+                    this.book_returned = data.data
                 })
                 .catch(error => error.response.data)
         }
