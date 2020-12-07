@@ -113,7 +113,7 @@ class BookController extends Controller
         $data = DB::table('borrows')
             ->join('books', 'borrows.isbn', '=', 'books.isbn')
             ->join('users', 'borrows.user_id', '=', 'users.id')
-            ->select('borrows.id','books.isbn', 'books.title', 'books.author', 'borrows.date_borrowed', 'borrows.due_date', 'borrows.penalty', 'users.name',
+            ->select('borrows.id', 'books.call_number', 'books.title', 'books.author', 'borrows.date_borrowed', 'borrows.due_date', 'borrows.penalty', 'users.name',
                 DB::raw("(SELECT name FROM students WHERE (students.student_id = borrows.borrower_id)) AS student_name"),
                 DB::raw("(SELECT name FROM faculties WHERE (faculties.faculty_id = borrows.borrower_id)) AS faculty_name"),
             )
@@ -140,6 +140,28 @@ class BookController extends Controller
         return response()->json([
             'data' => $data
         ], Response::HTTP_OK);
+    }
+
+    public function lost()
+    {
+        $data = DB::table('borrows')
+            ->join('books', 'borrows.isbn', '=', 'books.isbn')
+            ->join('users', 'borrows.user_id', '=', 'users.id')
+            ->select('books.call_number', 'books.isbn', 'books.title', 'books.author', 'borrows.date_borrowed', 'borrows.due_date', 'users.name',
+                DB::raw("(SELECT name FROM students WHERE (students.student_id = borrows.borrower_id)) AS student_name"),
+                DB::raw("(SELECT name FROM faculties WHERE (faculties.faculty_id = borrows.borrower_id)) AS faculty_name"),
+            )
+            ->where('borrows.status', 3)
+            ->get();
+
+        return response()->json([
+            'data' => $data
+        ], Response::HTTP_OK);
+    }
+
+    public function overdue()
+    {
+        
     }
 
 }

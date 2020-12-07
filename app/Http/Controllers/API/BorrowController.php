@@ -50,7 +50,8 @@ class BorrowController extends Controller
         $data = DB::table('borrows')
             ->join('books', 'borrows.isbn', '=', 'books.isbn')
             ->join('users', 'borrows.user_id', '=', 'users.id')
-            ->select('borrows.id','books.isbn', 'borrows.status', 'books.title', 'books.author', 'borrows.date_borrowed', 'borrows.due_date', 'borrows.penalty', 'users.name')
+            ->select('borrows.id','books.isbn', 'borrows.status', 'books.title', 'books.author', 
+                    'borrows.date_borrowed', 'borrows.due_date', 'borrows.penalty', 'users.name')
             ->where('borrows.borrower_id', $id)
             ->where('borrows.status', 1)
             ->get();

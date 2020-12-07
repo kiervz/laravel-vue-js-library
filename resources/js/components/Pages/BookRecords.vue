@@ -65,7 +65,7 @@
                 aria-labelledby="book-inventory-tab">
                 <div class="table-responsive">
                     <table class="table table-hover">
-                        <thead>
+                        <thead class="thead-light">
                             <tr>
                                 <th>ID</th>
                                 <th>Call No.</th>
@@ -104,7 +104,7 @@
                 aria-labelledby="book-borrowed-tab">
                 <div class="table-responsive">
                     <table class="table table-hover">
-                        <thead>
+                        <thead class="thead-light">
                             <tr>
                                 <th>ID</th>
                                 <th>Call No.</th>
@@ -136,7 +136,7 @@
                 role="tabpanel" 
                 aria-labelledby="book-returned-tab">
                 <table class="table table-hover">
-                    <thead>
+                    <thead class="thead-light">
                         <tr>
                             <th>ID</th>
                             <th>Call No.</th>
@@ -166,7 +166,32 @@
                 id="book-lost" 
                 role="tabpanel" 
                 aria-labelledby="book-lost-tab">
-                Book Lost
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Call No.</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Borrower's Name</th>
+                            <th>Date Borrowed</th>
+                            <th>Date Due</th>
+                            <th>Process By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(data, index) in book_lost" :key="index">
+                            <td>{{ index=+1 }}</td>
+                            <td>{{ data.call_number }}</td>
+                            <td>{{ data.title }}</td>
+                            <td>{{ data.author }}</td>
+                            <td>{{ data.student_name || data.faculty_name }}</td>
+                            <td>{{ data.date_borrowed }}</td>
+                            <td>{{ data.due_date }}</td>
+                            <td>{{ data.name }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="tab-pane fade" 
                 id="book-overdue" 
@@ -184,7 +209,8 @@
             return {
                 book_inventory: [],
                 book_borrowed: [],
-                book_returned: []
+                book_returned: [],
+                book_lost: [],
             }
         },
         created() {
@@ -204,6 +230,12 @@
             axios.post('api/book/returned')
                 .then(({data}) => {
                     this.book_returned = data.data
+                })
+                .catch(error => error.response.data)
+
+            axios.post('api/book/lost')
+                .then(({data}) => {
+                    this.book_lost = data.data
                 })
                 .catch(error => error.response.data)
         }
