@@ -10,7 +10,7 @@
                     <div class="col-md-5">
                         <input type="text" v-on:keydown.enter="searchBorrower(form['borrower_id'])" class="form-control" v-model="form['borrower_id']">
                     </div>
-                    <button class="btn btn-sm btn-primary" @click="searchBorrower(form['borrower_id'])  ">Search Borrower</button>
+                    <button ref="id" class="btn btn-sm btn-primary" @click="searchBorrower(form['borrower_id'])  ">Search Borrower</button>
                 </div>
                 <div class="form-group row" v-for="(item, index) in items" :key="index">
                     <label :for="item.label" class="col-md-4 col-form-label text-md-left">{{ item.label }}</label>
@@ -53,12 +53,27 @@
                     },
                 ],
                 borrower:[],
+                id_from: [],
             }
+        },
+        created() {
+            if (localStorage.getItem('borrower_id') != null) {
+                this.id_from = localStorage.getItem('borrower_id').split(',')
+                if (this.id_from[1] == 'book-records') {
+                    this.form.borrower_id = this.id_from[0]
+                    setTimeout(() => { 
+                        this.$refs.id.click()
+                    }, 100);
+                }
+                localStorage.removeItem('borrower_id')
+            }
+
         },
         methods: {
             emptyFields() {
                 this.form.clear()
                 this.form.reset()
+                EventBus.$emit('clearData')
             },
             searchBorrower(id) {
                 if (!id) {
@@ -87,7 +102,6 @@
                     icon: 'warning',
                 })
                 this.emptyFields()
-                EventBus.$emit('clearData')
             }
         }
     }

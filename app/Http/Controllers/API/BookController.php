@@ -169,6 +169,8 @@ class BookController extends Controller
             ->select('books.call_number', 'books.title', 'books.author', 'borrows.date_borrowed', 'borrows.due_date', 'users.name',
                 DB::raw("(SELECT name FROM students WHERE (students.student_id = borrows.borrower_id)) AS student_name"),
                 DB::raw("(SELECT name FROM faculties WHERE (faculties.faculty_id = borrows.borrower_id)) AS faculty_name"),
+                DB::raw("(SELECT student_id FROM students WHERE (students.student_id = borrows.borrower_id)) AS student_id"),
+                DB::raw("(SELECT faculty_id FROM faculties WHERE (faculties.faculty_id = borrows.borrower_id)) AS faculty_id"),
             )
             ->where('borrows.status', 1)
             ->where('borrows.penalty', '>', 0)
@@ -179,7 +181,7 @@ class BookController extends Controller
         ], Response::HTTP_OK);
     }
 
-    private function borrowOverdue() 
+    public function borrowOverdue() 
     {
         $borrows = Borrow::where('status', 1);
         foreach ($borrows as $borrows) {

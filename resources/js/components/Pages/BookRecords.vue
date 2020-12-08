@@ -208,6 +208,7 @@
                             <th>Date Borrowed</th>
                             <th>Date Due</th>
                             <th>Process By</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -220,6 +221,7 @@
                             <td>{{ data.date_borrowed }}</td>
                             <td>{{ data.due_date }}</td>
                             <td>{{ data.name }}</td>
+                            <td><i class="fas fa-undo" @click="bookReturn(data.student_id || data.faculty_id)"></i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -240,36 +242,78 @@
             }
         },
         created() {
-            axios.post('api/book/inventory')
-                .then(({data}) => {
-                    this.book_inventory = data.data
-                })
-                .catch(error => error.response.data)
+            this.fetchInventory()
+            this.fetchOverdue()
+            this.fetchLost()
+            this.fetchReturned()
+            this.fetchBorrowed()
+        },
+        methods: {
+            async fetchInventory() {
+                this.$Progress.start()
+                await axios.post('api/book/inventory')
+                    .then(({data}) => {
+                        this.book_inventory = data.data
+                        this.$Progress.finish()
+                    })
+                    .catch(error => {
+                        error.response.data
+                        this.$Progress.fail()
+                    })
+            },
+            async fetchOverdue() {
+                this.$Progress.start()
+                await axios.post('api/book/overdue')
+                    .then(({data}) => {
+                        this.book_overdue = data.data
+                        this.$Progress.finish()
+                    })
+                    .catch(error => {
+                        error.response.data
+                        this.$Progress.fail()
+                    })
+            },
+            async fetchLost() {
+                this.$Progress.start()
+                await axios.post('api/book/lost')
+                    .then(({data}) => {
+                        this.book_lost = data.data
+                        this.$Progress.finish()
+                    })
+                    .catch(error => {
+                        error.response.data
+                        this.$Progress.fail()
+                    })
+            },
+            async fetchReturned() {
+                this.$Progress.start()
+                await axios.post('api/book/returned')
+                    .then(({data}) => {
+                        this.book_returned = data.data
+                        this.$Progress.finish()
+                    })
+                    .catch(error => {
+                        error.response.data
+                        this.$Progress.fail()
+                    })
+            },
+            async fetchBorrowed() {
+                this.$Progress.start()
+                await axios.post('api/book/borrowed')
+                    .then(({data}) => {
+                        this.book_borrowed = data.data
+                        this.$Progress.finish()
+                    })
+                    .catch(error => {
+                        error.response.data
+                        this.$Progress.fail()
+                    })
+            },
 
-            axios.post('api/book/borrowed')
-                .then(({data}) => {
-                    this.book_borrowed = data.data
-                    console.log(this.book_borrowed);
-                })
-                .catch(error => error.response.data)
-
-            axios.post('api/book/returned')
-                .then(({data}) => {
-                    this.book_returned = data.data
-                })
-                .catch(error => error.response.data)
-
-            axios.post('api/book/lost')
-                .then(({data}) => {
-                    this.book_lost = data.data
-                })
-                .catch(error => error.response.data)
-
-            axios.post('api/book/overdue')
-                .then(({data}) => {
-                    this.book_overdue = data.data
-                })
-                .catch(error => error.response.data)
+            bookReturn(id) {
+                localStorage.setItem('borrower_id', [id, 'book-records'])
+                this.$router.push('/issued-return')
+            }
         }
     }
 </script>

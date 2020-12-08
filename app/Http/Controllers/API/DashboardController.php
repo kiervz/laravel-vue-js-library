@@ -47,7 +47,7 @@ class DashboardController extends Controller
     
     public function booksOverdue() 
     {
-        $this->BookController->overdue();
+        $this->BookController->borrowOverdue();
         $books_overdue = DB::table('borrows')
                             ->where('status', 1)
                             ->where('penalty', '>', 0)
