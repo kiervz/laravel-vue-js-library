@@ -66,9 +66,10 @@
             }
         },
         created() {
+
             EventBus.$on('clearData', () => {
                 this.datas = []
-            });
+            })
         },
         methods: {
             borrowerID(id) {
