@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Borrow;
 use App\Models\Faculty;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -17,8 +18,11 @@ class BorrowerController extends Controller
             $borrower = Faculty::where('faculty_id', $id)->get();
         }
 
+        $penalty = Borrow::where('borrower_id', $id)->sum('penalty');
+        
         return response()->json([
-            'borrower' => $borrower
+            'borrower' => $borrower,
+            'penalty' => $penalty
         ]);
     }
 

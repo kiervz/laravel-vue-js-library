@@ -4880,7 +4880,7 @@ __webpack_require__.r(__webpack_exports__);
             _this2.form.name = data.borrower[0].name;
             _this2.form.major = data.borrower[0].major != null ? data.borrower[0].major : 'None';
             _this2.form.type = data.borrower[0].major != null ? 'Student' : 'Faculty';
-            _this2.form.penalty = 0;
+            _this2.form.penalty = data.penalty * 20;
 
             _this2.$emit('borrowerID', id);
           }
@@ -50115,7 +50115,7 @@ var render = function() {
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(data.due_date))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(data.penalty))]),
+              _c("td", [_vm._v(_vm._s(data.penalty * 20))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(data.name))]),
               _vm._v(" "),

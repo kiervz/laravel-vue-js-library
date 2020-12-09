@@ -87,7 +87,7 @@
                                 this.form.name = data.borrower[0].name
                                 this.form.major = (data.borrower[0].major != null ? data.borrower[0].major : 'None')
                                 this.form.type = (data.borrower[0].major != null ?  'Student' : 'Faculty')
-                                this.form.penalty = 0
+                                this.form.penalty = data.penalty * 20
 
                                 this.$emit('borrowerID', id)
                             }

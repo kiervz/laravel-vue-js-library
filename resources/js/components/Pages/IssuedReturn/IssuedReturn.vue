@@ -41,7 +41,7 @@
                         <td>{{ data.author }}</td>
                         <td>{{ data.date_borrowed }}</td>
                         <td>{{ data.due_date }}</td>
-                        <td>{{ data.penalty }}</td>
+                        <td>{{ data.penalty * 20 }}</td>
                         <td>{{ data.name }}</td>
                         <td>
                             <i class="fas fa-undo" @click="returnBook(data.id, data)"></i>
