@@ -11,7 +11,7 @@
                     <div class="icon">
                         <i class='fa-5x mt-3 fas fa-swatchbook'></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="/book" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
 
@@ -25,7 +25,7 @@
                     <div class="icon">
                         <i class='fa-5x mt-3 fas fa-book'></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="/book-records" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
 
@@ -39,7 +39,7 @@
                     <div class="icon">
                         <i class='fa-5x mt-3 fas fa-exclamation-triangle'></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="/book-records" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6">
@@ -52,7 +52,7 @@
                     <div class="icon">
                         <i class='fa-5x mt-3 fas fa-book-reader'></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="/book-records" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6">
@@ -65,7 +65,7 @@
                     <div class="icon">
                         <i class='fa-5x mt-3 fas fa-users'></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="/student-management" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6">
@@ -78,7 +78,7 @@
                     <div class="icon">
                         <i class='fa-5x mt-3 fas fa-user-tie'></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="/faculty-management" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         </div>

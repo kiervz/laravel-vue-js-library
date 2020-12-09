@@ -15,9 +15,9 @@ class CreateOptionsTable extends Migration
     {
         Schema::create('options', function (Blueprint $table) {
             $table->id();
-            $table->decimal('penalty');
-            $table->integer('books_allowed');
-            $table->integer('days_allowed');
+            $table->decimal('penalty')->default(0);
+            $table->integer('books_allowed')->default(0);
+            $table->integer('days_allowed')->default(0);
             $table->timestamps();
         });
     }

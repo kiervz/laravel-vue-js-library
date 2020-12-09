@@ -135,96 +135,102 @@
                 id="book-returned" 
                 role="tabpanel" 
                 aria-labelledby="book-returned-tab">
-                <table class="table table-hover">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Call No.</th>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Borrower's Name</th>
-                            <th>Date Borrowed</th>
-                            <th>Date Due</th>
-                            <th>Process By</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(data, index) in book_returned" :key="index">
-                            <td>{{ index + 1 }}</td>
-                            <td>{{ data.call_number }}</td>
-                            <td>{{ data.title }}</td>
-                            <td>{{ data.author }}</td>
-                            <td>{{ data.student_name || data.faculty_name }}</td>
-                            <td>{{ data.date_borrowed }}</td>
-                            <td>{{ data.due_date }}</td>
-                            <td>{{ data.name }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Call No.</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Borrower's Name</th>
+                                <th>Date Borrowed</th>
+                                <th>Date Due</th>
+                                <th>Process By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(data, index) in book_returned" :key="index">
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ data.call_number }}</td>
+                                <td>{{ data.title }}</td>
+                                <td>{{ data.author }}</td>
+                                <td>{{ data.student_name || data.faculty_name }}</td>
+                                <td>{{ data.date_borrowed }}</td>
+                                <td>{{ data.due_date }}</td>
+                                <td>{{ data.name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="tab-pane fade" 
                 id="book-lost" 
                 role="tabpanel" 
                 aria-labelledby="book-lost-tab">
-                <table class="table table-hover">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Call No.</th>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Borrower's Name</th>
-                            <th>Date Borrowed</th>
-                            <th>Date Due</th>
-                            <th>Process By</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(data, index) in book_lost" :key="index">
-                            <td>{{ index + 1 }}</td>
-                            <td>{{ data.call_number }}</td>
-                            <td>{{ data.title }}</td>
-                            <td>{{ data.author }}</td>
-                            <td>{{ data.student_name || data.faculty_name }}</td>
-                            <td>{{ data.date_borrowed }}</td>
-                            <td>{{ data.due_date }}</td>
-                            <td>{{ data.name }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Call No.</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Borrower's Name</th>
+                                <th>Date Borrowed</th>
+                                <th>Date Due</th>
+                                <th>Process By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(data, index) in book_lost" :key="index">
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ data.call_number }}</td>
+                                <td>{{ data.title }}</td>
+                                <td>{{ data.author }}</td>
+                                <td>{{ data.student_name || data.faculty_name }}</td>
+                                <td>{{ data.date_borrowed }}</td>
+                                <td>{{ data.due_date }}</td>
+                                <td>{{ data.name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="tab-pane fade" 
                 id="book-overdue" 
                 role="tabpanel" 
                 aria-labelledby="book-overdue-tab">
-                <table class="table table-hover">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Call No.</th>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Borrower's Name</th>
-                            <th>Date Borrowed</th>
-                            <th>Date Due</th>
-                            <th>Process By</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(data, index) in book_overdue" :key="index">
-                            <td>{{ index + 1 }}</td>
-                            <td>{{ data.call_number }}</td>
-                            <td>{{ data.title }}</td>
-                            <td>{{ data.author }}</td>
-                            <td>{{ data.student_name || data.faculty_name }}</td>
-                            <td>{{ data.date_borrowed }}</td>
-                            <td>{{ data.due_date }}</td>
-                            <td>{{ data.name }}</td>
-                            <td><i class="fas fa-undo" @click="bookReturn(data.student_id || data.faculty_id)"></i></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Call No.</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Borrower's Name</th>
+                                <th>Date Borrowed</th>
+                                <th>Date Due</th>
+                                <th>Process By</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(data, index) in book_overdue" :key="index">
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ data.call_number }}</td>
+                                <td>{{ data.title }}</td>
+                                <td>{{ data.author }}</td>
+                                <td>{{ data.student_name || data.faculty_name }}</td>
+                                <td>{{ data.date_borrowed }}</td>
+                                <td>{{ data.due_date }}</td>
+                                <td>{{ data.name }}</td>
+                                <td><i class="fas fa-undo" @click="bookReturn(data.student_id || data.faculty_id)"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

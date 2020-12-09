@@ -3402,6 +3402,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -46581,7 +46587,7 @@ var render = function() {
     "aside",
     { staticClass: "main-sidebar sidebar-dark-primary elevation-4" },
     [
-      _c("a", { staticClass: "brand-link", attrs: { href: "index3.html" } }, [
+      _c("a", { staticClass: "brand-link", attrs: { href: "" } }, [
         _c("img", {
           staticClass: "brand-image img-circle elevation-3",
           staticStyle: { opacity: ".8" },
@@ -48338,34 +48344,36 @@ var render = function() {
           }
         },
         [
-          _c("table", { staticClass: "table table-hover" }, [
-            _vm._m(3),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.book_returned, function(data, index) {
-                return _c("tr", { key: index }, [
-                  _c("td", [_vm._v(_vm._s(index + 1))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.call_number))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.title))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.author))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(_vm._s(data.student_name || data.faculty_name))
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.date_borrowed))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.due_date))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.name))])
-                ])
-              }),
-              0
-            )
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.book_returned, function(data, index) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [_vm._v(_vm._s(index + 1))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.call_number))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.title))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.author))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(data.student_name || data.faculty_name))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.date_borrowed))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.due_date))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.name))])
+                  ])
+                }),
+                0
+              )
+            ])
           ])
         ]
       ),
@@ -48381,34 +48389,36 @@ var render = function() {
           }
         },
         [
-          _c("table", { staticClass: "table table-hover" }, [
-            _vm._m(4),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.book_lost, function(data, index) {
-                return _c("tr", { key: index }, [
-                  _c("td", [_vm._v(_vm._s(index + 1))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.call_number))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.title))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.author))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(_vm._s(data.student_name || data.faculty_name))
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.date_borrowed))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.due_date))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.name))])
-                ])
-              }),
-              0
-            )
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _vm._m(4),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.book_lost, function(data, index) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [_vm._v(_vm._s(index + 1))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.call_number))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.title))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.author))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(data.student_name || data.faculty_name))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.date_borrowed))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.due_date))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.name))])
+                  ])
+                }),
+                0
+              )
+            ])
           ])
         ]
       ),
@@ -48424,47 +48434,49 @@ var render = function() {
           }
         },
         [
-          _c("table", { staticClass: "table table-hover" }, [
-            _vm._m(5),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.book_overdue, function(data, index) {
-                return _c("tr", { key: index }, [
-                  _c("td", [_vm._v(_vm._s(index + 1))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.call_number))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.title))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.author))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(_vm._s(data.student_name || data.faculty_name))
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.date_borrowed))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.due_date))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.name))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("i", {
-                      staticClass: "fas fa-undo",
-                      on: {
-                        click: function($event) {
-                          return _vm.bookReturn(
-                            data.student_id || data.faculty_id
-                          )
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _vm._m(5),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.book_overdue, function(data, index) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [_vm._v(_vm._s(index + 1))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.call_number))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.title))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.author))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(data.student_name || data.faculty_name))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.date_borrowed))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.due_date))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(data.name))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("i", {
+                        staticClass: "fas fa-undo",
+                        on: {
+                          click: function($event) {
+                            return _vm.bookReturn(
+                              data.student_id || data.faculty_id
+                            )
+                          }
                         }
-                      }
-                    })
+                      })
+                    ])
                   ])
-                ])
-              }),
-              0
-            )
+                }),
+                0
+              )
+            ])
           ])
         ]
       )
@@ -49899,10 +49911,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-      _vm._v("More info "),
-      _c("i", { staticClass: "fas fa-arrow-circle-right" })
-    ])
+    return _c(
+      "a",
+      { staticClass: "small-box-footer", attrs: { href: "/book" } },
+      [
+        _vm._v("More info "),
+        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -49916,10 +49932,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-      _vm._v("More info "),
-      _c("i", { staticClass: "fas fa-arrow-circle-right" })
-    ])
+    return _c(
+      "a",
+      { staticClass: "small-box-footer", attrs: { href: "/book-records" } },
+      [
+        _vm._v("More info "),
+        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -49933,10 +49953,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-      _vm._v("More info "),
-      _c("i", { staticClass: "fas fa-arrow-circle-right" })
-    ])
+    return _c(
+      "a",
+      { staticClass: "small-box-footer", attrs: { href: "/book-records" } },
+      [
+        _vm._v("More info "),
+        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -49950,10 +49974,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-      _vm._v("More info "),
-      _c("i", { staticClass: "fas fa-arrow-circle-right" })
-    ])
+    return _c(
+      "a",
+      { staticClass: "small-box-footer", attrs: { href: "/book-records" } },
+      [
+        _vm._v("More info "),
+        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -49967,10 +49995,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-      _vm._v("More info "),
-      _c("i", { staticClass: "fas fa-arrow-circle-right" })
-    ])
+    return _c(
+      "a",
+      {
+        staticClass: "small-box-footer",
+        attrs: { href: "/student-management" }
+      },
+      [
+        _vm._v("More info "),
+        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -49984,10 +50019,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-      _vm._v("More info "),
-      _c("i", { staticClass: "fas fa-arrow-circle-right" })
-    ])
+    return _c(
+      "a",
+      {
+        staticClass: "small-box-footer",
+        attrs: { href: "/faculty-management" }
+      },
+      [
+        _vm._v("More info "),
+        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -50031,7 +50073,7 @@ var render = function() {
               [_vm._v("ISBN")]
             ),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-5" }, [
+            _c("div", { staticClass: "col-md-6" }, [
               _c("input", {
                 directives: [
                   {
@@ -50067,14 +50109,14 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-sm btn-primary",
+                staticClass: "btn btn-md btn-primary",
                 on: {
                   click: function($event) {
                     return _vm.searchBook(_vm.form["isbn"])
                   }
                 }
               },
-              [_vm._v("Search Book")]
+              [_vm._v("Search")]
             )
           ]),
           _vm._v(" "),
@@ -50305,7 +50347,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "d-flex align-items-center" }, [
       _c("h3", { staticClass: "card-title" }, [
-        _vm._v("Borrower's Borrowed Book")
+        _vm._v("Borrower's Borrowed Book(s)")
       ])
     ])
   },
@@ -50377,7 +50419,7 @@ var render = function() {
               [_vm._v("Borrower ID")]
             ),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-5" }, [
+            _c("div", { staticClass: "col-md-6" }, [
               _c("input", {
                 directives: [
                   {
@@ -50414,14 +50456,14 @@ var render = function() {
               "button",
               {
                 ref: "id",
-                staticClass: "btn btn-sm btn-primary",
+                staticClass: "btn btn-md btn-primary",
                 on: {
                   click: function($event) {
                     return _vm.searchBorrower(_vm.form["borrower_id"])
                   }
                 }
               },
-              [_vm._v("Search Borrower")]
+              [_vm._v("Search")]
             )
           ]),
           _vm._v(" "),

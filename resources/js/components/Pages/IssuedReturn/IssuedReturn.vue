@@ -11,7 +11,7 @@
         <div class="card-header col-md-12">
             <div class="d-flex justify-content-between align-items-baseline">
                 <div class="d-flex align-items-center">
-                    <h3 class="card-title">Borrower's Borrowed Book</h3>
+                    <h3 class="card-title">Borrower's Borrowed Book(s)</h3>
                 </div>
                 <div class="float-right">
                     <button class="btn btn-md btn-primary" @click="create">Borrow</button>

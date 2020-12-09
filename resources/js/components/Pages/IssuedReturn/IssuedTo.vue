@@ -7,10 +7,10 @@
             <div class="card-body">
                 <div class="form-group row">
                     <label for="Borrower ID" class="col-md-4 col-form-label text-md-left">Borrower ID</label>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <input type="text" v-on:keydown.enter="searchBorrower(form['borrower_id'])" class="form-control" v-model="form['borrower_id']">
                     </div>
-                    <button ref="id" class="btn btn-sm btn-primary" @click="searchBorrower(form['borrower_id'])  ">Search Borrower</button>
+                    <button ref="id" class="btn btn-md btn-primary" @click="searchBorrower(form['borrower_id'])  ">Search</button>
                 </div>
                 <div class="form-group row" v-for="(item, index) in items" :key="index">
                     <label :for="item.label" class="col-md-4 col-form-label text-md-left">{{ item.label }}</label>
