@@ -44,11 +44,53 @@
                         <td>{{ data.penalty }}</td>
                         <td>{{ data.name }}</td>
                         <td>
-                            <i class="fas fa-undo" @click="returnBook(data.id)"></i>
+                            <i class="fas fa-undo" @click="returnBook(data.id, data)"></i>
                         </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+
+        <!-- Modal for penalty slip -->
+        <div class="modal fade" id="penalty_slip" role="dialog">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="card">
+                        <div class="card-body" id="slip">
+                            <h2 class="text-center">Penalty Slip</h2>
+                            <p>Slip #: {{ penalty_data.id }}</p>
+                            <table cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="60%">ISBN :</td>
+                                        <td>{{ penalty_data.isbn }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="60%">Book Title :</td>
+                                        <td>{{ penalty_data.title }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="60%">Author :</td>
+                                        <td>{{ penalty_data.author }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="60%">Borrower's ID :</td>
+                                        <td>{{ borrower_id }}</td>
+                                    </tr>
+                                    <tr class="total">
+                                        <td width="60%">Penalty :</td>
+                                        <td>{{ penalty_data.penalty * 20 }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-sm btn-light" @click="print">Print <i class="fas fa-print"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -62,11 +104,11 @@
             return {
                 datas: [],
                 borrower_id: null,
-                book_isbn: null
+                book_isbn: null,
+                penalty_data: [],
             }
         },
         created() {
-
             EventBus.$on('clearData', () => {
                 this.datas = []
             })
@@ -120,39 +162,57 @@
                     })
                     .catch(error => error.response.data)
             },
-            returnBook(id) {
+            returnBook(id, data) {
                 Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
+                    title: 'Do you want to generate penalty slip?',
+                    showDenyButton: true,
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, return it!'
+                    confirmButtonText: `Yes`,
+                    denyButtonText: `No`,
                 }).then((result) => {
-                    if (result.value) {
-                        this.$Progress.start();
-                        axios.put('api/borrow/'+ id)
-                            .then(({ data }) => {
-                                Toast.fire({
-                                    icon: data.status,
-                                    title: data.message
-                                });
-                                // Get the borrower id then show his borrowed books
-                                this.borrowerID(this.borrower_id) 
-                                this.$Progress.finish();
-                            })
-                            .catch(error => {
-                                error.response.data
-                                Toast.fire({
-                                    icon: 'warning',
-                                    title: 'Something went wrong.',
-                                });
-                                this.$Progress.fail();
-                            })
+                    if (result.isConfirmed) {
+                        //pass the data parameter to penalty_data
+                        this.penalty_data = data
+                        //show the penalty slip
+                        $('#penalty_slip').modal('show')
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, return it!'
+                        }).then((result) => {
+                            if (result.value) {
+                                this.$Progress.start();
+                                axios.put('api/borrow/'+ id)
+                                    .then(({ data }) => {
+                                        Toast.fire({
+                                            icon: data.status,
+                                            title: data.message
+                                        });
+                                        // Get the borrower id then show his borrowed books
+                                        this.borrowerID(this.borrower_id) 
+                                        this.$Progress.finish();
+                                    })
+                                    .catch(error => {
+                                        error.response.data
+                                        Toast.fire({
+                                            icon: 'warning',
+                                            title: 'Something went wrong.',
+                                        });
+                                        this.$Progress.fail();
+                                    })
+                            }
+                        });
                     }
-                });
+                })
             },
+            print() {
+                this.$htmlToPaper('slip')
+            }
         }
     }
 </script>
