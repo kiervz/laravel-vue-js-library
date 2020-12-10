@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <issued-to @borrowerID="borrowerID"></issued-to>
+                <issued-to @borrowerID="borrowerID" @borrowerPenalty="borrowerPenalty"></issued-to>
             </div>
             <div class="col-md-6">
                 <issued-book @bookISBN="bookISBN"></issued-book>
@@ -14,7 +14,7 @@
                     <h3 class="card-title">Borrower's Borrowed Book(s)</h3>
                 </div>
                 <div class="float-right">
-                    <button class="btn btn-md btn-primary" @click="create">Borrow</button>
+                    <button class="btn btn-md btn-primary" :disabled="!isBorrow" @click="borrow">Borrow</button>
                 </div>
             </div>
         </div>
@@ -80,7 +80,7 @@
                                     </tr>
                                     <tr class="total">
                                         <td width="60%">Penalty :</td>
-                                        <td>{{ penalty_data.penalty * 20 }}</td>
+                                        <td>{{ penalty_data.penalty * options.penalty }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -106,23 +106,38 @@
                 borrower_id: null,
                 book_isbn: null,
                 penalty_data: [],
+                options: [],
+                isBorrow: true,
+                borrower_penalty: null
             }
         },
         created() {
             EventBus.$on('clearData', () => {
                 this.datas = []
+                this.isBorrow = true
             })
+            this.fetchOptions()
         },
         methods: {
+            fetchOptions() {
+                axios.post('api/option')
+                    .then(({data}) => {
+                        this.options = data.options[0]
+                    })
+                    .catch(error => error.response.data)
+            },
             borrowerID(id) {
                 this.datas = []
                 this.borrower_id = id
                 this.showData(id)
             },
+            borrowerPenalty(penalty) {
+                this.borrower_penalty = penalty
+            },
             bookISBN(isbn) {
                 this.book_isbn = isbn
             },
-            create() {
+            borrow() {
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -159,6 +174,14 @@
                 axios.get('api/borrow/'+ id) 
                     .then(({data}) => {
                         this.datas = data.data
+                        let max_books_allowed = this.datas.length >= this.options.books_allowed
+                        let has_penalty = this.borrower_penalty > 0 
+                        console.log(max_books_allowed, has_penalty);
+                        if (max_books_allowed || has_penalty) {
+                            this.isBorrow = false
+                        } else {
+                            this.isBorrow = true
+                        }
                     })
                     .catch(error => error.response.data)
             },

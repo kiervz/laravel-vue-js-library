@@ -19,7 +19,13 @@ class BorrowController extends Controller
         $status = "success";
         $message = "Book Successfully Issued!";
         
-        if (!empty(Borrow::where('isbn', $request->isbn)->where('borrower_id', $request->borrower_id)->first())) 
+        if(empty($request->isbn) || empty($request->borrower_id)) {
+            $status = "error";
+            $message = "Please fill up all fields.";
+        } else if (!empty(Borrow::where('isbn', $request->isbn)
+                        ->where('borrower_id', $request->borrower_id)
+                        ->where('status', 1)
+                        ->first())) 
         {
             $status = "error";
             $message = "The book is already borrowed by the borrower.";

@@ -4896,7 +4896,10 @@ __webpack_require__.r(__webpack_exports__);
       datas: [],
       borrower_id: null,
       book_isbn: null,
-      penalty_data: []
+      penalty_data: [],
+      options: [],
+      isBorrow: true,
+      borrower_penalty: null
     };
   },
   created: function created() {
@@ -4904,19 +4907,34 @@ __webpack_require__.r(__webpack_exports__);
 
     EventBus.$on('clearData', function () {
       _this.datas = [];
+      _this.isBorrow = true;
     });
+    this.fetchOptions();
   },
   methods: {
+    fetchOptions: function fetchOptions() {
+      var _this2 = this;
+
+      axios.post('api/option').then(function (_ref) {
+        var data = _ref.data;
+        _this2.options = data.options[0];
+      })["catch"](function (error) {
+        return error.response.data;
+      });
+    },
     borrowerID: function borrowerID(id) {
       this.datas = [];
       this.borrower_id = id;
       this.showData(id);
     },
+    borrowerPenalty: function borrowerPenalty(penalty) {
+      this.borrower_penalty = penalty;
+    },
     bookISBN: function bookISBN(isbn) {
       this.book_isbn = isbn;
     },
-    create: function create() {
-      var _this2 = this;
+    borrow: function borrow() {
+      var _this3 = this;
 
       Swal.fire({
         title: 'Are you sure?',
@@ -4928,21 +4946,21 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, save it!'
       }).then(function (result) {
         if (result.value) {
-          _this2.$Progress.start();
+          _this3.$Progress.start();
 
           axios.post('api/borrow', {
-            isbn: _this2.book_isbn,
-            borrower_id: _this2.borrower_id
-          }).then(function (_ref) {
-            var data = _ref.data;
+            isbn: _this3.book_isbn,
+            borrower_id: _this3.borrower_id
+          }).then(function (_ref2) {
+            var data = _ref2.data;
             Toast.fire({
               icon: data.status,
               title: data.message
             }); // Get the borrower id then show his borrowed books
 
-            _this2.borrowerID(_this2.borrower_id);
+            _this3.borrowerID(_this3.borrower_id);
 
-            _this2.$Progress.finish();
+            _this3.$Progress.finish();
           })["catch"](function (error) {
             error.response.data;
             Toast.fire({
@@ -4950,23 +4968,32 @@ __webpack_require__.r(__webpack_exports__);
               title: 'Something went wrong.'
             });
 
-            _this2.$Progress.fail();
+            _this3.$Progress.fail();
           });
         }
       });
     },
     showData: function showData(id) {
-      var _this3 = this;
+      var _this4 = this;
 
-      axios.get('api/borrow/' + id).then(function (_ref2) {
-        var data = _ref2.data;
-        _this3.datas = data.data;
+      axios.get('api/borrow/' + id).then(function (_ref3) {
+        var data = _ref3.data;
+        _this4.datas = data.data;
+        var max_books_allowed = _this4.datas.length >= _this4.options.books_allowed;
+        var has_penalty = _this4.borrower_penalty > 0;
+        console.log(max_books_allowed, has_penalty);
+
+        if (max_books_allowed || has_penalty) {
+          _this4.isBorrow = false;
+        } else {
+          _this4.isBorrow = true;
+        }
       })["catch"](function (error) {
         return error.response.data;
       });
     },
     returnBook: function returnBook(id, data) {
-      var _this4 = this;
+      var _this5 = this;
 
       Swal.fire({
         title: 'Do you want to generate penalty slip?',
@@ -4977,7 +5004,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.isConfirmed) {
           //pass the data parameter to penalty_data
-          _this4.penalty_data = data; //show the penalty slip
+          _this5.penalty_data = data; //show the penalty slip
 
           $('#penalty_slip').modal('show');
         } else if (result.isDenied) {
@@ -4991,18 +5018,18 @@ __webpack_require__.r(__webpack_exports__);
             confirmButtonText: 'Yes, return it!'
           }).then(function (result) {
             if (result.value) {
-              _this4.$Progress.start();
+              _this5.$Progress.start();
 
-              axios.put('api/borrow/' + id).then(function (_ref3) {
-                var data = _ref3.data;
+              axios.put('api/borrow/' + id).then(function (_ref4) {
+                var data = _ref4.data;
                 Toast.fire({
                   icon: data.status,
                   title: data.message
                 }); // Get the borrower id then show his borrowed books
 
-                _this4.borrowerID(_this4.borrower_id);
+                _this5.borrowerID(_this5.borrower_id);
 
-                _this4.$Progress.finish();
+                _this5.$Progress.finish();
               })["catch"](function (error) {
                 error.response.data;
                 Toast.fire({
@@ -5010,7 +5037,7 @@ __webpack_require__.r(__webpack_exports__);
                   title: 'Something went wrong.'
                 });
 
-                _this4.$Progress.fail();
+                _this5.$Progress.fail();
               });
             }
           });
@@ -5126,6 +5153,8 @@ __webpack_require__.r(__webpack_exports__);
             _this2.form.penalty = data.penalty * 20;
 
             _this2.$emit('borrowerID', id);
+
+            _this2.$emit('borrowerPenalty', _this2.form.penalty);
           }
         })["catch"](function (error) {
           return error.response.data;
@@ -50625,7 +50654,14 @@ var render = function() {
       _c(
         "div",
         { staticClass: "col-md-6" },
-        [_c("issued-to", { on: { borrowerID: _vm.borrowerID } })],
+        [
+          _c("issued-to", {
+            on: {
+              borrowerID: _vm.borrowerID,
+              borrowerPenalty: _vm.borrowerPenalty
+            }
+          })
+        ],
         1
       ),
       _vm._v(" "),
@@ -50649,7 +50685,8 @@ var render = function() {
               "button",
               {
                 staticClass: "btn btn-md btn-primary",
-                on: { click: _vm.create }
+                attrs: { disabled: !_vm.isBorrow },
+                on: { click: _vm.borrow }
               },
               [_vm._v("Borrow")]
             )
@@ -50753,7 +50790,11 @@ var render = function() {
                         _vm._v("Penalty :")
                       ]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(_vm.penalty_data.penalty * 20))])
+                      _c("td", [
+                        _vm._v(
+                          _vm._s(_vm.penalty_data.penalty * _vm.options.penalty)
+                        )
+                      ])
                     ])
                   ])
                 ])

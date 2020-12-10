@@ -90,6 +90,7 @@
                                 this.form.penalty = data.penalty * 20
 
                                 this.$emit('borrowerID', id)
+                                this.$emit('borrowerPenalty', this.form.penalty)
                             }
                         })
                         .catch(error => error.response.data);

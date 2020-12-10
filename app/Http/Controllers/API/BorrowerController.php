@@ -18,7 +18,9 @@ class BorrowerController extends Controller
             $borrower = Faculty::where('faculty_id', $id)->get();
         }
 
-        $penalty = Borrow::where('borrower_id', $id)->sum('penalty');
+        $penalty = Borrow::where('borrower_id', $id)
+                        ->where('status', 1)
+                        ->sum('penalty');
         
         return response()->json([
             'borrower' => $borrower,
