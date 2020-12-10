@@ -51,7 +51,20 @@ Vue.component(AlertError.name, AlertError)
 
 //vue html to paper 
 import VueHtmlToPaper from 'vue-html-to-paper';
-Vue.use(VueHtmlToPaper);
+const options = {
+  name: '_blank',
+  specs: [
+    'fullscreen=yes',
+    'titlebar=yes',
+    'scrollbars=yes',
+  ],
+  styles: [
+    'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+    'https://unpkg.com/kidlat-css/css/kidlat.css'
+  ]
+}
+
+Vue.use(VueHtmlToPaper, options);
 
 /**
  * The following block of code may be used to automatically register your
