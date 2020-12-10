@@ -27,7 +27,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="faculty in faculties" :key="faculty.id">
+                            <tr v-for="faculty in faculties.data" :key="faculty.id">
                                 <td>{{ faculty.faculty_id }}</td>
                                 <td>{{ faculty.name }}</td>
                                 <td>{{ faculty.gender }}</td>
@@ -44,8 +44,13 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer clearfix">
-                <div class="float-right">
-                    <!-- pagination here -->
+                <div class="float-center">
+                    <advanced-laravel-vue-paginate 
+                        :data="faculties" 
+                        :onEachSide="true"
+                        dots="..."
+                        @paginateTo="fetchFaculties"
+                    />
                 </div>
             </div>
         </div>
@@ -219,11 +224,12 @@
                     }
                 });
             },
-            fetchFaculties() {
+            fetchFaculties(page) {
+                let url = page ? `api/faculty?page=${page}` : 'api/faculty'
                 this.$Progress.start()
                 axios.get('api/faculty')
                     .then(({ data }) => {
-                        this.faculties = data.faculties.data
+                        this.faculties = data.faculties
                         this.$Progress.finish()
                     })
                     .catch(error => {

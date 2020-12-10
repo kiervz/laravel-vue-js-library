@@ -28,7 +28,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="student in students" :key="student.id">
+                            <tr v-for="student in students.data" :key="student.id">
                                 <td>{{ student.student_id }}</td>
                                 <td>{{ student.name }}</td>
                                 <td>{{ student.gender }}</td>
@@ -46,8 +46,13 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer clearfix">
-                <div class="float-right">
-                    <!-- pagination here -->
+                <div class="float-center">
+                    <advanced-laravel-vue-paginate 
+                        :data="students" 
+                        :onEachSide="true"
+                        dots="..."
+                        @paginateTo="fetchStudents"
+                    />
                 </div>
             </div>
         </div>
@@ -228,11 +233,12 @@
                     }
                 });
             },
-            fetchStudents() {
+            fetchStudents(page) {
+                let url = page ? `api/student?page=${page}` : 'api/student'
                 this.$Progress.start()
                 axios.get('api/student')
                     .then(({ data }) => {
-                        this.students = data.students.data
+                        this.students = data.students
                         this.$Progress.finish()
                     })
                     .catch(error => {

@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "admin-lte": "^3.0.5",
+        "advanced-laravel-vue-paginate": "^0.1.9",
         "sweetalert2": "^10.10.1",
         "vform": "^1.0.1",
         "vue-html-to-paper": "^1.3.1",

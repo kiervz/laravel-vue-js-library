@@ -66,6 +66,10 @@ const options = {
 
 Vue.use(VueHtmlToPaper, options);
 
+// Advanced-Laravel-Vue-Paginate
+import 'advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css'
+Vue.component('advanced-laravel-vue-paginate', require('advanced-laravel-vue-paginate').default);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

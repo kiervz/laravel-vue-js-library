@@ -35,7 +35,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="book in books" :key="book.id">
+                                    <tr v-for="book in books.data" :key="book.id">
                                         <td>{{ book.id }}</td>
                                         <td>{{ book.call_number }}</td>
                                         <td>{{ book.isbn }}</td>
@@ -57,8 +57,13 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
-                        <div class="float-right">
-                            <!-- pagination here -->
+                        <div class="float-center">
+                            <advanced-laravel-vue-paginate 
+                                :data="books" 
+			                    :onEachSide="true"
+			                    dots="..."
+                                @paginateTo="fetchBooks"
+                            />
                         </div>
                     </div>
                 </div>
@@ -334,11 +339,12 @@
             })
         },
         methods: {
-            fetchBooks() {
+            fetchBooks(page) {
+                let url = page ? `api/book?page=${page}` : 'api/book'
                 this.$Progress.start()
-                axios.get('api/book')
+                axios.get(url)
                     .then(({data}) => {
-                        this.books = data.books.data
+                        this.books = data.books
                         this.$Progress.finish()
                     })
                     .catch(error => {

@@ -16,10 +16,10 @@ class UserController extends Controller
 {
     public function index() 
     {
-        $users = UserResource::collection(User::paginate(10));
+        $users = User::paginate(10);
 
         return response()->json([
-            'users' => $users
+            'users' => UserResource::collection($users)->response()->getData(true)
         ], Response::HTTP_OK);
     }
 
