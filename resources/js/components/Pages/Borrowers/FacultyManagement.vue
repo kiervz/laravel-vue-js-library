@@ -47,7 +47,7 @@
                 <div class="float-center">
                     <advanced-laravel-vue-paginate 
                         :data="faculties" 
-                        :onEachSide="true"
+                        :onEachSide="1"
                         dots="..."
                         @paginateTo="fetchFaculties"
                     />
@@ -227,7 +227,7 @@
             fetchFaculties(page) {
                 let url = page ? `api/faculty?page=${page}` : 'api/faculty'
                 this.$Progress.start()
-                axios.get('api/faculty')
+                axios.get(url)
                     .then(({ data }) => {
                         this.faculties = data.faculties
                         this.$Progress.finish()

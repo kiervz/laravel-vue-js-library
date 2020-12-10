@@ -60,7 +60,7 @@
                         <div class="float-center">
                             <advanced-laravel-vue-paginate 
                                 :data="books" 
-			                    :onEachSide="true"
+			                    :onEachSide="1"
 			                    dots="..."
                                 @paginateTo="fetchBooks"
                             />

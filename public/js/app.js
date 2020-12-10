@@ -5023,6 +5023,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'BookCategory',
   data: function data() {
@@ -5044,13 +5049,14 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    fetchCategory: function fetchCategory() {
+    fetchCategory: function fetchCategory(page) {
       var _this2 = this;
 
+      var url = page ? "api/category?page=".concat(page) : 'api/category';
       this.$Progress.start();
-      axios.get('api/category').then(function (_ref) {
+      axios.get(url).then(function (_ref) {
         var data = _ref.data;
-        _this2.book_categories = data.categories.data;
+        _this2.book_categories = data.categories;
 
         _this2.$Progress.finish();
       })["catch"](function (error) {
@@ -6043,7 +6049,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var url = page ? "api/faculty?page=".concat(page) : 'api/faculty';
       this.$Progress.start();
-      axios.get('api/faculty').then(function (_ref2) {
+      axios.get(url).then(function (_ref2) {
         var data = _ref2.data;
         _this3.faculties = data.faculties;
 
@@ -7643,7 +7649,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var url = page ? "api/user?page=".concat(page) : 'api/user';
       this.$Progress.start();
-      axios.get('api/user').then(function (_ref) {
+      axios.get(url).then(function (_ref) {
         var data = _ref.data;
         _this2.users = data.users;
 
@@ -50065,7 +50071,7 @@ var render = function() {
               { staticClass: "float-center" },
               [
                 _c("advanced-laravel-vue-paginate", {
-                  attrs: { data: _vm.books, onEachSide: true, dots: "..." },
+                  attrs: { data: _vm.books, onEachSide: 1, dots: "..." },
                   on: { paginateTo: _vm.fetchBooks }
                 })
               ],
@@ -51011,7 +51017,7 @@ var render = function() {
             _vm._v(" "),
             _c(
               "tbody",
-              _vm._l(_vm.book_categories, function(item) {
+              _vm._l(_vm.book_categories.data, function(item) {
                 return _c("tr", { key: item.id }, [
                   _c("td", [_vm._v(_vm._s(item.id))]),
                   _vm._v(" "),
@@ -51035,7 +51041,19 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._m(1)
+      _c("div", { staticClass: "card-footer clearfix" }, [
+        _c(
+          "div",
+          { staticClass: "float-center" },
+          [
+            _c("advanced-laravel-vue-paginate", {
+              attrs: { data: _vm.book_categories, onEachSide: 1, dots: "..." },
+              on: { paginateTo: _vm.fetchCategory }
+            })
+          ],
+          1
+        )
+      ])
     ])
   ])
 }
@@ -51052,14 +51070,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Action")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-footer clearfix" }, [
-      _c("div", { staticClass: "float-right" })
     ])
   }
 ]
@@ -51895,7 +51905,7 @@ var render = function() {
           { staticClass: "float-center" },
           [
             _c("advanced-laravel-vue-paginate", {
-              attrs: { data: _vm.faculties, onEachSide: true, dots: "..." },
+              attrs: { data: _vm.faculties, onEachSide: 1, dots: "..." },
               on: { paginateTo: _vm.fetchFaculties }
             })
           ],
@@ -52437,7 +52447,7 @@ var render = function() {
           { staticClass: "float-center" },
           [
             _c("advanced-laravel-vue-paginate", {
-              attrs: { data: _vm.students, onEachSide: true, dots: "..." },
+              attrs: { data: _vm.students, onEachSide: 1, dots: "..." },
               on: { paginateTo: _vm.fetchStudents }
             })
           ],
@@ -54142,7 +54152,7 @@ var render = function() {
         { staticClass: "float-center" },
         [
           _c("advanced-laravel-vue-paginate", {
-            attrs: { data: _vm.users, onEachSide: true, dots: "..." },
+            attrs: { data: _vm.users, onEachSide: 1, dots: "..." },
             on: { paginateTo: _vm.fetchUsers }
           })
         ],

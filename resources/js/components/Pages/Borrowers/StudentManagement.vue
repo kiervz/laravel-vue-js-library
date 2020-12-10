@@ -49,7 +49,7 @@
                 <div class="float-center">
                     <advanced-laravel-vue-paginate 
                         :data="students" 
-                        :onEachSide="true"
+                        :onEachSide="1"
                         dots="..."
                         @paginateTo="fetchStudents"
                     />

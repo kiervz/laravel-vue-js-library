@@ -46,7 +46,7 @@
             <div class="float-center">
                 <advanced-laravel-vue-paginate 
                     :data="users" 
-                    :onEachSide="true"
+                    :onEachSide="1"
                     dots="..."
                     @paginateTo="fetchUsers"
                 />
@@ -208,7 +208,7 @@
             fetchUsers(page) {
                 let url = page ? `api/user?page=${page}` : 'api/user'
                 this.$Progress.start()
-                axios.get('api/user')
+                axios.get(url)
                     .then(({ data }) => {
                         this.users = data.users
                         this.$Progress.finish()
