@@ -4043,15 +4043,6 @@ __webpack_require__.r(__webpack_exports__);
     return {
       userType: null
     };
-  },
-  created: function created() {
-    var _this = this;
-
-    axios.post('api/auth/me').then(function (res) {
-      _this.userType = res.data.user_type;
-    })["catch"](function (error) {
-      return Exception.handle(error);
-    });
   }
 });
 
@@ -4111,11 +4102,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      user_type: null,
       items: [{
         name: 'Dashboard',
         link: "/dashboard",
         icon: "tachometer-alt",
-        istreeview: false
+        istreeview: false,
+        only: ['Administrator', 'Librarian']
       }, {
         name: 'Manage Book',
         link: "/book",
@@ -4124,22 +4117,27 @@ __webpack_require__.r(__webpack_exports__);
         treeview: [{
           name: 'Book',
           link: "/book",
-          icon: "book"
+          icon: "book",
+          only: ['Administrator', 'Librarian']
         }, {
           name: 'Category',
           link: "/book-category",
-          icon: "swatchbook"
-        }]
+          icon: "swatchbook",
+          only: ['Administrator']
+        }],
+        only: ['Administrator', 'Librarian']
       }, {
         name: 'Issued & Return',
         link: "/issued-return",
         icon: "paste",
-        istreeview: false
+        istreeview: false,
+        only: ['Administrator', 'Librarian']
       }, {
         name: 'Book Records',
         link: "/book-records",
         icon: "swatchbook",
-        istreeview: false
+        istreeview: false,
+        only: ['Administrator', 'Librarian']
       }, {
         name: 'Borrowers',
         link: "/student-management",
@@ -4148,29 +4146,44 @@ __webpack_require__.r(__webpack_exports__);
         treeview: [{
           name: 'Student Management',
           link: "/student-management",
-          icon: "user"
+          icon: "user",
+          only: ['Administrator', 'Librarian']
         }, {
           name: 'Faculty Management',
           link: "/faculty-management",
-          icon: "user-tie"
-        }]
+          icon: "user-tie",
+          only: ['Administrator', 'Librarian']
+        }],
+        only: ['Administrator', 'Librarian']
       }, {
         name: 'User Management',
         link: "/user-management",
         icon: "users-cog",
-        istreeview: false
+        istreeview: false,
+        only: ['Administrator', 'Librarian']
       }, {
         name: 'Audit Log',
         link: "/audit-log",
         icon: "history",
-        istreeview: false
+        istreeview: false,
+        only: ['Administrator']
       }, {
         name: 'Reports',
         link: "/reports",
         icon: "file-download",
-        istreeview: false
+        istreeview: false,
+        only: ['Administrator', 'Librarian']
       }]
     };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.post('api/auth/me').then(function (res) {
+      _this.user_type = res.data.user_type;
+    })["catch"](function (error) {
+      return Exception.handle(error);
+    });
   }
 });
 
@@ -5040,52 +5053,63 @@ __webpack_require__.r(__webpack_exports__);
       editMode: false
     };
   },
-  created: function created() {
+  mounted: function mounted() {
     var _this = this;
+
+    axios.post('api/auth/me').then(function (res) {
+      if (res.data.user_type == 'Librarian') {
+        _this.$router.push('dashboard');
+      }
+    })["catch"](function (error) {
+      return Exception.handle(error);
+    });
+  },
+  created: function created() {
+    var _this2 = this;
 
     this.fetchCategory();
     this.$on('refreshCategories', function () {
-      _this.fetchCategory();
+      _this2.fetchCategory();
     });
   },
   methods: {
     fetchCategory: function fetchCategory(page) {
-      var _this2 = this;
+      var _this3 = this;
 
       var url = page ? "api/category?page=".concat(page) : 'api/category';
       this.$Progress.start();
       axios.get(url).then(function (_ref) {
         var data = _ref.data;
-        _this2.book_categories = data.categories;
+        _this3.book_categories = data.categories;
 
-        _this2.$Progress.finish();
+        _this3.$Progress.finish();
       })["catch"](function (error) {
-        _this2.errors = error.response.data.errors;
+        _this3.errors = error.response.data.errors;
 
-        _this2.$Progress.fail();
+        _this3.$Progress.fail();
       });
     },
     addCategory: function addCategory() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$Progress.start();
       this.form.post('api/category', this.form).then(function (_ref2) {
         var data = _ref2.data;
 
-        _this3.$Progress.finish();
+        _this4.$Progress.finish();
 
-        _this3.cancel();
+        _this4.cancel();
 
-        _this3.$emit('refreshCategories');
+        _this4.$emit('refreshCategories');
 
         Toast.fire({
           icon: data.status,
           title: data.message
         });
       })["catch"](function (err) {
-        _this3.$Progress.fail();
+        _this4.$Progress.fail();
 
-        _this3.errors = err.response.data.errors;
+        _this4.errors = err.response.data.errors;
         Toast.fire({
           icon: 'error',
           title: 'Something went wrong. Please, try again later.'
@@ -5104,26 +5128,26 @@ __webpack_require__.r(__webpack_exports__);
       this.form.reset();
     },
     updateCategory: function updateCategory() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.$Progress.start();
       this.form.put('api/category/' + this.form.id).then(function (_ref3) {
         var data = _ref3.data;
 
-        _this4.$Progress.finish();
+        _this5.$Progress.finish();
 
-        _this4.cancel();
+        _this5.cancel();
 
-        _this4.$emit('refreshCategories');
+        _this5.$emit('refreshCategories');
 
         Toast.fire({
           icon: data.status,
           title: data.message
         });
       })["catch"](function (error) {
-        _this4.$Progress.fail();
+        _this5.$Progress.fail();
 
-        _this4.errors = error.response.data.errors;
+        _this5.errors = error.response.data.errors;
         Toast.fire({
           icon: 'error',
           title: 'Something went wrong. Please, try again later.'
@@ -5969,7 +5993,7 @@ __webpack_require__.r(__webpack_exports__);
         required: "required",
         type: "text"
       }],
-      faculties: [],
+      faculties: {},
       editMode: false,
       errors: []
     };
@@ -6316,7 +6340,7 @@ __webpack_require__.r(__webpack_exports__);
         required: "required",
         type: "text"
       }],
-      students: [],
+      students: {},
       editMode: false,
       errors: []
     };
@@ -7586,9 +7610,6 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         id: 2,
         name: 'Librarian'
-      }, {
-        id: 3,
-        name: 'Student Assistant'
       }],
       form: new Form({
         id: '',
@@ -49474,7 +49495,18 @@ var render = function() {
             _vm._l(_vm.items, function(item, index) {
               return _c(
                 "li",
-                { key: index, staticClass: "nav-item" },
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: item.only.includes(_vm.user_type),
+                      expression: "item.only.includes(user_type)"
+                    }
+                  ],
+                  key: index,
+                  staticClass: "nav-item"
+                },
                 [
                   _c(
                     "router-link",
@@ -49505,7 +49537,18 @@ var render = function() {
                         ) {
                           return _c(
                             "li",
-                            { key: index, staticClass: "nav-item" },
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: item.only.includes(_vm.user_type),
+                                  expression: "item.only.includes(user_type)"
+                                }
+                              ],
+                              key: index,
+                              staticClass: "nav-item"
+                            },
                             [
                               _c(
                                 "router-link",

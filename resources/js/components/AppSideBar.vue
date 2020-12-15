@@ -18,7 +18,7 @@
 
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                   <li class="nav-item" v-for="(item, index) in items" :key="index">
+                   <li class="nav-item" v-for="(item, index) in items" :key="index" v-show="item.only.includes(user_type)">
                         <router-link :to="item.link" class="nav-link">
                             <i :class="'nav-icon fas fa-' + item.icon"></i>
                             <p>
@@ -27,7 +27,7 @@
                             </p>
                         </router-link>
                         <ul v-if="item.istreeview" class="nav nav-treeview">
-                            <li class="nav-item" v-for="(item, index) in items[index].treeview" :key="index">
+                            <li class="nav-item" v-for="(item, index) in items[index].treeview" :key="index" v-show="item.only.includes(user_type)">
                                 <router-link :to="item.link" class="nav-link">
                                     <i :class="'nav-icon fas fa-' + item.icon"></i>
                                     <p>{{ item.name }}</p>
@@ -44,12 +44,14 @@
     export default {
         data() {
             return {
+                user_type: null,
                 items: [
                     {
                         name : 'Dashboard',
                         link : "/dashboard",
                         icon : "tachometer-alt",
                         istreeview: false,
+                        only: ['Administrator', 'Librarian']
                     },
                     {
                         name : 'Manage Book',
@@ -61,25 +63,30 @@
                                 name : 'Book',
                                 link : "/book", 
                                 icon : "book",
+                                only: ['Administrator', 'Librarian']
                             },
                             {
                                 name : 'Category',
                                 link : "/book-category", 
                                 icon : "swatchbook",
+                                only: ['Administrator']
                             },
-                        ]
+                        ],
+                        only: ['Administrator', 'Librarian']
                     },
                     {
                         name : 'Issued & Return',
                         link : "/issued-return",
                         icon : "paste",
                         istreeview: false,
+                        only: ['Administrator', 'Librarian']
                     },
                     {
                         name : 'Book Records',
                         link : "/book-records",
                         icon : "swatchbook",
                         istreeview: false,
+                        only: ['Administrator', 'Librarian']
                     },
                     {
                         name : 'Borrowers',
@@ -91,34 +98,47 @@
                                 name : 'Student Management',
                                 link : "/student-management", 
                                 icon : "user",
+                                only: ['Administrator', 'Librarian']
                             },
                             {
                                 name : 'Faculty Management',
                                 link : "/faculty-management", 
                                 icon : "user-tie",
+                                only: ['Administrator', 'Librarian']
                             }
-                        ]
+                        ],
+                        only: ['Administrator', 'Librarian']
                     },
                     {
                         name : 'User Management',
                         link : "/user-management",
                         icon : "users-cog",
                         istreeview: false,
+                        only: ['Administrator', 'Librarian']
                     },
                     {
                         name : 'Audit Log',
                         link : "/audit-log",
                         icon : "history",
                         istreeview: false,
+                        only: ['Administrator']
                     },
                     {
                         name : 'Reports',
                         link : "/reports",
                         icon : "file-download",
                         istreeview: false,
+                        only: ['Administrator', 'Librarian']
                     }
                 ],
             }
         },
+        created() {
+            axios.post('api/auth/me')
+                .then(res => {
+                    this.user_type = res.data.user_type
+                })
+                .catch(error => Exception.handle(error))
+        }
     }
 </script>

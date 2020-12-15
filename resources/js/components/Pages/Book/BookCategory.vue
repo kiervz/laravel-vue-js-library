@@ -62,6 +62,15 @@
                 editMode: false
             }
         },
+        mounted() {
+            axios.post('api/auth/me')
+                .then(res => {
+                    if (res.data.user_type == 'Librarian') {
+                        this.$router.push('dashboard');
+                    }
+                })
+                .catch(error => Exception.handle(error))
+        },
         created() {
             this.fetchCategory()
             this.$on('refreshCategories', () => {

@@ -160,7 +160,7 @@
                         type: "text"
                     },
                 ],
-                faculties: [],
+                faculties: {},
                 editMode: false,
                 errors: []
             }

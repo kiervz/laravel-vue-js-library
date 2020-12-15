@@ -169,7 +169,7 @@
                         type: "text"
                     },
                 ],
-                students: [],
+                students: {},
                 editMode: false,
                 errors: []
             }

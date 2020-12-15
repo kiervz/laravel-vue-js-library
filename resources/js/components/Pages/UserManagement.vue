@@ -144,10 +144,6 @@
                     {
                         id:2, 
                         name: 'Librarian'
-                    }, 
-                    {
-                        id: 3, 
-                        name: 'Student Assistant'
                     }
                 ],
                 form: new Form({
