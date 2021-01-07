@@ -44,7 +44,7 @@
     export default {
         data() {
             return {
-                user_type: null,
+                user_type: User.userType(),
                 items: [
                     {
                         name : 'Dashboard',
@@ -114,31 +114,10 @@
                         link : "/user-management",
                         icon : "users-cog",
                         istreeview: false,
-                        only: ['Administrator', 'Librarian']
-                    },
-                    {
-                        name : 'Audit Log',
-                        link : "/audit-log",
-                        icon : "history",
-                        istreeview: false,
                         only: ['Administrator']
                     },
-                    {
-                        name : 'Reports',
-                        link : "/reports",
-                        icon : "file-download",
-                        istreeview: false,
-                        only: ['Administrator', 'Librarian']
-                    }
                 ],
             }
         },
-        created() {
-            axios.post('api/auth/me')
-                .then(res => {
-                    this.user_type = res.data.user_type
-                })
-                .catch(error => Exception.handle(error))
-        }
     }
 </script>

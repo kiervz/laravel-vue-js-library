@@ -6,9 +6,10 @@ class User {
     responseAfterLogin(res) {
         const access_token = res.data.access_token;
         const user = res.data.user;
+        const user_type = res.data.user_type;
 
         if (Token.isValid(access_token)) {
-            AppStorage.store(access_token, user);
+            AppStorage.store(access_token, user, user_type);
             window.location = '/dashboard';
         } else {
             this.$isHaveError = false
@@ -37,6 +38,12 @@ class User {
     name() {
         if (this.loggedIn()) {
             return AppStorage.getUser();
+        }
+    }
+
+    userType() {
+        if (this.loggedIn()) {
+            return AppStorage.getUserType();
         }
     }
 

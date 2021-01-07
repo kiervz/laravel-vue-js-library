@@ -38,10 +38,10 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::apiResource('borrow', 'API\BorrowController');
     Route::get('borrower/{id}', 'API\BorrowerController@show')
             ->name('borrower.show');
-    Route::post('option', 'API\OptionController@index')->name('option.index');
-    Route::put('option/{id}', 'API\OptionController@update')->name('option.update');
 
     Route::group(['middleware' => 'isadmin'], function() {
+        Route::post('option', 'API\OptionController@index')->name('option.index');
+        Route::put('option/{id}', 'API\OptionController@update')->name('option.update');
         Route::apiResource('category', 'API\BookCategoryController');
     });
 });

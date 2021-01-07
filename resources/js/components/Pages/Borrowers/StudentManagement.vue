@@ -236,7 +236,7 @@
             fetchStudents(page) {
                 let url = page ? `api/student?page=${page}` : 'api/student'
                 this.$Progress.start()
-                axios.get('api/student')
+                axios.get(url)
                     .then(({ data }) => {
                         this.students = data.students
                         this.$Progress.finish()

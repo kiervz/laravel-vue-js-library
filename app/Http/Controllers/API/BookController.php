@@ -183,7 +183,7 @@ class BookController extends Controller
 
     public function borrowOverdue() 
     {
-        $borrows = Borrow::where('status', 1);
+        $borrows = Borrow::where('status', 1)->get();
         foreach ($borrows as $borrows) {
             $diff_day = now()->diff($borrows->due_date)->d;
             $diff_hour = now()->diff($borrows->due_date)->h;
